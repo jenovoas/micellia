@@ -1212,6 +1212,56 @@ function processSalesBotQuery(query) {
 // ==========================================================================
 // FONDO 3D DE RED DE MICELIO (THREE.JS)
 // ==========================================================================
+// ==========================================================================
+// FONDO 3D DE RED DE MICELIO (THREE.JS) CON HONGOS OSTRA PROCEDURALES
+// ==========================================================================
+function createWireframeOysterMushroom(colorHex) {
+    const group = new THREE.Group();
+    
+    // Material translúcido estilo rejilla holográfica
+    const material = new THREE.MeshBasicMaterial({
+        color: colorHex,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.18
+    });
+
+    // 1. Sombrero de Hongo Ostra (Pleurotoide - forma de abanico asimétrico)
+    // El domo de la esfera achatada representa el sombrero, y las subdivisiones forman las "laminillas" (gills)
+    const capGeo = new THREE.SphereGeometry(1.0, 16, 12, 0, Math.PI * 2, 0, Math.PI / 2.2);
+    const cap = new THREE.Mesh(capGeo, material);
+    cap.scale.set(1.4, 0.22, 1.0); // Achatado y alargado
+    cap.rotation.x = 0.35;         // Inclinado característico
+    cap.position.set(0, 0.8, -0.2);
+    group.add(cap);
+
+    // 2. Tallo (Stipe) lateral
+    const stemGeo = new THREE.CylinderGeometry(0.06, 0.14, 1.2, 8, 3);
+    const stem = new THREE.Mesh(stemGeo, material);
+    stem.rotation.z = -0.2; // Inclinación lateral
+    stem.position.set(-0.25, 0.25, 0);
+    group.add(stem);
+
+    // 3. Pequeño Hongo Secundario (Brote del racimo)
+    const babyGroup = new THREE.Group();
+    const babyCap = new THREE.Mesh(capGeo, material);
+    babyCap.scale.set(0.7, 0.13, 0.5);
+    babyCap.rotation.x = 0.45;
+    babyCap.position.set(0, 0.4, -0.1);
+    babyGroup.add(babyCap);
+
+    const babyStem = new THREE.Mesh(stemGeo, material);
+    babyStem.scale.set(0.6, 0.6, 0.6);
+    babyStem.rotation.z = -0.35;
+    babyStem.position.set(-0.15, 0.1, 0);
+    babyGroup.add(babyStem);
+
+    babyGroup.position.set(0.4, -0.2, 0.2);
+    group.add(babyGroup);
+
+    return group;
+}
+
 function initMycelium3D() {
     const container = document.getElementById('canvas-container');
     if (!container || typeof THREE === 'undefined') return;
@@ -1226,7 +1276,34 @@ function initMycelium3D() {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
 
-    // 2. Generación de nodos de micelio
+    // 2. Crear Racimos de Hongos Ostra Holográficos
+    const mushrooms = [];
+    const shroomColor = 0xc3b59f; // Color oro champán
+
+    // Cluster 1 (Izquierda Superior)
+    const m1 = createWireframeOysterMushroom(shroomColor);
+    m1.position.set(-3.5, 1.8, -2.5);
+    m1.scale.set(1.3, 1.3, 1.3);
+    scene.add(m1);
+    mushrooms.push(m1);
+
+    // Cluster 2 (Derecha Inferior)
+    const m2 = createWireframeOysterMushroom(shroomColor);
+    m2.position.set(3.8, -1.8, -3.0);
+    m2.rotation.y = Math.PI / 1.5;
+    m2.scale.set(1.1, 1.1, 1.1);
+    scene.add(m2);
+    mushrooms.push(m2);
+
+    // Cluster 3 (Centro Atrás)
+    const m3 = createWireframeOysterMushroom(shroomColor);
+    m3.position.set(0.2, 2.5, -4.5);
+    m3.rotation.y = -Math.PI / 4;
+    m3.scale.set(1.2, 1.2, 1.2);
+    scene.add(m3);
+    mushrooms.push(m3);
+
+    // 3. Generación de nodos de micelio (Spores)
     const nodeCount = 90;
     const positions = [];
     const velocities = [];
@@ -1243,7 +1320,7 @@ function initMycelium3D() {
         velocities.push(new THREE.Vector3(vx, vy, vz));
     }
 
-    // 3. Puntos de crecimiento (Tip Points)
+    // 4. Puntos de crecimiento (Tip Points)
     const pointsGeometry = new THREE.BufferGeometry();
     const pointsArray = new Float32Array(nodeCount * 3);
     updatePointsArray();
@@ -1258,21 +1335,21 @@ function initMycelium3D() {
     }
 
     const pointsMaterial = new THREE.PointsMaterial({
-        size: 0.08,
+        size: 0.07,
         color: 0xc3b59f,
         transparent: true,
-        opacity: 0.9,
+        opacity: 0.8,
         blending: THREE.AdditiveBlending
     });
 
     const pointsMesh = new THREE.Points(pointsGeometry, pointsMaterial);
     scene.add(pointsMesh);
 
-    // 4. Conexiones del micelio (Líneas/Hifas)
+    // 5. Conexiones del micelio (Líneas/Hifas)
     const lineMaterial = new THREE.LineBasicMaterial({
         color: 0xc3b59f,
         transparent: true,
-        opacity: 0.15,
+        opacity: 0.12,
         blending: THREE.AdditiveBlending
     });
 
@@ -1280,19 +1357,20 @@ function initMycelium3D() {
     const lineMesh = new THREE.LineSegments(lineGeometry, lineMaterial);
     scene.add(lineMesh);
 
-    // 5. Interacción del ratón
+    // 6. Interacción del ratón
     let mouseX = 0, mouseY = 0;
     document.addEventListener('mousemove', (e) => {
         mouseX = (e.clientX / window.innerWidth) * 2 - 1;
         mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
     });
 
-    // 6. Bucle de animación
+    // 7. Bucle de animación
     const maxDistance = 2.4;
     
     function animate() {
         requestAnimationFrame(animate);
 
+        // Deriva lenta de los nodos
         for (let i = 0; i < nodeCount; i++) {
             positions[i].add(velocities[i]);
             
@@ -1304,6 +1382,7 @@ function initMycelium3D() {
         updatePointsArray();
         pointsGeometry.attributes.position.needsUpdate = true;
 
+        // Construir líneas dinámicas
         const lineVertices = [];
         for (let i = 0; i < nodeCount; i++) {
             for (let j = i + 1; j < nodeCount; j++) {
@@ -1322,12 +1401,20 @@ function initMycelium3D() {
             lineGeometry.deleteAttribute('position');
         }
 
-        pointsMesh.rotation.y += 0.0006;
-        pointsMesh.rotation.x += 0.0002;
-        lineMesh.rotation.y += 0.0006;
-        lineMesh.rotation.x += 0.0002;
+        // Rotación general de la red
+        pointsMesh.rotation.y += 0.0004;
+        pointsMesh.rotation.x += 0.0001;
+        lineMesh.rotation.y += 0.0004;
+        lineMesh.rotation.x += 0.0001;
 
-        camera.position.x += (mouseX * 2.0 - camera.position.x) * 0.03;
+        // Flotar y rotar hongos ostra
+        mushrooms.forEach((shroom, index) => {
+            shroom.rotation.y += 0.0015;
+            shroom.position.y += Math.sin(Date.now() * 0.0008 + index) * 0.0012;
+        });
+
+        // Parallax de la cámara
+        camera.position.x += (mouseX * 1.8 - camera.position.x) * 0.03;
         camera.position.y += (mouseY * 1.5 - camera.position.y) * 0.03;
         camera.lookAt(scene.position);
 
