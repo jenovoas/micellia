@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dossier Técnico - Micelia Sercotec 2026</title>
+    <!-- Google Fonts & Material Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <!-- Estilos -->
+    <link rel="stylesheet" href="public.css">
+    <link rel="icon" type="image/png" href="logo.png">
+    
+    <!-- Three.js para Fondo 3D Animado -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- Mermaid.js para renderizado dinámico de diagramas -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@9.3.0/dist/mermaid.min.js"></script>
+    
+    <style>
+        .dossier-container {
+            max-width: 1200px;
+            margin: 8rem auto 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .dossier-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2.5rem;
+        }
+
+        @media (max-width: 968px) {
+            .dossier-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .sidebar-menu {
+            position: sticky;
+            top: 7rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            background: rgba(10, 15, 12, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(195, 181, 159, 0.15);
+            border-radius: 20px;
+            padding: 1.5rem;
+            height: fit-content;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background: rgba(195, 181, 159, 0.12);
+            color: var(--accent-gold);
+            border-left: 3px solid var(--accent-gold);
+            padding-left: 1.25rem;
+        }
+
+        .content-card {
+            background: rgba(18, 28, 22, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(195, 181, 159, 0.15);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            display: none;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .content-card.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dossier-title {
+            font-family: var(--font-display);
+            color: var(--accent-gold);
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(195, 181, 159, 0.15);
+            padding-bottom: 0.75rem;
+        }
+
+        .dossier-subtitle {
+            font-family: var(--font-display);
+            color: var(--text-primary);
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem 0;
+        }
+
+        .alert-box {
+            background: rgba(195, 181, 159, 0.08);
+            border-left: 4px solid var(--accent-gold);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            color: var(--text-primary);
+        }
+
+        .alert-title {
+            font-weight: 700;
+            color: var(--accent-gold);
+            margin-bottom: 0.25rem;
+        }
+
+        /* Tabla de especificaciones */
+        .spec-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: rgba(10, 15, 12, 0.4);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(195, 181, 159, 0.12);
+        }
+
+        .spec-table th, .spec-table td {
+            padding: 1rem 1.25rem;
+            text-align: left;
+        }
+
+        .spec-table th {
+            background: rgba(195, 181, 159, 0.1);
+            color: var(--accent-gold);
+            font-family: var(--font-display);
+            font-weight: 600;
+        }
+
+        .spec-table tr:not(:last-child) {
+            border-bottom: 1px solid rgba(195, 181, 159, 0.08);
+        }
+
+        .spec-table td strong {
+            color: var(--accent-gold);
+        }
+
+        /* Contenedor del Diagrama */
+        .diagram-container {
+            background: rgba(10, 15, 12, 0.8);
+            border: 1px solid rgba(195, 181, 159, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            display: flex;
+            justify-content: center;
+            overflow-x: auto;
+        }
+        
+        .mermaid {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Contenedor del Fondo 3D Mycelium Network -->
+    <div id="canvas-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.65;"></div>
+
+    <!-- Navbar Superior -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="brand">
+                <img src="logo.png" class="brand-logo-img" alt="Micelia Logo">
+                <span class="brand-name">MICELIA</span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html#inicio" class="nav-link">Inicio</a>
+                <a href="index.html#estilos-vida" class="nav-link">Para Ti</a>
+                <a href="index.html#biblioteca" class="nav-link">Camino del Micelio</a>
+                <a href="dossier.html" class="nav-link active">Dossier Técnico</a>
+                <a href="index.html#tienda" class="nav-link">Comprar</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido del Dossier -->
+    <div class="dossier-container">
+        <div class="dossier-grid">
+            <!-- Sidebar Navegación -->
+            <div class="sidebar-menu">
+                <div class="menu-item active" onclick="showTab('resumen')">
+                    <span class="material-symbols-outlined">analytics</span>
+                    Ficha Resumen
+                </div>
+                <div class="menu-item" onclick="showTab('arquitectura')">
+                    <span class="material-symbols-outlined">schema</span>
+                    Arquitectura IoT
+                </div>
+                <div class="menu-item" onclick="showTab('telemetria')">
+                    <span class="material-symbols-outlined">sensors</span>
+                    Telemetría Yatra S60
+                </div>
+                <div class="menu-item" onclick="showTab('ledger')">
+                    <span class="material-symbols-outlined">lock</span>
+                    Ledger TruthSync
+                </div>
+                <div class="menu-item" onclick="showTab('predictivo')">
+                    <span class="material-symbols-outlined">query_stats</span>
+                    Proyecciones ML
+                </div>
+                <div class="menu-item" onclick="showTab('sustrato')">
+                    <span class="material-symbols-outlined">recycling</span>
+                    Inmersión Alcalina
+                </div>
+            </div>
+
+            <!-- Contenidos Dinámicos -->
+            <div class="content-wrapper">
+                
+                <!-- 1. Ficha Resumen -->
+                <div id="tab-resumen" class="content-card active">
+                    <h1 class="dossier-title">Resumen Ejecutivo del Proyecto</h1>
+                    <p>Esta especificación describe la ingeniería aplicada al proyecto <strong>Micelia</strong>, diseñado para el cultivo tecnificado de Hongo Ostra en Curanilahue, con cofinanciamiento de Sercotec (Capital Abeja 2026).</p>
+                    
+                    <h2 class="dossier-subtitle">Ficha de Datos Operativos</h2>
+                    <table class="spec-table">
+                        <thead>
+                            <tr>
+                                <th>Parámetro</th>
+                                <th>Detalle Técnico y Financiero</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Postulante</strong></td>
+                                <td>María Angélica Sepúlveda Carrasco</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Provincia y Comuna</strong></td>
+                                <td>Curanilahue, Provincia de Arauco, Región del Biobío</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Módulo de Cultivo</strong></td>
+                                <td>Cámara de fructificación térmica aislada de 30 m²</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Aporte Neto Sercotec</strong></td>
+                                <td>$3.500.000 CLP (Tope máximo legal)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Aporte Emprendedora</strong></td>
+                                <td>$105.000 CLP (3% del Neto obligatorio)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>IVA del Proyecto</strong></td>
+                                <td>$684.950 CLP (19% financiado por la emprendedora)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Presupuesto Consolidado</strong></td>
+                                <td>$4.289.950 CLP</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Punto de Equilibrio</strong></td>
+                                <td>$221.000 CLP/mes (Equivalente al 21.2% de los ingresos estimados)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="alert-box">
+                        <div class="alert-title">Sostenibilidad Financiera</div>
+                        Debido a que la producción se emplaza en terreno propio de la fundadora, los costos fijos mensuales son extremadamente reducidos ($60.000 CLP), permitiendo que la rentabilidad y punto de equilibrio sean altamente resilientes ante variaciones estacionales.
+                    </div>
+                </div>
+
+                <!-- 2. Arquitectura General IoT -->
+                <div id="tab-arquitectura" class="content-card">
+                    <h1 class="dossier-title">Arquitectura General del Sistema IoT</h1>
+                    <p>El control del microclima y el resguardo de la base biológica del cultivo se sustentan en un esquema híbrido de computación física (Edge Computing) coordinado con servicios en la nube.</p>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph TD
+    subgraph "Edge - Módulo de Cultivo (Curanilahue)"
+        S1["Sensor Sensirion SHT31 (Temp & Hum)"] -->|I2C 0x44| ESP32["Microcontrolador ESP32 (Dual Core)"]
+        S2["Sensor Dióxido Carbono (CO2)"] -->|GPIO / ADC| ESP32
+        ESP32 -->|GPIO / Relevadores| Actuadores["Actuadores Climatización: Split Inverter, Extractores, Humidificador"]
+    end
+
+    subgraph "Servidor Central Cloud (Host: fan - 157.254.174.40)"
+        ESP32 -->|TCP Port 4000: Firmware IoT| Daemon["Cortex Daemon (Rust TCP Listener)"]
+        Daemon -->|Procesa & Valida S60| Core["Cortex Core System"]
+        Core -->|Historial / Alertas| DB["Base de Datos PostgreSQL"]
+        Core -->|Firmado Criptográfico SHA256| TS["Ledger TruthSync (truthsync_orders)"]
+        
+        Nginx["Servidor Web Nginx (Proxy Reverso)"] -->|Puerto 8080/ws| Daemon
+    end
+
+    subgraph "Plataforma de Clientes & Administración"
+        Nginx -->|Puerto 3000| Web["Next.js Web / Dashboard (pinguinoseguro.cl/micelia)"]
+        Client["Usuario / Cliente"] -->|Navega| Web
+    end
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Telemetría Yatra S60 -->
+                <div id="tab-telemetria" class="content-card">
+                    <h1 class="dossier-title">Telemetría y Climatización: Estándar Yatra S60</h1>
+                    <p>Las mediciones de las variables físicas se transmiten al daemon Cortex donde se procesan en base sexagesimal (s60) para optimizar el almacenamiento y auditoría.</p>
+                    
+                    <h2 class="dossier-subtitle">Límites Biológicos Ideales para Pleurotus ostreatus</h2>
+                    <table class="spec-table">
+                        <thead>
+                            <tr>
+                                <th>Variable</th>
+                                <th>Rango Fúngico Óptimo</th>
+                                <th>Impacto en Cultivo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Humedad Relativa</strong></td>
+                                <td>85% - 95%</td>
+                                <td>Crítico para la inducción y turgencia de primordios.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>CO₂</strong></td>
+                                <td>&lt; 900 ppm</td>
+                                <td>Previene el crecimiento deforme, elongado y fibroso de los hongos.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Temperatura</strong></td>
+                                <td>18°C - 22°C</td>
+                                <td>Asegura un metabolismo celular equilibrado durante la fructificación.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="diagram-container">
+                        <div class="mermaid">
+sequenceDiagram
+    autonumber
+    participant Sensor as "Sensor SHT31 / CO2"
+    participant Edge as "ESP32 (Edge)"
+    participant Cortex as "Cortex Daemon (Rust)"
+    participant DB as "PostgreSQL (Telemetry DB)"
+
+    Note over Sensor, Edge: Lectura cíclica de variables físicas
+    Sensor->>Edge: Voltajes y tramas digitales (I2C)
+    Edge->>Edge: Convierte a decimales estándares (T°C, HR%, ppm)
+    Edge->>Cortex: Envía trama cruda por puerto TCP 4000
+    Note over Cortex: Biblioteca system/s60
+    Cortex->>Cortex: Convierte lecturas decimales a base sexagesimal (s60)
+    Cortex->>DB: Almacena registro de telemetría firmado
+    Note over Cortex, Edge: Bucle de Control Microclimático
+    alt Humedad < 85% o CO2 > 900ppm
+        Cortex-->>Edge: Comando de activación inmediato (Humidificador/Extractor)
+        Edge->>Edge: Conmuta relés optoacoplados físicos
+    end
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Ledger TruthSync -->
+                <div id="tab-ledger" class="content-card">
+                    <h1 class="dossier-title">Ledger de Transacciones TruthSync</h1>
+                    <p>Cada pedido y actualización logística es firmado mediante un hash criptográfico SHA-256 inmutable para auditorías comerciales.</p>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+flowchart TD
+    A["Cliente realiza Pedido en Portal Web (micelia.cl)"] --> B["Servidor Next.js (Puerto 3000) procesa orden"]
+    B --> C["Consulta base de datos y recupera Hash del pedido anterior (H_prev)"]
+    C --> D["Concatena: ID_Pedido + Datos_Cliente + Estado_Nuevo + H_prev"]
+    D --> E["Calcula Hash criptográfico SHA256 (H_new)"]
+    E --> F["Inserta en tabla postgres: truthsync_orders (H_new, Datos_Pedido)"]
+    F --> G["Firma confirmada (Inmutabilidad garantizada para auditorías)"]
+    
+    style G fill:#2e4f3a,stroke:#c3b59f,stroke-width:2px,color:#f5f3ef
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Proyecciones ML -->
+                <div id="tab-predictivo" class="content-card">
+                    <h1 class="dossier-title">Proyección de Ventas y Sustrato (Rust PyO3)</h1>
+                    <p>El análisis de regresión lineal (mínimos cuadrados) se ejecuta en un backend compilado en Rust y expuesto a Python mediante PyO3 para velocidad óptima.</p>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph LR
+    subgraph "Capa de Scripts Python 3.14"
+        PyScript["public.js/API Gateway (Requests)"] -->|Ejecuta| PythonVM["Servidor Python 3.14 (Backend)"]
+        Env["Var Entorno: PYO3_USE_ABI3_FORWARD_COMPATIBILITY='1'"] -.-> PythonVM
+    end
+
+    subgraph "Capa Core Rust"
+        PythonVM -->|Llamada PyO3| RustModule["system/cortex (Módulo Rust)"]
+        RustModule -->|Cálculo Matemático| LinearReg["Regresión Mínimos Cuadrados"]
+        LinearReg -->|Vector de Coeficientes| RustModule
+    end
+
+    RustModule -->|Devuelve predicción matricial| PythonVM
+    PythonVM -->|Renderiza Dashboard| WebInterface["Gráfico Predictivo de Ventas y Sustrato"]
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. Inmersión Alcalina -->
+                <div id="tab-sustrato" class="content-card">
+                    <h1 class="dossier-title">Procesamiento Circular de Sustrato</h1>
+                    <p>La inmersión alcalina por cal hidratada destruye los competidores micológicos de manera limpia y sin combustión.</p>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+flowchart LR
+    P1["Picado de Paja (1 - 3.5 cm)"] --> P2["Inmersión en tambor con Cal Hidratada Ca(OH)2"]
+    P2 -->|Baño químico por 16 horas con pH 12| P3["Drenaje en ambiente estéril (Restitución a pH 7-8)"]
+    P3 -->|Prueba del Puño: Humedad 60% - 70%| P4["Inoculación del Micelio (Tasa: 5% - 10%)"]
+    P4 --> P5["Llenado y sellado de bolsas tubulares (40x60 cm)"]
+    P5 --> P6["Incubación en oscuridad total (20 - 30 días)"]
+
+    style P2 fill:#0d2215,stroke:#c3b59f,stroke-width:2px,color:#f5f2eb
+                        </div>
+                    </div>
+                    
+                    <div class="alert-box">
+                        <div class="alert-title">Economía Circular y Ahorro Energético</div>
+                        Este método químico disminuye los costos variables asociados a la leña o gas licuado en un 100% comparado con la pasteurización tradicional por vapor, haciéndolo ideal para la sustentabilidad económica del proyecto.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts de interactividad y Three.js -->
+    <script src="public.js"></script>
+    <script>
+        // Inicializar Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            securityLevel: 'loose',
+            themeVariables: {
+                background: 'rgba(10, 15, 12, 0.4)',
+                primaryColor: '#2e4f3a',
+                primaryTextColor: '#f5f3ef',
+                lineColor: '#c3b59f',
+                secondaryColor: '#121c16',
+                tertiaryColor: '#0a0f0c',
+                mainBkg: 'rgba(18, 28, 22, 0.8)',
+                nodeBorder: 'rgba(195, 181, 159, 0.3)'
+            }
+        });
+
+        // Lógica de Tabs del Dossier
+        function showTab(tabId) {
+            // Remover clase active de todos los botones del menú
+            document.querySelectorAll('.menu-item').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Ocultar todas las tarjetas de contenido
+            document.querySelectorAll('.content-card').forEach(card => {
+                card.classList.remove('active');
+            });
+
+            // Activar botón seleccionado
+            const activeBtn = Array.from(document.querySelectorAll('.menu-item')).find(btn => btn.innerText.toLowerCase().includes(tabId === 'resumen' ? 'ficha' : tabId.slice(0, 5)));
+            if (activeBtn) activeBtn.classList.add('active');
+
+            // Mostrar tarjeta de contenido correspondiente
+            const activeCard = document.getElementById('tab-' + tabId);
+            if (activeCard) {
+                activeCard.classList.add('active');
+                // Re-renderizar Mermaid al activar el tab para asegurar dimensiones correctas
+                window.dispatchEvent(new Event('resize'));
+            }
+        }
+    </script>
+</body>
+
+</html>
