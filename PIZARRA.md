@@ -40,6 +40,9 @@ ssh fan 'bash -s' < ./deployment/setup_multi_production.sh
 ```
 *Este comando instalará BIND9, Nginx, configurará las 3 zonas DNS autoritativas, creará los server blocks para Nginx y abrirá los puertos 53 (DNS), 80 (HTTP) y 443 (HTTPS) en el firewall.*
 
+> [!WARNING]
+> Ejecutar `setup_multi_production.sh` sobrescribirá los archivos de configuración de Nginx en `/etc/nginx/conf.d/` con bloques iniciales en puerto 80, eliminando las directivas SSL agregadas por Certbot. Si esto ocurre, los sitios HTTPS dejarán de responder y deberás re-ejecutar el **Paso 4** inmediatamente para restaurar los certificados y el puerto 443.
+
 ### Paso 3: Copiar el Script de Certificación SSL (Certbot)
 Copia el script de emisión de certificados a la ruta de comandos del servidor `fan`:
 ```bash
