@@ -75,5 +75,7 @@ Los precios y productos en la landing page y el carrito deben coincidir exactame
 ## 8. Foco en Producción y Despliegues Remotos
 * Todo cambio realizado en el código local debe sincronizarse y probarse directamente en el servidor de producción `fan` (mediante `make -C system deploy`).
 * Los reportes, capturas y walkthroughs deben orientarse y hacer referencia al entorno real de producción y no a pruebas en localhost.
+* **Advertencia Crítica de SSL/Certbot**: Ejecutar `setup_multi_production.sh` sobrescribe los bloques de Nginx en `/etc/nginx/conf.d/` desactivando el puerto 443 (SSL). Si es estrictamente necesario correr ese script de aprovisionamiento, se debe ejecutar inmediatamente después la emisión de certificados: `sudo /usr/local/bin/issue_ssl.sh <dominio>` para evitar la caída de los portales HTTPS.
+
 
 
