@@ -469,7 +469,8 @@ async function loadUserOrders() {
         // Filtrar solo las del cliente autenticado
         userOrders = allOrders.filter(o => o.customer_email.toLowerCase() === currentUser.email.toLowerCase());
         
-        if (document.getElementById("profile-modal").classList.contains("open")) {
+        const profileModal = document.getElementById("profile-modal");
+        if (profileModal && profileModal.classList.contains("open")) {
             renderProfileOrders();
             runMLPrediction();
         }
@@ -590,11 +591,13 @@ function openProfileModal() {
 }
 
 function closeProfileModal() {
-    document.getElementById("profile-modal").classList.remove("open");
+    const profileModal = document.getElementById("profile-modal");
+    if (profileModal) profileModal.classList.remove("open");
 }
 
 function closeLoginModal() {
-    document.getElementById("login-modal").classList.remove("open");
+    const loginModal = document.getElementById("login-modal");
+    if (loginModal) loginModal.classList.remove("open");
 }
 
 function openArticleModal(id) {
