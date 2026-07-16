@@ -1,0 +1,13 @@
+[workspace]
+resolver = "2"
+members = [
+    "cortex",
+    "firmware",
+    "s60"
+]
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"

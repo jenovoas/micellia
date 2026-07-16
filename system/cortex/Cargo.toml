@@ -1,0 +1,20 @@
+[package]
+name = "cortex"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "cortex"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+s60 = { path = "../s60" }
+tokio = { version = "1.35", features = ["full"] }
+pyo3 = { version = "0.22", features = ["extension-module"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+redis = { version = "0.24", features = ["tokio-comp"] }
+tokio-postgres = { version = "0.7", features = ["with-serde_json-1"] }
+axum = { version = "0.7", features = ["ws"] }
+tower-http = { version = "0.5", features = ["cors", "fs"] }
+sha2 = "0.10"

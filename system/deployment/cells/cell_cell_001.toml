@@ -1,0 +1,25 @@
+# Plantilla de Configuración de Célula Autónoma "Micelia"
+# Generado automáticamente para replicación sin intervención manual.
+
+[cell]
+id = "cell_001"
+name = "Camara-Cultivo-cell_001"
+location = "Modulo-A"
+
+[sensors]
+co2_address = "0x40"
+temp_hum_address = "0x44"
+differential_pressure_address = "0x48"
+
+[actuators]
+extractor_pin = 12
+humidifier_pin = 13
+nebulizer_pin = 14
+damper_pin = 15
+
+[limits]
+# Valores en base sexagesimal S60 (escalados * 216,000)
+temp_fructification_min_raw = 3888000   # 18°C (18 * 216000)
+temp_fructification_max_raw = 4752000   # 22°C (22 * 216000)
+hum_fructification_raw = 19440000       # 90%  (90 * 216000)
+co2_fructification_limit = 172800000    # 800 ppm (800 * 216000)

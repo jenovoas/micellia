@@ -1,0 +1,11 @@
+[package]
+name = "s60"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+default = ["std"]
+std = []
+
+[dependencies]
+# No external dependencies required for the basic S60 math

@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Micelia - Soberanía Alimentaria y Hongo Ostra</title>
+    <!-- Google Fonts & Material Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <!-- Estilos -->
+    <link rel="stylesheet" href="public.css">
+</head>
+<body>
+    <!-- Navbar Superior -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="brand">
+                <img src="logo.jpeg" class="brand-logo-img" alt="Micelia Logo">
+                <span class="brand-name">MICELIA</span>
+            </div>
+            <div class="nav-links">
+                <a href="#inicio" class="nav-link active">Inicio</a>
+                <a href="#estilos-vida" class="nav-link">Para Ti</a>
+                <a href="#biblioteca" class="nav-link">Camino del Micelio</a>
+                <a href="#tienda" class="nav-link">Comprar</a>
+                <a href="#" class="nav-link" id="login-nav-btn">Iniciar Sesión</a>
+                <div class="profile-nav-container" id="profile-nav-container" style="display: none; cursor: pointer;">
+                    <span class="avatar-icon material-symbols-outlined" style="font-size: 1.5rem; vertical-align: middle; color: var(--accent-gold);">account_circle</span>
+                    <span class="profile-name" id="profile-name-text" style="font-size: 0.95rem; font-weight: 500; color: var(--accent-gold); margin-left: 0.25rem;">María G.</span>
+                </div>
+                <a href="admin.html" class="nav-link nav-btn-admin">Acceso Operador</a>
+            </div>
+            <button class="cart-btn" id="open-cart-btn">
+                <span class="material-symbols-outlined">shopping_cart</span>
+                <span class="cart-count">0</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Sección Inicio / Héroe -->
+    <section id="inicio" class="hero-section-container">
+        <div class="hero-section">
+            <div class="hero-content">
+                <span class="hero-tag">Frescura Radical</span>
+                <h1>Hongos Ostra Cosechados y Entregados en &lt; 24 Horas</h1>
+                <p class="hero-desc">Democratizando el acceso a una nutrición noble de alta calidad en la Provincia de Arauco. Cultivo técnico automatizado e incorruptible, sustentado en la economía circular y la honestidad ecológica.</p>
+                <div class="hero-cta-container">
+                    <a href="#tienda" class="btn btn-primary">Ver Tienda</a>
+                    <a href="#biblioteca" class="btn btn-secondary">Aprender del Cultivo</a>
+                </div>
+            </div>
+            <div class="hero-image-container">
+                <img src="oyster_mushrooms.png" class="hero-img" alt="Cultivo Técnico de Hongo Ostra Micelia">
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Estilos de Vida / Perfiles de Cliente -->
+    <section id="estilos-vida" class="lifestyle-section" style="max-width: 1200px; margin: 0 auto; padding: 6rem 2rem;">
+        <div class="section-header" style="text-align: center; margin-bottom: 3.5rem;">
+            <span class="section-tag" style="color: var(--accent-gold); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 0.75rem;">Micelia Para Ti</span>
+            <h2 style="font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem;">Beneficios según tu Estilo de Vida</h2>
+            <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto; font-size: 1rem; line-height: 1.6;">Descubre cómo el hongo ostra se adapta a tu día a día y potencia tu salud, rendimiento y cocina con recetas y consejos a tu medida.</p>
+        </div>
+
+        <div class="lifestyle-container" style="display: flex; flex-direction: column; gap: 2rem;">
+            <!-- Tabs Navigation -->
+            <div class="lifestyle-tabs" style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 1.5rem;">
+                <button class="lifestyle-tab active" data-tab="deportistas" onclick="switchLifestyle('deportistas')">
+                    <span class="material-symbols-outlined">directions_run</span>
+                    <span>Deportistas</span>
+                </button>
+                <button class="lifestyle-tab" data-tab="tercera-edad" onclick="switchLifestyle('tercera-edad')">
+                    <span class="material-symbols-outlined">elderly</span>
+                    <span>Tercera Edad</span>
+                </button>
+                <button class="lifestyle-tab" data-tab="naturalistas" onclick="switchLifestyle('naturalistas')">
+                    <span class="material-symbols-outlined">park</span>
+                    <span>Naturalistas</span>
+                </button>
+                <button class="lifestyle-tab" data-tab="gourmet" onclick="switchLifestyle('gourmet')">
+                    <span class="material-symbols-outlined">restaurant_menu</span>
+                    <span>Gourmet</span>
+                </button>
+                <button class="lifestyle-tab" data-tab="familias" onclick="switchLifestyle('familias')">
+                    <span class="material-symbols-outlined">family_restroom</span>
+                    <span>Familias</span>
+                </button>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="lifestyle-content-card glass-card" id="lifestyle-content-card">
+                <!-- Se poblará de forma dinámica mediante JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Recetas e Info Nutricional / Slider -->
+    <section id="recetas-nutricion" class="slider-section-container" style="background: rgba(0, 0, 0, 0.25); padding: 6rem 2rem; border-top: 1px solid rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.02);">
+        <div class="section-header" style="text-align: center; margin-bottom: 3.5rem;">
+            <span class="section-tag" style="color: var(--accent-gold); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 0.75rem;">Inspiración Micológica</span>
+            <h2 style="font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem;">Recetas que Abren el Apetito</h2>
+            <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto; font-size: 1rem; line-height: 1.6;">Explora platos gourmet de fácil preparación y descubre la potencia nutricional oculta en cada bocado de setas ostra.</p>
+        </div>
+
+        <div class="slider-container" style="max-width: 1100px; margin: 0 auto; position: relative; overflow: hidden; border-radius: 24px; box-shadow: 0 30px 60px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); min-height: 480px; background: rgba(12, 18, 14, 0.7);">
+            <!-- Slide 1: Tacos -->
+            <div class="slide active" data-slide="0">
+                <div class="slide-image-wrapper">
+                    <img src="tacos.png" alt="Tacos Gourmet de Hongo Ostra">
+                </div>
+                <div class="slide-content">
+                    <span class="slide-badge">Bajo en Calorías • Alto en Fibra</span>
+                    <h3>Tacos de Hongo Ostra Deshilachado</h3>
+                    <p class="slide-description">Una explosión de frescura y sabor mexicano. Setas ostra desmenuzadas longitudinalmente a mano, doradas a la plancha con cebollas, cilantro fresco y un toque de crema de palta artesanal sobre tortillas artesanales.</p>
+                    <div class="slide-nutrition-grid">
+                        <div class="nutrition-item"><strong>92 kcal</strong><span>Por taco</span></div>
+                        <div class="nutrition-item"><strong>3.8g</strong><span>Proteínas</span></div>
+                        <div class="nutrition-item"><strong>0g</strong><span>Colesterol</span></div>
+                    </div>
+                    <a href="#tienda" class="btn btn-primary btn-sm">Quiero Cocinar Esto</a>
+                </div>
+            </div>
+
+            <!-- Slide 2: Grilled Steak -->
+            <div class="slide" data-slide="1">
+                <div class="slide-image-wrapper">
+                    <img src="steak.png" alt="Steak de Hongo Ostra al Ajo">
+                </div>
+                <div class="slide-content">
+                    <span class="slide-badge">Potasio • Complejo B</span>
+                    <h3>Clusters al Grill con Mantequilla de Ajo</h3>
+                    <p class="slide-description">El plato estrella para apreciar la textura carnosa del hongo ostra. Racimos enteros asados con bordes caramelizados y crujientes, sazonados con perejil fresco y ajo picado fino.</p>
+                    <div class="slide-nutrition-grid">
+                        <div class="nutrition-item"><strong>145 kcal</strong><span>Por porción</span></div>
+                        <div class="nutrition-item"><strong>5.2g</strong><span>Proteínas</span></div>
+                        <div class="nutrition-item"><strong>B1, B2, B6</strong><span>Vitaminas</span></div>
+                    </div>
+                    <a href="#tienda" class="btn btn-primary btn-sm">Quiero Cocinar Esto</a>
+                </div>
+            </div>
+
+            <!-- Slide 3: Risotto -->
+            <div class="slide" data-slide="2">
+                <div class="slide-image-wrapper">
+                    <img src="risotto.png" alt="Risotto de Setas Ostra">
+                </div>
+                <div class="slide-content">
+                    <span class="slide-badge">Beta-glucanos • Umami Puro</span>
+                    <h3>Risotto Cremoso de Setas con Aceite de Trufa</h3>
+                    <p class="slide-description">Lujo gastronómico reconfortante en tu mesa. Arroz arborio cocido a fuego lento, coronado con hongos ostra salteados al dente, queso parmesano maduro y unas gotas de aceite de trufa.</p>
+                    <div class="slide-nutrition-grid">
+                        <div class="nutrition-item"><strong>320 kcal</strong><span>Por plato</span></div>
+                        <div class="nutrition-item"><strong>8.4g</strong><span>Proteínas</span></div>
+                        <div class="nutrition-item"><strong>Inmuno</strong><span>Beta-glucanos</span></div>
+                    </div>
+                    <a href="#tienda" class="btn btn-primary btn-sm">Quiero Cocinar Esto</a>
+                </div>
+            </div>
+
+            <!-- Controles del Slider -->
+            <button class="slider-arrow prev" onclick="moveSlider(-1)">
+                <span class="material-symbols-outlined">chevron_left</span>
+            </button>
+            <button class="slider-arrow next" onclick="moveSlider(1)">
+                <span class="material-symbols-outlined">chevron_right</span>
+            </button>
+
+            <!-- Indicadores (Puntos) -->
+            <div class="slider-dots">
+                <span class="slider-dot active" onclick="setSlide(0)"></span>
+                <span class="slider-dot" onclick="setSlide(1)"></span>
+                <span class="slider-dot" onclick="setSlide(2)"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Camino del Micelio -->
+    <section id="biblioteca" class="biblioteca-section">
+        <div class="section-header">
+            <span class="section-tag">Camino del Micelio</span>
+            <h2>Educación, Ecología y Telemetría Científica</h2>
+            <p>Creemos que la sustentabilidad florece al educar a la comunidad. Explora nuestras guías de cultivo orgánico y estudia las condiciones biológicas de nuestras cámaras de producción en tiempo real.</p>
+        </div>
+
+        <div class="articles-grid">
+            <!-- Artículo 1 -->
+            <div class="article-card" onclick="openArticleModal(1)">
+                <div class="article-icon">
+                    <span class="material-symbols-outlined">psychology</span>
+                </div>
+                <h3>¿Qué es realmente el hongo ostra?</h3>
+                <p>Descubre la biología fúngica básica, sus ciclos de vida y las propiedades del Pleurotus ostreatus.</p>
+                <span class="read-more">Leer Publicación <span class="material-symbols-outlined">arrow_forward</span></span>
+            </div>
+
+            <!-- Artículo 2 -->
+            <div class="article-card" onclick="openArticleModal(2)">
+                <div class="article-icon">
+                    <span class="material-symbols-outlined">ecg_heart</span>
+                </div>
+                <h3>¿Por qué incorporarlo a tu dieta?</h3>
+                <p>Compendio nutricional sobre beta-glucanos, aminoácidos esenciales y beneficios metabólicos de las setas.</p>
+                <span class="read-more">Leer Publicación <span class="material-symbols-outlined">arrow_forward</span></span>
+            </div>
+
+            <!-- Artículo 3 -->
+            <div class="article-card" onclick="openArticleModal(3)">
+                <div class="article-icon">
+                    <span class="material-symbols-outlined">restaurant</span>
+                </div>
+                <h3>5 errores comunes al cocinar setas</h3>
+                <p>Cómo lograr la textura crujiente perfecta y evitar los errores culinarios clásicos de la cocina casera.</p>
+                <span class="read-more">Leer Publicación <span class="material-symbols-outlined">arrow_forward</span></span>
+            </div>
+
+            <!-- Artículo 4 -->
+            <div class="article-card" onclick="openArticleModal(4)">
+                <div class="article-icon">
+                    <span class="material-symbols-outlined">eco</span>
+                </div>
+                <h3>Cultivo sin químicos ni pesticidas</h3>
+                <p>Detalle de nuestro proceso biológico de digestión enzimática y por qué no requerimos aditivos sintéticos.</p>
+                <span class="read-more">Leer Publicación <span class="material-symbols-outlined">arrow_forward</span></span>
+            </div>
+
+            <!-- Artículo 5 -->
+            <div class="article-card" onclick="openArticleModal(5)">
+                <div class="article-icon">
+                    <span class="material-symbols-outlined">recycling</span>
+                </div>
+                <h3>Valorización de residuos agrícolas</h3>
+                <p>El pilar de nuestra economía circular: transformando la paja de trigo y avena local en proteína pura.</p>
+                <span class="read-more">Leer Publicación <span class="material-symbols-outlined">arrow_forward</span></span>
+            </div>
+
+            <!-- Artículo 6: Telemetría y Sensores -->
+            <div class="article-card" onclick="openTelemetryStudyModal()" style="border: 1px dashed rgba(195,181,159,0.3); background: rgba(195,181,159,0.02);">
+                <div class="article-icon" style="color: var(--accent-gold);">
+                    <span class="material-symbols-outlined">analytics</span>
+                </div>
+                <h3>Estudio de Telemetría y Sensores</h3>
+                <p>Monitorea y analiza las lecturas en tiempo real de temperatura, humedad y CO₂ firmadas en TruthSync para investigación científica.</p>
+                <span class="read-more" style="color: var(--accent-gold);">Estudiar Datos <span class="material-symbols-outlined">arrow_forward</span></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Tienda / Pedidos -->
+    <section id="tienda" class="tienda-section">
+        <div class="section-header">
+            <span class="section-tag">Tienda Local</span>
+            <h2>Pedidos y Suscripciones B2B</h2>
+            <p>Llevamos la frescura directo a tu cocina familiar o restaurante en Curanilahue. Elige el formato ideal.</p>
+        </div>
+
+        <div class="products-grid">
+            <!-- Producto 1 -->
+            <div class="product-card">
+                <div class="product-badge">Más Popular</div>
+                <div class="product-icon">
+                    <span class="material-symbols-outlined">box</span>
+                </div>
+                <h3>Hongo Ostra Fresco - 500g</h3>
+                <p class="price">$4.500 CLP</p>
+                <p class="desc">Caja de cultivo familiar de hongo fresco cosechado en la mañana y entregado en la tarde. Turgencia y frescura inigualable.</p>
+                <button class="btn btn-primary add-to-cart-btn" data-id="1" data-name="Hongo Ostra Fresco 500g" data-price="4500">Añadir al Carrito</button>
+            </div>
+
+            <!-- Producto 2 -->
+            <div class="product-card">
+                <div class="product-icon">
+                    <span class="material-symbols-outlined">inventory_2</span>
+                </div>
+                <h3>Hongo Ostra Fresco - 1kg</h3>
+                <p class="price">$8.000 CLP</p>
+                <p class="desc">Formato familiar XL o para cocineros aficionados. Perfecto para conservar en escabeche, deshidratar o cocinar en banquetes.</p>
+                <button class="btn btn-primary add-to-cart-btn" data-id="2" data-name="Hongo Ostra Fresco 1kg" data-price="8000">Añadir al Carrito</button>
+            </div>
+
+            <!-- Producto 3 -->
+            <div class="product-card B2B">
+                <div class="product-badge B2B">Suscripción B2B</div>
+                <div class="product-icon">
+                    <span class="material-symbols-outlined">receipt_long</span>
+                </div>
+                <h3>Suscripción Restaurante (HORECA)</h3>
+                <p class="price">$25.000 CLP <small>/mes</small></p>
+                <p class="desc">Suministro garantizado de 3.5kg mensuales de calibre premium estandarizado, entregado semanalmente. Exclusivo para locales de Arauco.</p>
+                <button class="btn btn-secondary add-to-cart-btn" data-id="3" data-name="Suscripción HORECA" data-price="25000">Suscribirse</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sidebar del Carrito de Compras -->
+    <aside class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h3>Tu Pedido</h3>
+            <button class="close-cart-btn" id="close-cart-btn">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div class="cart-items" id="cart-items-container">
+            <!-- Items agregados de forma dinámica -->
+            <div class="empty-cart-message">El carrito está vacío.</div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total-row">
+                <span>Total:</span>
+                <span class="cart-total-price" id="cart-total-price">$0 CLP</span>
+            </div>
+            <button class="btn btn-primary checkout-btn" id="checkout-btn" disabled>Proceder al Despacho</button>
+        </div>
+    </aside>
+    <div class="cart-backdrop" id="cart-backdrop"></div>
+
+    <!-- Modal de Lectura de Artículos (Biblioteca) -->
+    <div class="modal" id="article-modal">
+        <div class="modal-content article-modal-content">
+            <button class="close-modal-btn" onclick="closeArticleModal()">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <div class="modal-body" id="article-content">
+                <!-- Contenido dinámico del artículo -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Checkout / Despacho -->
+    <div class="modal" id="checkout-modal">
+        <div class="modal-content checkout-modal-content">
+            <button class="close-modal-btn" onclick="closeCheckoutModal()">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <h2>Datos de Despacho</h2>
+            <p>Completa tus datos para coordinar el despacho directo en Curanilahue.</p>
+            <form id="checkout-form" class="checkout-form">
+                <div class="form-group">
+                    <label for="checkout-name">Nombre Completo</label>
+                    <input type="text" id="checkout-name" required placeholder="María González">
+                </div>
+                <div class="form-group">
+                    <label for="checkout-email">Correo Electrónico</label>
+                    <input type="email" id="checkout-email" required placeholder="maria@ejemplo.com">
+                </div>
+                <div class="form-group">
+                    <label for="checkout-phone">Teléfono / WhatsApp</label>
+                    <input type="tel" id="checkout-phone" required placeholder="+56 9 1234 5678">
+                </div>
+                <div class="form-group">
+                    <label for="checkout-address">Dirección de Despacho</label>
+                    <input type="text" id="checkout-address" required placeholder="Calle Prat 123, Curanilahue">
+                </div>
+                <div class="checkout-actions">
+                    <button type="submit" class="btn btn-primary">Ir al Pago Seguro (Webpay)</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Pasarela de Pago Simulada (Webpay/Stripe) -->
+    <div class="modal" id="payment-modal">
+        <div class="modal-content payment-modal-content">
+            <h2>Pasarela de Pago Segura</h2>
+            <div class="webpay-logo">
+                <span class="material-symbols-outlined">lock</span>
+                <span>Webpay Plus</span>
+            </div>
+            
+            <div class="payment-summary">
+                <p>Monto a transferir:</p>
+                <h3 id="payment-amount-text">$0 CLP</h3>
+            </div>
+
+            <!-- Formulario de Tarjeta -->
+            <form id="payment-form" class="payment-form">
+                <div class="form-group">
+                    <label>Número de Tarjeta</label>
+                    <div class="input-icon-container">
+                        <span class="material-symbols-outlined input-icon">credit_card</span>
+                        <input type="text" required placeholder="XXXX XXXX XXXX XXXX" max-length="19" value="4559 1200 4589 1267">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Vencimiento</label>
+                        <input type="text" required placeholder="MM/AA" max-length="5" value="12/28">
+                    </div>
+                    <div class="form-group">
+                        <label>CVC / CVV</label>
+                        <input type="password" required placeholder="XXX" max-length="3" value="123">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Titular de la Tarjeta</label>
+                    <input type="text" required placeholder="MARIA GONZALEZ" value="MARIA GONZALEZ">
+                </div>
+
+                <div class="payment-actions">
+                    <button type="button" class="btn btn-secondary" onclick="abortPayment()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="confirm-payment-btn">Pagar de forma Segura</button>
+                </div>
+            </form>
+
+            <!-- Pantalla de Procesamiento / Éxito -->
+            <div class="payment-processing" id="payment-processing" style="display: none;">
+                <div class="spinner"></div>
+                <p>Verificando fondos con el banco emisor...</p>
+            </div>
+
+            <div class="payment-success" id="payment-success" style="display: none;">
+                <span class="material-symbols-outlined success-icon">verified_user</span>
+                <h3>¡Transacción Exitosa!</h3>
+                <p>Tu orden ha sido autorizada y firmada en el ledger descentralizado **TruthSync**.</p>
+                <div class="signature-box">
+                    <p class="sig-label">Hash Criptográfico SHA256:</p>
+                    <code id="sig-hash-text">Generando firma inmutable...</code>
+                </div>
+                <button class="btn btn-primary" onclick="finishOrder()">Finalizar y Volver</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Iniciar Sesión -->
+    <div class="modal" id="login-modal">
+        <div class="modal-content login-modal-content" style="max-width: 450px;">
+            <button class="close-modal-btn" onclick="closeLoginModal()">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <h2 style="font-family: var(--font-display); margin-bottom: 0.5rem;">Entrar a Micelia</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem;">Inicia sesión para guardar tu historial de compras y acceder a predicciones de consumo.</p>
+            
+            <div class="social-login-container" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
+                <button class="btn btn-secondary btn-social" onclick="loginSocial('Google')" style="display: flex; align-items: center; justify-content: center; gap: 0.85rem; padding: 0.75rem;">
+                    <img src="https://www.google.com/favicon.ico" alt="Google logo" style="width: 18px; height: 18px;">
+                    Continuar con Google
+                </button>
+                <button class="btn btn-secondary btn-social" onclick="loginSocial('Facebook')" style="display: flex; align-items: center; justify-content: center; gap: 0.85rem; padding: 0.75rem;">
+                    <span class="material-symbols-outlined" style="color: #1877f2; font-size: 1.3rem;">facebook</span>
+                    Continuar con Facebook
+                </button>
+            </div>
+            
+            <div class="login-separator" style="text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); line-height: 0.1em; margin: 2rem 0; color: var(--text-muted); font-size: 0.8rem;"><span style="background: var(--bg-sidebar); padding: 0 10px;">O CON CORREO</span></div>
+            
+            <form id="login-form" class="login-form">
+                <div class="form-group">
+                    <label for="login-email">Correo Electrónico</label>
+                    <input type="email" id="login-email" required placeholder="maria@ejemplo.com">
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Contraseña</label>
+                    <input type="password" id="login-password" required placeholder="••••••••">
+                </div>
+                <div class="login-actions" style="margin-top: 2rem;">
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Entrar / Registrarse</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Mi Perfil / Seguimiento / ML -->
+    <div class="modal" id="profile-modal">
+        <div class="modal-content profile-modal-content" style="max-width: 700px;">
+            <button class="close-modal-btn" onclick="closeProfileModal()">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            
+            <div class="profile-header-main" style="display: flex; align-items: center; gap: 1.5rem; padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 2rem; position: relative;">
+                <span class="material-symbols-outlined" style="font-size: 4rem; color: var(--accent-gold);">account_circle</span>
+                <div style="flex-grow: 1;">
+                    <h2 id="profile-user-name" style="font-family: var(--font-display); font-size: 1.6rem; font-weight: 700;">María González</h2>
+                    <p id="profile-user-email" style="color: var(--text-muted); font-size: 0.95rem;">maria@ejemplo.com</p>
+                </div>
+                <button class="btn btn-secondary" onclick="logoutUser()" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Cerrar Sesión</button>
+            </div>
+
+            <!-- Sección ML Predictor -->
+            <div class="profile-ml-predictor" style="background: rgba(195, 181, 159, 0.04); border: 1px solid rgba(195, 181, 159, 0.1); border-radius: 16px; padding: 2rem; margin-bottom: 2.5rem;">
+                <div class="ml-badge" style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--accent-gold-glow); color: var(--accent-gold); padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 1rem;">
+                    <span class="material-symbols-outlined" style="font-size: 1.1rem;">neurology</span>
+                    <span>Cortex ML Engine</span>
+                </div>
+                <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.5rem;">Estimador de Próxima Compra</h3>
+                <div class="ml-prediction-body">
+                    <p id="ml-prediction-text" style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; margin-bottom: 1rem;">No tienes suficientes pedidos para entrenar el modelo predictivo. ¡Realiza tu primera compra!</p>
+                    <div id="ml-action-container" style="display: none;">
+                        <button class="btn btn-primary" onclick="orderPredictedItem()" style="padding: 0.5rem 1.5rem; font-size: 0.9rem;">Programar Despacho Sugerido</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección Seguimiento de Pedidos -->
+            <div class="profile-orders-section">
+                <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 1.5rem;">Tus Pedidos y Seguimiento</h3>
+                <div id="profile-orders-list" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <p style="color: var(--text-muted); font-size: 0.95rem; text-align: center; margin: 2rem 0;">Aún no has realizado ningún pedido.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <img src="logo.jpeg" class="brand-logo-img" alt="Micelia Logo">
+                <span>MICELIA</span>
+            </div>
+            <p>Cultivo Técnico de Hongos Ostra • Soberanía Alimentaria Arauco</p>
+            <p class="copyright">Curanilahue, Región del Biobío, Chile • © 2026 Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts de la Landing Page -->
+    <script src="public.js"></script>
+</body>
+</html>

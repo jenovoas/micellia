@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Micelia - Centro de Control y Telemetría</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts & Material Symbols -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar de Navegación -->
+        <aside class="sidebar">
+            <div class="brand">
+                <img src="logo.jpeg" class="brand-logo-img" alt="Micelia Logo">
+                <h2>MICELIA</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" id="btn-dashboard">
+                    <span class="icon material-symbols-outlined">dashboard</span>
+                    Panel General
+                </a>
+                <a href="#" class="nav-item" id="btn-deliveries">
+                    <span class="icon material-symbols-outlined">local_shipping</span>
+                    Gestión de Despachos
+                </a>
+                <a href="#" class="nav-item" id="btn-ml-forecast">
+                    <span class="icon material-symbols-outlined">neurology</span>
+                    Predicciones (ML)
+                </a>
+                <a href="#" class="nav-item" id="btn-chambers">
+                    <span class="icon material-symbols-outlined">science</span>
+                    Cámaras (Células)
+                </a>
+                <a href="#" class="nav-item" id="btn-yatra">
+                    <span class="icon material-symbols-outlined">calculate</span>
+                    Convertidor Yatra S60
+                </a>
+                <a href="#" class="nav-item" id="btn-security">
+                    <span class="icon material-symbols-outlined">shield</span>
+                    Cortex (eBPF / LSM)
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="status-indicator-container">
+                    <span class="pulse-dot green"></span>
+                    <span class="status-text">Cortex Online (v1.0)</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Contenido Principal -->
+        <main class="main-content">
+            <!-- Encabezado -->
+            <header class="content-header">
+                <div>
+                    <h1>Célula de Fructificación 001</h1>
+                    <p class="subtitle">Monitoreo en tiempo real bajo Protocolo Yatra S60</p>
+                </div>
+                <div class="header-actions">
+                    <div class="manual-badge">Modo: Trazabilidad Digital</div>
+                </div>
+            </header>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid" id="view-dashboard">
+                <!-- Tarjeta de Estado Lógico -->
+                <div class="glass-card state-card">
+                    <h3>Estado de Cámara</h3>
+                    <div class="state-badge-container">
+                        <span class="state-badge" id="current-state-badge">FRUCTIFICACIÓN</span>
+                    </div>
+                    <p class="state-description" id="state-desc">
+                        Condiciones óptimas para inducción y crecimiento de cuerpos fructíferos. Humedad alta y ventilación activa.
+                    </p>
+                    
+                    <div class="state-timeline">
+                        <div class="timeline-step">Preparación</div>
+                        <div class="timeline-step">Incubación</div>
+                        <div class="timeline-step">Inducción</div>
+                        <div class="timeline-step">Fructificación</div>
+                        <div class="timeline-step">Cosecha</div>
+                        <div class="timeline-step">Sanitización</div>
+                    </div>
+
+                    <div class="action-buttons-group">
+                        <button class="btn btn-primary" id="btn-next-state">Avanzar a Cosecha</button>
+                        <button class="btn btn-danger" id="btn-trigger-alert">Declarar Contaminación (MIP)</button>
+                    </div>
+                </div>
+
+                <!-- Telemetría Yatra S60 (En tiempo real con Gauges) -->
+                <div class="glass-card telemetry-card">
+                    <h3>Telemetría Sexagesimal (S60)</h3>
+                    
+                    <div class="gauges-grid">
+                        <!-- Gauge Temperatura -->
+                        <div class="gauge-container">
+                            <div class="gauge-ring-wrapper">
+                                <svg class="gauge-svg" viewBox="0 0 100 100">
+                                    <circle class="gauge-track" cx="50" cy="50" r="42"></circle>
+                                    <circle class="gauge-value" cx="50" cy="50" r="42" id="temp-gauge-circle"></circle>
+                                </svg>
+                                <div class="gauge-center-text">
+                                    <span class="sensor-value-float" id="temp-float">19.50 °C</span>
+                                    <span class="sensor-label">Temp</span>
+                                </div>
+                            </div>
+                            <div class="sensor-s60-box">
+                                <span class="s60-value" id="temp-s60">19° 30' 0" 0'''</span>
+                                <small class="s60-sub">Precisión Yatra</small>
+                            </div>
+                        </div>
+
+                        <!-- Gauge Humedad -->
+                        <div class="gauge-container">
+                            <div class="gauge-ring-wrapper">
+                                <svg class="gauge-svg" viewBox="0 0 100 100">
+                                    <circle class="gauge-track" cx="50" cy="50" r="42"></circle>
+                                    <circle class="gauge-value" cx="50" cy="50" r="42" id="hum-gauge-circle"></circle>
+                                </svg>
+                                <div class="gauge-center-text">
+                                    <span class="sensor-value-float" id="hum-float">92.15 %</span>
+                                    <span class="sensor-label">Humedad</span>
+                                </div>
+                            </div>
+                            <div class="sensor-s60-box">
+                                <span class="s60-value" id="hum-s60">92° 9' 0" 0'''</span>
+                                <small class="s60-sub">Filtros HEPA</small>
+                            </div>
+                        </div>
+
+                        <!-- Gauge CO2 -->
+                        <div class="gauge-container">
+                            <div class="gauge-ring-wrapper">
+                                <svg class="gauge-svg" viewBox="0 0 100 100">
+                                    <circle class="gauge-track" cx="50" cy="50" r="42"></circle>
+                                    <circle class="gauge-value" cx="50" cy="50" r="42" id="co2-gauge-circle"></circle>
+                                </svg>
+                                <div class="gauge-center-text">
+                                    <span class="sensor-value-float" id="co2-float">780 ppm</span>
+                                    <span class="sensor-label">CO₂</span>
+                                </div>
+                            </div>
+                            <div class="sensor-s60-box">
+                                <span class="s60-value" id="co2-s60">780° 0' 0" 0'''</span>
+                                <small class="s60-sub">Gases HEPA</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulador de Controles Analógicos -->
+                <div class="glass-card simulator-card">
+                    <h3>Simulador de Ajustes Analógicos</h3>
+                    <p class="card-hint">Mueve los controles para ver la conversión sexagesimal instantánea en la capa Cortex.</p>
+                    
+                    <div class="control-group">
+                        <label for="range-temp">Temperatura objetivo (°C)</label>
+                        <input type="range" id="range-temp" min="10" max="30" step="0.05" value="19.5">
+                    </div>
+
+                    <div class="control-group">
+                        <label for="range-hum">Humedad objetivo (%)</label>
+                        <input type="range" id="range-hum" min="50" max="100" step="0.05" value="92.15">
+                    </div>
+
+                    <div class="control-group">
+                        <label for="range-co2">CO₂ (ppm)</label>
+                        <input type="range" id="range-co2" min="300" max="3000" step="10" value="780">
+                    </div>
+                </div>
+
+                <!-- Dual-Lane Logging Dashboard -->
+                <div class="glass-card logs-card">
+                    <div class="logs-header">
+                        <h3>Bitácora del Sistema (Dual Lane)</h3>
+                        <div class="tab-buttons">
+                            <button class="tab-btn active" id="tab-obs">Observabilidad</button>
+                            <button class="tab-btn" id="tab-sec">Seguridad (eBPF)</button>
+                        </div>
+                    </div>
+                    
+                    <div class="log-viewport" id="log-viewport">
+                        <!-- Logs cargados dinámicamente -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vista Gestión de Despachos -->
+            <div class="glass-card" id="view-deliveries" style="display: none; padding: 2.5rem; margin-top: 2rem; border-radius: 20px;">
+                <h3 style="font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 0.5rem;">Gestión y Seguimiento de Despachos</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem;">Actualiza el estado de las entregas y certifica la cadena de custodia alimentaria firmando de forma inmutable en el ledger TruthSync.</p>
+                <div class="table-container" style="overflow-x: auto; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.15);">
+                    <table class="orders-table" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; min-width: 800px;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.08); color: var(--accent-gold); font-family: var(--font-display);">
+                                <th style="padding: 1.25rem 1rem;">ID</th>
+                                <th style="padding: 1.25rem 1rem;">Fecha</th>
+                                <th style="padding: 1.25rem 1rem;">Cliente</th>
+                                <th style="padding: 1.25rem 1rem;">Detalle del Pedido</th>
+                                <th style="padding: 1.25rem 1rem;">Monto</th>
+                                <th style="padding: 1.25rem 1rem;">Estado</th>
+                                <th style="padding: 1.25rem 1rem;">Firma (TruthSync)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-orders-table-body">
+                            <!-- Carga dinámica -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Vista Predicciones ML -->
+            <div class="glass-card" id="view-ml-forecast" style="display: none; padding: 2.5rem; margin-top: 2rem; border-radius: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <div>
+                        <h3 style="font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 0.5rem;">Predicciones de Ventas (Machine Learning)</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">Proyecciones de ventas de setas ostra calculadas mediante regresión lineal en la capa Cortex.</p>
+                    </div>
+                    <div class="ml-badge" style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--accent-gold-glow); color: var(--accent-gold); padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">
+                        <span class="material-symbols-outlined" style="font-size: 1.1rem;">neurology</span>
+                        <span>Cortex ML Forecast</span>
+                    </div>
+                </div>
+                
+                <!-- Visualización de Gráfico SVG de ML -->
+                <div class="ml-chart-container" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 2.5rem; display: flex; flex-direction: column; gap: 1.5rem;">
+                    <div class="ml-chart-header" style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted);">
+                        <span>Tendencia de Ventas (Histórico Real vs Proyección ML 3 Meses)</span>
+                        <span>Algoritmo: Regresión Lineal por Mínimos Cuadrados</span>
+                    </div>
+                    <div id="ml-chart-viewport" style="width: 100%; height: 320px; display: flex; align-items: flex-end; justify-content: space-between; position: relative; padding-top: 2rem; border-bottom: 2px solid rgba(255,255,255,0.1); border-left: 2px solid rgba(255,255,255,0.1); padding-bottom: 0px;">
+                        <!-- Barras cargadas de forma dinámica en JS -->
+                    </div>
+                    <div style="display: flex; justify-content: center; gap: 2rem; font-size: 0.85rem; margin-top: 1rem;">
+                        <span style="display: flex; align-items: center; gap: 0.5rem;"><span style="width: 12px; height: 12px; background: var(--accent-green-light); border-radius: 2px;"></span>Histórico Real</span>
+                        <span style="display: flex; align-items: center; gap: 0.5rem;"><span style="width: 12px; height: 12px; background: var(--accent-gold); border-radius: 2px;"></span>Predicción ML</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
