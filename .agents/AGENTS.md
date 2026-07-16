@@ -70,3 +70,10 @@ Los precios y productos en la landing page y el carrito deben coincidir exactame
 * **Certificados SSL (Certbot)**:
   * Administrados mediante el script helper en el servidor en `/usr/local/bin/issue_ssl.sh`. Ejecutar por dominio bajo demanda una vez propagado el DNS (`sudo /usr/local/bin/issue_ssl.sh <dominio>`).
 
+---
+
+## 8. Foco en Producción y Despliegues Remotos
+* Todo cambio realizado en el código local debe sincronizarse y probarse directamente en el servidor de producción `fan` (mediante `make -C system deploy`).
+* Los reportes, capturas y walkthroughs deben orientarse y hacer referencia al entorno real de producción y no a pruebas en localhost.
+
+

@@ -74,7 +74,7 @@
         }
 
         .content-card {
-            background: rgba(18, 28, 22, 0.6);
+            background: rgba(18, 28, 22, 0.65);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(195, 181, 159, 0.15);
             border-radius: 24px;
@@ -107,12 +107,33 @@
             color: var(--text-primary);
             font-size: 1.4rem;
             margin: 2rem 0 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dossier-text {
+            color: var(--text-primary);
+            line-height: 1.7;
+            margin-bottom: 1.25rem;
+            font-size: 1.05rem;
+        }
+
+        .dossier-list {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .dossier-list li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
         }
 
         .alert-box {
             background: rgba(195, 181, 159, 0.08);
             border-left: 4px solid var(--accent-gold);
-            padding: 1rem 1.5rem;
+            padding: 1.25rem 1.75rem;
             border-radius: 8px;
             margin: 1.5rem 0;
             color: var(--text-primary);
@@ -160,7 +181,7 @@
             background: rgba(10, 15, 12, 0.8);
             border: 1px solid rgba(195, 181, 159, 0.1);
             border-radius: 16px;
-            padding: 2rem;
+            padding: 2.5rem;
             margin: 1.5rem 0;
             display: flex;
             justify-content: center;
@@ -189,7 +210,7 @@
             <div class="nav-links">
                 <a href="index.html#inicio" class="nav-link">Inicio</a>
                 <a href="index.html#estilos-vida" class="nav-link">Para Ti</a>
-                <a href="index.html#biblioteca" class="nav-link">Camino del Micelio</a>
+                <a href="biblioteca.html" class="nav-link">Biblioteca</a>
                 <a href="dossier.html" class="nav-link active">Dossier Técnico</a>
                 <a href="index.html#tienda" class="nav-link">Comprar</a>
             </div>
@@ -233,7 +254,7 @@
                 <!-- 1. Ficha Resumen -->
                 <div id="tab-resumen" class="content-card active">
                     <h1 class="dossier-title">Resumen Ejecutivo del Proyecto</h1>
-                    <p>Esta especificación describe la ingeniería aplicada al proyecto <strong>Micelia</strong>, diseñado para el cultivo tecnificado de Hongo Ostra en Curanilahue, con cofinanciamiento de Sercotec (Capital Abeja 2026).</p>
+                    <p class="dossier-text">Esta especificación describe la ingeniería aplicada al proyecto <strong>Micelia</strong>, diseñado para el cultivo tecnificado de Hongo Ostra en Curanilahue, con cofinanciamiento de Sercotec (Capital Abeja 2026).</p>
                     
                     <h2 class="dossier-subtitle">Ficha de Datos Operativos</h2>
                     <table class="spec-table">
@@ -283,43 +304,49 @@
                         <div class="alert-title">Sostenibilidad Financiera</div>
                         Debido a que la producción se emplaza en terreno propio de la fundadora, los costos fijos mensuales son extremadamente reducidos ($60.000 CLP), permitiendo que la rentabilidad y punto de equilibrio sean altamente resilientes ante variaciones estacionales.
                     </div>
+
+                    <h2 class="dossier-subtitle">Diagnóstico y Oportunidad Territorial</h2>
+                    <p class="dossier-text">La Provincia de Arauco sufre de una severa dependencia de canales de distribución alimentaria centralizados. Prácticamente la totalidad de los hongos frescos comercializados en la zona provienen de la Región Metropolitana, perdiendo frescura y aumentando su costo final debido al transporte interregional. Micelia propone resolver este problema mediante un modelo de "Frescura Radical", entregando cosechas locales en menos de 24 horas.</p>
                 </div>
 
                 <!-- 2. Arquitectura General IoT -->
                 <div id="tab-arquitectura" class="content-card">
                     <h1 class="dossier-title">Arquitectura General del Sistema IoT</h1>
-                    <p>El control del microclima y el resguardo de la base biológica del cultivo se sustentan en un esquema híbrido de computación física (Edge Computing) coordinado con servicios en la nube.</p>
+                    <p class="dossier-text">El control del microclima y el resguardo de la base biológica del cultivo se sustentan en un esquema híbrido de computación física (Edge Computing) coordinado con servicios en la nube.</p>
                     
                     <div class="diagram-container">
                         <div class="mermaid">
 graph TD
-    subgraph "Edge - Módulo de Cultivo (Curanilahue)"
-        S1["Sensor Sensirion SHT31 (Temp & Hum)"] -->|I2C 0x44| ESP32["Microcontrolador ESP32 (Dual Core)"]
-        S2["Sensor Dióxido Carbono (CO2)"] -->|GPIO / ADC| ESP32
-        ESP32 -->|GPIO / Relevadores| Actuadores["Actuadores Climatización: Split Inverter, Extractores, Humidificador"]
+    subgraph "Edge - Modulo de Cultivo Curanilahue"
+        S1["Sensor Sensirion SHT31 - Temp y Hum"] -->|I2C 0x44| ESP32["Microcontrolador ESP32 Dual Core"]
+        S2["Sensor Dioxido Carbono CO2"] -->|GPIO / ADC| ESP32
+        ESP32 -->|GPIO / Relevadores| Actuadores["Actuadores de Climatizacion"]
     end
 
-    subgraph "Servidor Central Cloud (Host: fan - 157.254.174.40)"
-        ESP32 -->|TCP Port 4000: Firmware IoT| Daemon["Cortex Daemon (Rust TCP Listener)"]
-        Daemon -->|Procesa & Valida S60| Core["Cortex Core System"]
+    subgraph "Servidor Central Cloud - Host fan 157.254.174.40"
+        ESP32 -->|TCP Port 4000: Firmware IoT| Daemon["Cortex Daemon - Rust TCP Listener"]
+        Daemon -->|Procesa y Valida S60| Core["Cortex Core System"]
         Core -->|Historial / Alertas| DB["Base de Datos PostgreSQL"]
-        Core -->|Firmado Criptográfico SHA256| TS["Ledger TruthSync (truthsync_orders)"]
+        Core -->|Firmado Criptografico SHA256| TS["Ledger TruthSync - truthsync_orders"]
         
-        Nginx["Servidor Web Nginx (Proxy Reverso)"] -->|Puerto 8080/ws| Daemon
+        Nginx["Servidor Web Nginx Proxy Reverso"] -->|Puerto 8080/ws| Daemon
     end
 
-    subgraph "Plataforma de Clientes & Administración"
-        Nginx -->|Puerto 3000| Web["Next.js Web / Dashboard (pinguinoseguro.cl/micelia)"]
-        Client["Usuario / Cliente"] -->|Navega| Web
+    subgraph "Plataforma de Clientes y Administracion"
+        Nginx -->|Puerto 3000| Web["Nextjs Web Dashboard - micelia"]
+        Client["Usuario o Cliente"] -->|Navega| Web
     end
                         </div>
                     </div>
+
+                    <h2 class="dossier-subtitle">Descripción de Componentes de Ingeniería</h2>
+                    <p class="dossier-text">El sistema de automatización Edge se basa en el microcontrolador <strong>ESP32</strong> que gestiona las tareas en tiempo real mediante un lazo de control cerrado. Los actuadores eléctricos (humidificador ultrasónico, aire acondicionado y extractores) son accionados a través de módulos de relés optoacoplados de estado sólido para aislar el ruido electromagnético de los motores y evitar caídas del procesador.</p>
                 </div>
 
                 <!-- 3. Telemetría Yatra S60 -->
                 <div id="tab-telemetria" class="content-card">
                     <h1 class="dossier-title">Telemetría y Climatización: Estándar Yatra S60</h1>
-                    <p>Las mediciones de las variables físicas se transmiten al daemon Cortex donde se procesan en base sexagesimal (s60) para optimizar el almacenamiento y auditoría.</p>
+                    <p class="dossier-text">Las mediciones de las variables físicas se transmiten al daemon Cortex donde se procesan en base sexagesimal (s60) para optimizar el almacenamiento y auditoría.</p>
                     
                     <h2 class="dossier-subtitle">Límites Biológicos Ideales para Pleurotus ostreatus</h2>
                     <table class="spec-table">
@@ -353,85 +380,95 @@ graph TD
                         <div class="mermaid">
 sequenceDiagram
     autonumber
-    participant Sensor as "Sensor SHT31 / CO2"
-    participant Edge as "ESP32 (Edge)"
-    participant Cortex as "Cortex Daemon (Rust)"
-    participant DB as "PostgreSQL (Telemetry DB)"
+    participant Sensor as "Sensor SHT31 y CO2"
+    participant Edge as "ESP32 Edge"
+    participant Cortex as "Cortex Daemon Rust"
+    participant DB as "PostgreSQL Telemetry DB"
 
-    Note over Sensor, Edge: Lectura cíclica de variables físicas
+    Note over Sensor, Edge: Lectura ciclica de variables fisicas
     Sensor->>Edge: Voltajes y tramas digitales (I2C)
-    Edge->>Edge: Convierte a decimales estándares (T°C, HR%, ppm)
-    Edge->>Cortex: Envía trama cruda por puerto TCP 4000
+    Edge->>Edge: Convierte a decimales (T, HR, ppm)
+    Edge->>Cortex: Envia trama cruda por puerto TCP 4000
     Note over Cortex: Biblioteca system/s60
-    Cortex->>Cortex: Convierte lecturas decimales a base sexagesimal (s60)
-    Cortex->>DB: Almacena registro de telemetría firmado
-    Note over Cortex, Edge: Bucle de Control Microclimático
-    alt Humedad < 85% o CO2 > 900ppm
-        Cortex-->>Edge: Comando de activación inmediato (Humidificador/Extractor)
-        Edge->>Edge: Conmuta relés optoacoplados físicos
+    Cortex->>Cortex: Convierte a base sexagesimal s60
+    Cortex->>DB: Almacena registro de telemetria firmado
+    Note over Cortex, Edge: Bucle de Control Microclimatico
+    alt Humedad menor a 85 por ciento o CO2 mayor a 900ppm
+        Cortex-->>Edge: Comando de activacion inmediato
+        Edge->>Edge: Conmuta reles optoacoplados fisicos
     end
                         </div>
                     </div>
+
+                    <h2 class="dossier-subtitle">¿Por qué usamos el estándar sexagesimal Yatra S60?</h2>
+                    <p class="dossier-text">La codificación en base sexagesimal de la telemetría reduce el tamaño de las tramas de datos transmitidas por redes móviles rurales (3G/4G). Al compactar los flotantes en cadenas compactas sexagesimales de baja huella de bytes, se optimiza el consumo de datos en zonas aisladas de la Provincia de Arauco y se agiliza la velocidad de almacenamiento transaccional en la base de datos PostgreSQL en la nube.</p>
                 </div>
 
                 <!-- 4. Ledger TruthSync -->
                 <div id="tab-ledger" class="content-card">
                     <h1 class="dossier-title">Ledger de Transacciones TruthSync</h1>
-                    <p>Cada pedido y actualización logística es firmado mediante un hash criptográfico SHA-256 inmutable para auditorías comerciales.</p>
+                    <p class="dossier-text">Cada pedido y actualización logística es firmado mediante un hash criptográfico SHA-256 inmutable para auditorías comerciales.</p>
                     
                     <div class="diagram-container">
                         <div class="mermaid">
 flowchart TD
-    A["Cliente realiza Pedido en Portal Web (micelia.cl)"] --> B["Servidor Next.js (Puerto 3000) procesa orden"]
-    B --> C["Consulta base de datos y recupera Hash del pedido anterior (H_prev)"]
-    C --> D["Concatena: ID_Pedido + Datos_Cliente + Estado_Nuevo + H_prev"]
-    D --> E["Calcula Hash criptográfico SHA256 (H_new)"]
-    E --> F["Inserta en tabla postgres: truthsync_orders (H_new, Datos_Pedido)"]
-    F --> G["Firma confirmada (Inmutabilidad garantizada para auditorías)"]
+    A["Cliente realiza Pedido en Portal Web"] --> B["Servidor Next.js procesa orden"]
+    B --> C["Consulta base de datos y recupera Hash de pedido anterior"]
+    C --> D["Concatena ID de Pedido, Datos, Estado y Hash anterior"]
+    D --> E["Calcula Hash criptografico SHA256"]
+    F["Inserta en tabla postgres truthsync_orders"]
+    E --> F
+    F --> G["Firma confirmada inmutable"]
     
     style G fill:#2e4f3a,stroke:#c3b59f,stroke-width:2px,color:#f5f3ef
                         </div>
                     </div>
+
+                    <h2 class="dossier-subtitle">Trazabilidad Inmutable para Clientes HORECA</h2>
+                    <p class="dossier-text">En la industria alimentaria B2B (hoteles y restaurantes), asegurar la frescura y la veracidad de la fecha de cosecha es crítico. Al firmar digitalmente cada orden encadenándola con el bloque previo, el sistema hace imposible la manipulación retroactiva de datos de despacho y cosecha. Esto representa una garantía inigualable de calidad e inocuidad.</p>
                 </div>
 
                 <!-- 5. Proyecciones ML -->
                 <div id="tab-predictivo" class="content-card">
                     <h1 class="dossier-title">Proyección de Ventas y Sustrato (Rust PyO3)</h1>
-                    <p>El análisis de regresión lineal (mínimos cuadrados) se ejecuta en un backend compilado en Rust y expuesto a Python mediante PyO3 para velocidad óptima.</p>
+                    <p class="dossier-text">El análisis de regresión lineal (mínimos cuadrados) se ejecuta en un backend compilado en Rust y expuesto a Python mediante PyO3 para velocidad óptima.</p>
                     
                     <div class="diagram-container">
                         <div class="mermaid">
 graph LR
     subgraph "Capa de Scripts Python 3.14"
-        PyScript["public.js/API Gateway (Requests)"] -->|Ejecuta| PythonVM["Servidor Python 3.14 (Backend)"]
-        Env["Var Entorno: PYO3_USE_ABI3_FORWARD_COMPATIBILITY='1'"] -.-> PythonVM
+        PyScript["public.js - API Gateway"] -->|Ejecuta| PythonVM["Servidor Python - Backend"]
+        Env["Variable Entorno PyO3"] -.-> PythonVM
     end
 
     subgraph "Capa Core Rust"
-        PythonVM -->|Llamada PyO3| RustModule["system/cortex (Módulo Rust)"]
-        RustModule -->|Cálculo Matemático| LinearReg["Regresión Mínimos Cuadrados"]
+        PythonVM -->|Llamada PyO3| RustModule["Modulo Rust system-cortex"]
+        RustModule -->|Calculo Matematico| LinearReg["Regresion de Minimos Cuadrados"]
         LinearReg -->|Vector de Coeficientes| RustModule
     end
 
-    RustModule -->|Devuelve predicción matricial| PythonVM
-    PythonVM -->|Renderiza Dashboard| WebInterface["Gráfico Predictivo de Ventas y Sustrato"]
+    RustModule -->|Devuelve prediccion matricial| PythonVM
+    PythonVM -->|Renderiza Dashboard| WebInterface["Grafico Predictivo de Ventas"]
                         </div>
                     </div>
+
+                    <h2 class="dossier-subtitle">Algoritmo de Mínimos Cuadrados en Rust</h2>
+                    <p class="dossier-text">El cálculo matricial pesado necesario para proyectar las ventas y ajustar el stock de micelio y paja de trigo se delega a funciones nativas en Rust compiladas bajo `pyo3` con soporte extendido para Python 3.14. Esto garantiza tiempos de ejecución inferiores a 0.1ms, asegurando la escalabilidad del sistema cuando integremos a múltiples pequeños agricultores cooperativos.</p>
                 </div>
 
                 <!-- 6. Inmersión Alcalina -->
                 <div id="tab-sustrato" class="content-card">
                     <h1 class="dossier-title">Procesamiento Circular de Sustrato</h1>
-                    <p>La inmersión alcalina por cal hidratada destruye los competidores micológicos de manera limpia y sin combustión.</p>
+                    <p class="dossier-text">La inmersión alcalina por cal hidratada destruye los competidores micológicos de manera limpia y sin combustión.</p>
                     
                     <div class="diagram-container">
                         <div class="mermaid">
 flowchart LR
-    P1["Picado de Paja (1 - 3.5 cm)"] --> P2["Inmersión en tambor con Cal Hidratada Ca(OH)2"]
-    P2 -->|Baño químico por 16 horas con pH 12| P3["Drenaje en ambiente estéril (Restitución a pH 7-8)"]
-    P3 -->|Prueba del Puño: Humedad 60% - 70%| P4["Inoculación del Micelio (Tasa: 5% - 10%)"]
-    P4 --> P5["Llenado y sellado de bolsas tubulares (40x60 cm)"]
-    P5 --> P6["Incubación en oscuridad total (20 - 30 días)"]
+    P1["Picado de Paja de 1 a 3 cm"] --> P2["Inmersion con Cal Hidratada Ca-OH-2"]
+    P2 -->|Bano quimico por 16 horas con pH 12| P3["Drenaje y Restitucion de pH"]
+    P3 -->|Prueba del Puno: Humedad 60 a 70 por ciento| P4["Inoculacion de Micelio"]
+    P4 --> P5["Llenado y Sellado de Bolsas"]
+    P5 --> P6["Incubacion en Oscuridad"]
 
     style P2 fill:#0d2215,stroke:#c3b59f,stroke-width:2px,color:#f5f2eb
                         </div>
@@ -441,6 +478,9 @@ flowchart LR
                         <div class="alert-title">Economía Circular y Ahorro Energético</div>
                         Este método químico disminuye los costos variables asociados a la leña o gas licuado en un 100% comparado con la pasteurización tradicional por vapor, haciéndolo ideal para la sustentabilidad económica del proyecto.
                     </div>
+
+                    <h2 class="dossier-subtitle">El Mecanismo Biológico de Desinfección</h2>
+                    <p class="dossier-text">Al diluir hidróxido de calcio en agua fría, el pH sube súbitamente a 12. Este entorno destruye osmóticamente las paredes celulares de hongos y bacterias competidores. Transcurridas 16 horas, el sustrato se drena al aire libre. La exposición al dióxido de carbono ($CO_2$) ambiental reacciona con el residuo de cal formando carbonato de calcio neutro (tiza), bajando el pH a un rango óptimo de 7.5 en el cual el hongo ostra crece felizmente mientras se beneficia del calcio como micronutriente mineral.</p>
                 </div>
 
             </div>

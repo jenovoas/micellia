@@ -386,19 +386,23 @@ updateCO2(rangeCo2.value);
 const btnDashboard = document.getElementById("btn-dashboard");
 const btnDeliveries = document.getElementById("btn-deliveries");
 const btnMlForecast = document.getElementById("btn-ml-forecast");
+const btnDossier = document.getElementById("btn-dossier");
 
 const viewDashboard = document.getElementById("view-dashboard");
 const viewDeliveries = document.getElementById("view-deliveries");
 const viewMlForecast = document.getElementById("view-ml-forecast");
+const viewDossier = document.getElementById("view-dossier");
 
 function switchView(target) {
     viewDashboard.style.display = "none";
     viewDeliveries.style.display = "none";
     viewMlForecast.style.display = "none";
+    if (viewDossier) viewDossier.style.display = "none";
     
     btnDashboard.classList.remove("active");
     btnDeliveries.classList.remove("active");
     btnMlForecast.classList.remove("active");
+    if (btnDossier) btnDossier.classList.remove("active");
 
     if (target === "dashboard") {
         viewDashboard.style.display = "grid";
@@ -411,12 +415,18 @@ function switchView(target) {
         viewMlForecast.style.display = "block";
         btnMlForecast.classList.add("active");
         renderMlForecastChart();
+    } else if (target === "dossier") {
+        if (viewDossier) {
+            viewDossier.style.display = "block";
+            btnDossier.classList.add("active");
+        }
     }
 }
 
 btnDashboard.addEventListener("click", (e) => { e.preventDefault(); switchView("dashboard"); });
 btnDeliveries.addEventListener("click", (e) => { e.preventDefault(); switchView("deliveries"); });
 btnMlForecast.addEventListener("click", (e) => { e.preventDefault(); switchView("ml-forecast"); });
+if (btnDossier) btnDossier.addEventListener("click", (e) => { e.preventDefault(); switchView("dossier"); });
 
 async function loadAdminOrders() {
     const tableBody = document.getElementById("admin-orders-table-body");
@@ -539,6 +549,25 @@ function renderMlForecastChart() {
 }
 updateStateUI();
 renderLogs();
+
+// Mostrar nombre del operador en el subtítulo
+const savedUser = localStorage.getItem("micelia_current_user");
+if (savedUser) {
+    const userObj = JSON.parse(savedUser);
+    const subtitle = document.querySelector(".subtitle");
+    if (subtitle) {
+        subtitle.innerHTML = `Monitoreo en tiempo real bajo Protocolo Yatra S60 · Operador: <strong>${userObj.name}</strong>`;
+    }
+}
+
+// Botón de cerrar sesión
+const btnLogout = document.getElementById("btn-logout");
+if (btnLogout) {
+    btnLogout.addEventListener("click", () => {
+        localStorage.removeItem("micelia_current_user");
+        window.location.href = "index.html";
+    });
+}
 
 // Iniciar conexión real con Cortex
 connectWebSocket();

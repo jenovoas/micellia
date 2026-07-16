@@ -11,6 +11,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="icon" type="image/png" href="logo.png">
+    <script>
+        (function() {
+            const savedUser = localStorage.getItem("micelia_current_user");
+            if (!savedUser) {
+                alert("Acceso denegado. Debes iniciar sesión como operador.");
+                window.location.href = "index.html";
+                return;
+            }
+            const user = JSON.parse(savedUser);
+            if (user.role !== "operator") {
+                alert("Acceso denegado. Se requiere un correo institucional @micelia.cl.");
+                window.location.href = "index.html";
+            }
+        })();
+    </script>
 </head>
 <body>
     <div class="app-container">
@@ -45,12 +60,20 @@
                     <span class="icon material-symbols-outlined">shield</span>
                     Cortex (eBPF / LSM)
                 </a>
+                <a href="#" class="nav-item" id="btn-dossier">
+                    <span class="icon material-symbols-outlined">description</span>
+                    Dossier Técnico
+                </a>
             </nav>
-            <div class="sidebar-footer">
+            <div class="sidebar-footer" style="display: flex; flex-direction: column; gap: 1rem;">
                 <div class="status-indicator-container">
                     <span class="pulse-dot green"></span>
                     <span class="status-text">Cortex Online (v1.0)</span>
                 </div>
+                <button id="btn-logout" class="btn btn-secondary" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.6rem; font-size: 0.85rem; border: 1px solid rgba(195,181,159,0.3); background: rgba(0,0,0,0.2); color: var(--accent-gold); border-radius: 10px; cursor: pointer; transition: all 0.3s ease;">
+                    <span class="material-symbols-outlined" style="font-size: 1.1rem;">logout</span>
+                    Cerrar Sesión
+                </button>
             </div>
         </aside>
 
@@ -243,6 +266,11 @@
                         <span style="display: flex; align-items: center; gap: 0.5rem;"><span style="width: 12px; height: 12px; background: var(--accent-gold); border-radius: 2px;"></span>Predicción ML</span>
                     </div>
                 </div>
+            </div>
+
+            <!-- Vista Dossier Técnico (Protegido por login / admin) -->
+            <div class="glass-card" id="view-dossier" style="display: none; padding: 2.5rem; margin-top: 2rem; border-radius: 20px; height: calc(100vh - 12rem); overflow: hidden;">
+                <iframe src="dossier.html" style="width: 100%; height: 100%; border: none; border-radius: 12px; background: transparent;"></iframe>
             </div>
         </main>
     </div>

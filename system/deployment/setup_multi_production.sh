@@ -121,9 +121,12 @@ else
     echo "<h1>Micelia Dashboard - Placeholder</h1>" | sudo tee /var/www/micelia.cl/dashboard/index.html > /dev/null
 fi
 
-echo "<h1>Bienvenido a pinguinoseguro.cl</h1>" | sudo tee /var/www/pinguinoseguro.cl/index.html > /dev/null
-echo "<h1>Bienvenido a laespiguita.cl</h1>" | sudo tee /var/www/laespiguita.cl/index.html > /dev/null
-
+if [ ! -f /var/www/pinguinoseguro.cl/index.html ]; then
+    echo "<h1>Bienvenido a pinguinoseguro.cl</h1>" | sudo tee /var/www/pinguinoseguro.cl/index.html > /dev/null
+fi
+if [ ! -f /var/www/laespiguita.cl/index.html ]; then
+    echo "<h1>Bienvenido a laespiguita.cl</h1>" | sudo tee /var/www/laespiguita.cl/index.html > /dev/null
+fi
 sudo chown -R nginx:nginx /var/www/
 
 # 6. Configurar Server Blocks en Nginx
@@ -154,11 +157,37 @@ EOF
 sudo tee /etc/nginx/conf.d/pinguinoseguro.cl.conf > /dev/null << 'EOF'
 server {
     listen 80;
-    server_name pinguinoseguro.cl www.pinguinoseguro.cl;
+    server_name pinguinoseguro.cl www.pinguinoseguro.cl _ 157.254.174.40;
 
     location / {
-        root /var/www/pinguinoseguro.cl;
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    location = /portfolio {
+        return 301 $scheme://$http_host/portfolio/;
+    }
+
+    location /portfolio {
+        alias /var/www/pinguinoseguro.cl/portfolio;
         index index.html;
+    }
+
+    location /micelia {
+        alias /var/www/micelia.cl/dashboard;
+        index index.html;
+    }
+
+    location /ws {
+        proxy_pass http://127.0.0.1:8080/ws;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
     }
 }
 EOF

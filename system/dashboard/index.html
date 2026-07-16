@@ -33,8 +33,7 @@
             <div class="nav-links">
                 <a href="#inicio" class="nav-link active">Inicio</a>
                 <a href="#estilos-vida" class="nav-link">Para Ti</a>
-                <a href="#biblioteca" class="nav-link">Camino del Micelio</a>
-                <a href="dossier.html" class="nav-link">Dossier Técnico</a>
+                <a href="biblioteca.html" class="nav-link">Biblioteca</a>
                 <a href="#tienda" class="nav-link">Comprar</a>
                 <a href="#" class="nav-link" id="login-nav-btn">Iniciar Sesión</a>
                 <div class="profile-nav-container" id="profile-nav-container" style="display: none; cursor: pointer;">
@@ -44,7 +43,6 @@
                         style="font-size: 0.95rem; font-weight: 500; color: var(--accent-gold); margin-left: 0.25rem;">María
                         G.</span>
                 </div>
-                <a href="admin.html" class="nav-link nav-btn-admin">Acceso Operador</a>
             </div>
             <button class="cart-btn" id="open-cart-btn">
                 <span class="material-symbols-outlined">shopping_cart</span>
@@ -54,22 +52,83 @@
     </nav>
 
     <!-- Sección Inicio / Héroe -->
-    <section id="inicio" class="hero-section-container">
-        <div class="hero-section">
-            <div class="hero-content">
-                <span class="hero-tag">Frescura Radical</span>
-                <h1>Hongos Ostra Cosechados y Entregados en &lt; 24 Horas</h1>
-                <p class="hero-desc">Democratizando el acceso a una nutrición noble de alta calidad en la Provincia de
-                    Arauco. Cultivo técnico automatizado e incorruptible, sustentado en la economía circular y la
-                    honestidad ecológica.</p>
-                <div class="hero-cta-container">
-                    <a href="#tienda" class="btn btn-primary">Ver Tienda</a>
-                    <a href="#biblioteca" class="btn btn-secondary">Aprender del Cultivo</a>
+    <!-- Sección Inicio / Héroe con Slider Dinámico -->
+    <section id="inicio" class="hero-slider-container">
+        <!-- Contenedor general del Slider -->
+        <div class="hero-slider">
+            
+            <!-- Diapositiva 1: Frescura y Bienvenida -->
+            <div class="hero-slide active" data-slide="0">
+                <div class="hero-slide-content">
+                    <span class="hero-tag">Frescura Radical</span>
+                    <h1 class="gradient-text glow-text">Hongos Ostra Cosechados y Entregados en &lt; 24 Horas</h1>
+                    <p class="hero-desc">Democratizando el acceso a una nutrición noble de alta calidad en la Provincia de Arauco. Cultivo técnico automatizado e incorruptible, sustentado en la economía circular y la honestidad ecológica.</p>
+                    <div class="hero-cta-container">
+                        <a href="#tienda" class="btn btn-primary">Ver Tienda</a>
+                        <a href="biblioteca.html" class="btn btn-secondary">Aprender del Cultivo</a>
+                    </div>
+                </div>
+                <div class="hero-slide-image animate-float">
+                    <img src="oyster_mushrooms.png" class="hero-img" alt="Cultivo Técnico de Hongo Ostra Micelia">
                 </div>
             </div>
-            <div class="hero-image-container">
-                <img src="oyster_mushrooms.png" class="hero-img" alt="Cultivo Técnico de Hongo Ostra Micelia">
+
+            <!-- Diapositiva 2: Recetas Gourmet -->
+            <div class="hero-slide" data-slide="1">
+                <div class="hero-slide-content">
+                    <span class="hero-tag" style="border-color: var(--accent-gold); color: var(--accent-gold); background: rgba(195,181,159,0.05);">Recetario Gourmet</span>
+                    <h1 class="gradient-text glow-text">Delicias Gourmet con el Verdadero Poder Umami</h1>
+                    <p class="hero-desc">Desde ceviches 100% vegetales hasta calamares crujientes tempura y risotto de trufa. Explora nuestro recetario gourmet detallado paso a paso con los valores nutricionales oficiales.</p>
+                    <div class="hero-cta-container">
+                        <a href="biblioteca.html?filter=Recetario%20Gourmet" class="btn btn-primary">Explorar Recetas</a>
+                        <a href="view_doc.html?file=docs/receta_tacos.md&title=Tacos%20de%20Hongo%20Ostra" class="btn btn-secondary">Receta de Tacos</a>
+                    </div>
+                </div>
+                <div class="hero-slide-image animate-float">
+                    <img src="tacos.png" class="hero-img" alt="Tacos Gourmet de Hongo Ostra">
+                </div>
             </div>
+
+            <!-- Diapositiva 3: Telemetría S60 e IoT -->
+            <div class="hero-slide" data-slide="2">
+                <div class="hero-slide-content">
+                    <span class="hero-tag" style="border-color: var(--accent-green-light); color: var(--accent-green-light); background: rgba(74, 140, 66, 0.05);">Monitoreo IoT Yatra S60</span>
+                    <h1 class="gradient-text glow-text">Cultivo Automatizado de Máxima Precisión</h1>
+                    <p class="hero-desc">Monitoreamos las variables críticas del Pleurotus ostreatus (humedad 85%-95%, CO₂ &lt; 900 ppm) mediante microcontroladores ESP32 en base sexagesimal y el daemon Cortex multihilo en Rust.</p>
+                    <div class="hero-cta-container">
+                        <a href="view_doc.html?file=docs/telemetria_s60.md&title=Telemetria%20IoT%20S60" class="btn btn-primary">Ver Estándar S60</a>
+                        <a href="view_doc.html?file=docs/cortex_daemon.md&title=Rust%20Cortex%20Daemon" class="btn btn-secondary">Cortex Daemon en Rust</a>
+                    </div>
+                </div>
+                <div class="hero-slide-image animate-float">
+                    <img src="substrate_bags.png" class="hero-img" alt="Telemetría IoT S60">
+                </div>
+            </div>
+
+            <!-- Diapositiva 4: Kits y Promociones -->
+            <div class="hero-slide" data-slide="3">
+                <div class="hero-slide-content">
+                    <span class="hero-tag" style="border-color: #ff6b8b; color: #ff6b8b; background: rgba(255,107,139,0.05);">Kits de Autocultivo</span>
+                    <h1 class="gradient-text glow-text">Cosecha tus Propias Setas en Casa</h1>
+                    <p class="hero-desc">Elige entre nuestro Kit Educativo ($12.000) de 2kg para proyectos escolares STEM, el Familiar XL ($18.000) de 4.5kg para chefs de hogar, o el Exótico ($15.000) de setas rosadas tropicales.</p>
+                    <div class="hero-cta-container">
+                        <a href="#tienda" class="btn btn-primary">Comprar Kit</a>
+                        <a href="view_doc.html?file=docs/guia_autocultivo.md&title=Guia%20de%20Autocultivo" class="btn btn-secondary">Guía de Autocultivo</a>
+                    </div>
+                </div>
+                <div class="hero-slide-image animate-float">
+                    <img src="eco_packaging.png" class="hero-img" alt="Kits de Autocultivo">
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Navegación por puntos -->
+        <div class="hero-slider-dots">
+            <span class="hero-dot active" onclick="setHeroSlide(0)"></span>
+            <span class="hero-dot" onclick="setHeroSlide(1)"></span>
+            <span class="hero-dot" onclick="setHeroSlide(2)"></span>
+            <span class="hero-dot" onclick="setHeroSlide(3)"></span>
         </div>
     </section>
 
@@ -151,7 +210,7 @@
                         <div class="nutrition-item"><strong>3.8g</strong><span>Proteínas</span></div>
                         <div class="nutrition-item"><strong>0g</strong><span>Colesterol</span></div>
                     </div>
-                    <a href="#tienda" class="btn btn-primary btn-sm">Quiero Cocinar Esto</a>
+                    <a href="view_doc.html?file=docs/receta_tacos.md&title=Tacos+de+Hongo+Ostra" class="btn btn-primary btn-sm">Ver Receta Completa</a>
                 </div>
             </div>
 
@@ -171,7 +230,7 @@
                         <div class="nutrition-item"><strong>5.2g</strong><span>Proteínas</span></div>
                         <div class="nutrition-item"><strong>B1, B2, B6</strong><span>Vitaminas</span></div>
                     </div>
-                    <a href="#tienda" class="btn btn-primary btn-sm">Quiero Cocinar Esto</a>
+                    <a href="view_doc.html?file=docs/receta_grill.md&title=Clusters+al+Grill" class="btn btn-primary btn-sm">Ver Receta Completa</a>
                 </div>
             </div>
 
@@ -191,7 +250,7 @@
                         <div class="nutrition-item"><strong>8.4g</strong><span>Proteínas</span></div>
                         <div class="nutrition-item"><strong>Inmuno</strong><span>Beta-glucanos</span></div>
                     </div>
-                    <a href="#tienda" class="btn btn-primary btn-sm">Quiero Cocinar Esto</a>
+                    <a href="view_doc.html?file=docs/receta_risotto.md&title=Risotto+Cremoso" class="btn btn-primary btn-sm">Ver Receta Completa</a>
                 </div>
             </div>
 
@@ -212,91 +271,6 @@
         </div>
     </section>
 
-    <!-- Sección Camino del Micelio -->
-    <section id="biblioteca" class="biblioteca-section">
-        <div class="section-header">
-            <span class="section-tag">Camino del Micelio</span>
-            <h2>Educación, Ecología y Telemetría Científica</h2>
-            <p>Creemos que la sustentabilidad florece al educar a la comunidad. Explora nuestras guías de cultivo
-                orgánico y estudia las condiciones biológicas de nuestras cámaras de producción en tiempo real.</p>
-        </div>
-
-        <div class="articles-grid">
-            <!-- Artículo 1 -->
-            <div class="article-card" onclick="openArticleModal(1)">
-                <div class="article-icon">
-                    <span class="material-symbols-outlined">psychology</span>
-                </div>
-                <h3>¿Qué es realmente el hongo ostra?</h3>
-                <p>Descubre la biología fúngica básica, sus ciclos de vida y las propiedades del Pleurotus ostreatus.
-                </p>
-                <span class="read-more">Leer Publicación <span
-                        class="material-symbols-outlined">arrow_forward</span></span>
-            </div>
-
-            <!-- Artículo 2 -->
-            <div class="article-card" onclick="openArticleModal(2)">
-                <div class="article-icon">
-                    <span class="material-symbols-outlined">ecg_heart</span>
-                </div>
-                <h3>¿Por qué incorporarlo a tu dieta?</h3>
-                <p>Compendio nutricional sobre beta-glucanos, aminoácidos esenciales y beneficios metabólicos de las
-                    setas.</p>
-                <span class="read-more">Leer Publicación <span
-                        class="material-symbols-outlined">arrow_forward</span></span>
-            </div>
-
-            <!-- Artículo 3 -->
-            <div class="article-card" onclick="openArticleModal(3)">
-                <div class="article-icon">
-                    <span class="material-symbols-outlined">restaurant</span>
-                </div>
-                <h3>5 errores comunes al cocinar setas</h3>
-                <p>Cómo lograr la textura crujiente perfecta y evitar los errores culinarios clásicos de la cocina
-                    casera.</p>
-                <span class="read-more">Leer Publicación <span
-                        class="material-symbols-outlined">arrow_forward</span></span>
-            </div>
-
-            <!-- Artículo 4 -->
-            <div class="article-card" onclick="openArticleModal(4)">
-                <div class="article-icon">
-                    <span class="material-symbols-outlined">eco</span>
-                </div>
-                <h3>Cultivo sin químicos ni pesticidas</h3>
-                <p>Detalle de nuestro proceso biológico de digestión enzimática y por qué no requerimos aditivos
-                    sintéticos.</p>
-                <span class="read-more">Leer Publicación <span
-                        class="material-symbols-outlined">arrow_forward</span></span>
-            </div>
-
-            <!-- Artículo 5 -->
-            <div class="article-card" onclick="openArticleModal(5)">
-                <div class="article-icon">
-                    <span class="material-symbols-outlined">recycling</span>
-                </div>
-                <h3>Valorización de residuos agrícolas</h3>
-                <p>El pilar de nuestra economía circular: transformando la paja de trigo y avena local en proteína pura.
-                </p>
-                <span class="read-more">Leer Publicación <span
-                        class="material-symbols-outlined">arrow_forward</span></span>
-            </div>
-
-            <!-- Artículo 6: Bitácora e Historial de Sensores -->
-            <div class="article-card" onclick="openTelemetryStudyModal()"
-                style="border: 1px dashed rgba(195,181,159,0.3); background: rgba(195,181,159,0.02);">
-                <div class="article-icon" style="color: var(--accent-gold);">
-                    <span class="material-symbols-outlined">history_toggle_off</span>
-                </div>
-                <h3>Bitácora e Historial de Sensores</h3>
-                <p>Audita el registro histórico de logs de cultivo (Temperatura, Humedad, CO₂) firmados
-                    criptográficamente en el ledger inmutable TruthSync.</p>
-                <span class="read-more" style="color: var(--accent-gold);">Ver Bitácora de Cultivo <span
-                        class="material-symbols-outlined">arrow_forward</span></span>
-            </div>
-        </div>
-    </section>
-
     <!-- Sección Tienda / Pedidos -->
     <section id="tienda" class="tienda-section">
         <div class="section-header">
@@ -310,8 +284,8 @@
             <!-- Producto 1 -->
             <div class="product-card">
                 <div class="product-badge">Más Popular</div>
-                <div class="product-icon">
-                    <span class="material-symbols-outlined">box</span>
+                <div class="product-image">
+                    <img src="eco_packaging.png" alt="Hongo Ostra Fresco - 500g">
                 </div>
                 <h3>Hongo Ostra Fresco - 500g</h3>
                 <p class="price">$4.500 CLP</p>
@@ -323,8 +297,8 @@
 
             <!-- Producto 2 -->
             <div class="product-card">
-                <div class="product-icon">
-                    <span class="material-symbols-outlined">inventory_2</span>
+                <div class="product-image">
+                    <img src="raw_mushrooms.png" alt="Hongo Ostra Fresco - 1kg">
                 </div>
                 <h3>Hongo Ostra Fresco - 1kg</h3>
                 <p class="price">$8.000 CLP</p>
@@ -337,8 +311,8 @@
             <!-- Producto 3 -->
             <div class="product-card B2B">
                 <div class="product-badge B2B">Suscripción B2B</div>
-                <div class="product-icon">
-                    <span class="material-symbols-outlined">receipt_long</span>
+                <div class="product-image">
+                    <img src="cooking_mushrooms.png" alt="Suscripción Restaurante HORECA">
                 </div>
                 <h3>Suscripción Restaurante (HORECA)</h3>
                 <p class="price">$25.000 CLP <small>/mes</small></p>
@@ -346,6 +320,45 @@
                     semanalmente. Exclusivo para locales de Arauco.</p>
                 <button class="btn btn-secondary add-to-cart-btn" data-id="3" data-name="Suscripción HORECA"
                     data-price="25000">Suscribirse</button>
+            </div>
+
+            <!-- Producto 4: Kit Educativo -->
+            <div class="product-card">
+                <div class="product-badge">Educativo STEM</div>
+                <div class="product-image">
+                    <img src="eco_packaging.png" alt="Kit de Autocultivo Educativo">
+                </div>
+                <h3>Kit de Autocultivo Educativo</h3>
+                <p class="price">$12.000 CLP</p>
+                <p class="desc">Proyecto STEM ideal para familias y escuelas. Bolsa de sustrato inoculado de 2kg listo para activar. Cosecha garantizada en 10-14 días.</p>
+                <button class="btn btn-primary add-to-cart-btn" data-id="4" data-name="Kit de Autocultivo Educativo"
+                    data-price="12000">Añadir al Carrito</button>
+            </div>
+
+            <!-- Producto 5: Kit Familiar XL -->
+            <div class="product-card">
+                <div class="product-badge">Rendimiento XL</div>
+                <div class="product-image">
+                    <img src="substrate_bags.png" alt="Kit de Autocultivo Familiar XL">
+                </div>
+                <h3>Kit de Autocultivo Familiar XL</h3>
+                <p class="price">$18.000 CLP</p>
+                <p class="desc">Bloque de sustrato gigante de 4.5kg para recolectar setas en abundancia. Rinde hasta 4 cosechas. Ideal para amantes de la cocina fúngica.</p>
+                <button class="btn btn-primary add-to-cart-btn" data-id="5" data-name="Kit de Autocultivo Familiar XL"
+                    data-price="18000">Añadir al Carrito</button>
+            </div>
+
+            <!-- Producto 6: Kit Exótico -->
+            <div class="product-card">
+                <div class="product-badge" style="background: rgba(220, 80, 120, 0.15); color: #ff6b8b; border-color: rgba(220, 80, 120, 0.3);">Setas Rosadas</div>
+                <div class="product-image">
+                    <img src="oyster_mushrooms.png" alt="Kit de Autocultivo Exótico (Setas Rosadas)">
+                </div>
+                <h3>Kit de Autocultivo Exótico</h3>
+                <p class="price">$15.000 CLP</p>
+                <p class="desc">Variedad tropical Pleurotus djamor con colores rosados espectaculares y sabor suave a mariscos. Edición especial de cultivo rápido.</p>
+                <button class="btn btn-primary add-to-cart-btn" data-id="6" data-name="Kit de Autocultivo Exótico"
+                    data-price="15000">Añadir al Carrito</button>
             </div>
         </div>
     </section>
@@ -598,65 +611,6 @@
             <p class="copyright">Curanilahue, Región del Biobío, Chile • © 2026 Todos los derechos reservados.</p>
         </div>
     </footer>
-
-    <!-- Asistente de Ventas Inteligente (IA Sales Bot) -->
-    <div id="sales-bot-bubble"
-        style="position: fixed; bottom: 2rem; right: 2rem; width: 60px; height: 60px; background: var(--accent-gold); color: black; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 8px 24px rgba(0,0,0,0.4); z-index: 999; transition: transform 0.3s ease;"
-        onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"
-        onclick="toggleSalesBot()">
-        <span class="material-symbols-outlined" style="font-size: 2rem;">smart_toy</span>
-        <span
-            style="position: absolute; top: -2px; right: -2px; width: 12px; height: 12px; background: #25d366; border-radius: 50%; border: 2px solid var(--bg-dark);"></span>
-    </div>
-
-    <div id="sales-bot-chat"
-        style="position: fixed; bottom: 6.5rem; right: 2rem; width: 340px; height: 450px; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.6); display: none; flex-direction: column; overflow: hidden; z-index: 1000; font-family: var(--font-body);">
-        <!-- Chat Header -->
-        <div
-            style="background: var(--bg-dark); padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: space-between;">
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span class="material-symbols-outlined"
-                    style="color: var(--accent-gold); font-size: 1.5rem;">smart_toy</span>
-                <div>
-                    <strong style="color: var(--text-primary); font-size: 0.95rem; display: block;">Asistente Virtual
-                        Micelia</strong>
-                    <span style="color: #25d366; font-size: 0.75rem; display: flex; align-items: center; gap: 0.25rem;">
-                        <span style="width: 6px; height: 6px; background: #25d366; border-radius: 50%;"></span> En línea
-                        (IA)
-                    </span>
-                </div>
-            </div>
-            <button onclick="toggleSalesBot()"
-                style="background: none; border: none; color: var(--text-muted); cursor: pointer; display: flex; align-items: center;">
-                <span class="material-symbols-outlined" style="font-size: 1.2rem;">close</span>
-            </button>
-        </div>
-
-        <!-- Chat Messages -->
-        <div id="sales-bot-messages"
-            style="flex: 1; padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; background: rgba(0,0,0,0.15);">
-            <div
-                style="background: rgba(255,255,255,0.03); padding: 0.8rem; border-radius: 12px 12px 12px 0; align-self: flex-start; max-width: 85%; font-size: 0.9rem; line-height: 1.4; color: var(--text-primary);">
-                ¡Hola! Soy el asistente de compras de Micelia. 🍄 ¿Quieres saber sobre nuestras setas ostra, recetas o
-                prefieres que arme tu pedido para enviarlo directamente a WhatsApp?
-            </div>
-        </div>
-
-        <!-- Chat Input -->
-        <form id="sales-bot-form" onsubmit="handleSalesBotSubmit(event)"
-            style="padding: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 0.5rem; background: var(--bg-dark); margin: 0;">
-            <input type="text" id="sales-bot-input" placeholder="Pregúntame algo..."
-                style="flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 0.7rem 1rem; border-radius: 20px; color: var(--text-primary); font-size: 0.9rem; outline: none; transition: border 0.3s;"
-                onfocus="this.style.borderColor='var(--accent-gold)'"
-                onblur="this.style.borderColor='rgba(255,255,255,0.08)'">
-            <button type="submit"
-                style="background: var(--accent-gold); border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s;"
-                onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                <span class="material-symbols-outlined"
-                    style="color: black; font-size: 1.2rem; transform: rotate(-45deg) translate(2px, -1px);">send</span>
-            </button>
-        </form>
-    </div>
 
     <!-- Scripts de la Landing Page -->
     <script src="public.js"></script>

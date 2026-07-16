@@ -116,27 +116,38 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Eventos de Navegación
-    loginNavBtn.addEventListener("click", () => {
-        document.getElementById("login-modal").classList.add("open");
-    });
+    if (loginNavBtn) {
+        loginNavBtn.addEventListener("click", () => {
+            const modal = document.getElementById("login-modal");
+            if (modal) modal.classList.add("open");
+        });
+    }
 
-    profileNavContainer.addEventListener("click", () => {
-        openProfileModal();
-    });
+    if (profileNavContainer) {
+        profileNavContainer.addEventListener("click", () => {
+            if (currentUser && currentUser.role === "operator") {
+                window.location.href = "admin.html";
+            } else {
+                openProfileModal();
+            }
+        });
+    }
 
     // Abrir / Cerrar Carrito
-    openCartBtn.addEventListener("click", () => {
-        cartSidebar.classList.add("open");
-        cartBackdrop.classList.add("open");
-    });
+    if (openCartBtn) {
+        openCartBtn.addEventListener("click", () => {
+            if (cartSidebar) cartSidebar.classList.add("open");
+            if (cartBackdrop) cartBackdrop.classList.add("open");
+        });
+    }
 
     const closeCart = () => {
-        cartSidebar.classList.remove("open");
-        cartBackdrop.classList.remove("open");
+        if (cartSidebar) cartSidebar.classList.remove("open");
+        if (cartBackdrop) cartBackdrop.classList.remove("open");
     };
 
-    closeCartBtn.addEventListener("click", closeCart);
-    cartBackdrop.addEventListener("click", closeCart);
+    if (closeCartBtn) closeCartBtn.addEventListener("click", closeCart);
+    if (cartBackdrop) cartBackdrop.addEventListener("click", closeCart);
 
     // Añadir al Carrito
     const addBtns = document.querySelectorAll(".add-to-cart-btn");
@@ -147,101 +158,123 @@ document.addEventListener("DOMContentLoaded", () => {
             const price = parseInt(btn.getAttribute("data-price"));
             
             addToCart(id, name, price);
-            cartSidebar.classList.add("open");
-            cartBackdrop.classList.add("open");
+            if (cartSidebar) cartSidebar.classList.add("open");
+            if (cartBackdrop) cartBackdrop.classList.add("open");
         });
     });
 
     // Checkout Form Submit -> Abrir Pago
-    checkoutForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        checkoutModal.classList.remove("open");
-        
-        const total = calculateTotal();
-        document.getElementById("payment-amount-text").textContent = `$${total.toLocaleString("es-CL")} CLP`;
-        
-        paymentModal.classList.add("open");
-    });
+    if (checkoutForm) {
+        checkoutForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            if (checkoutModal) checkoutModal.classList.remove("open");
+            
+            const total = calculateTotal();
+            const amtText = document.getElementById("payment-amount-text");
+            if (amtText) amtText.textContent = `$${total.toLocaleString("es-CL")} CLP`;
+            
+            if (paymentModal) paymentModal.classList.add("open");
+        });
+    }
 
     // Envío del Pago -> Registrar Pedido en Cortex
-    paymentForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        
-        paymentForm.style.display = "none";
-        const processing = document.getElementById("payment-processing");
-        processing.style.display = "block";
-
-        const name = document.getElementById("checkout-name").value;
-        const email = document.getElementById("checkout-email").value;
-        const address = document.getElementById("checkout-address").value;
-        
-        const itemsList = cart.map(item => `${item.name} x${item.quantity}`).join(", ");
-        const total = calculateTotal();
-
-        const orderPayload = {
-            customer_name: name,
-            customer_email: email,
-            items: `${itemsList} (Despacho: ${address})`,
-            total_amount: total
-        };
-
-        // Simular validación bancaria
-        setTimeout(async () => {
-            try {
-                const response = await fetch("/api/orders", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(orderPayload)
-                });
-                
-                const resData = await response.json();
-                
-                processing.style.display = "none";
-                const successDiv = document.getElementById("payment-success");
-                successDiv.style.display = "block";
-                
-                document.getElementById("sig-hash-text").textContent = resData.signature || "sha256:error_firma";
-                
-                // Si el usuario está autenticado, refrescar sus órdenes
-                if (currentUser) {
-                    await loadUserOrders();
+    if (paymentForm) {
+        paymentForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            
+            paymentForm.style.display = "none";
+            const processing = document.getElementById("payment-processing");
+            if (processing) processing.style.display = "block";
+    
+            const nameInput = document.getElementById("checkout-name");
+            const emailInput = document.getElementById("checkout-email");
+            const addressInput = document.getElementById("checkout-address");
+            
+            const name = nameInput ? nameInput.value : "";
+            const email = emailInput ? emailInput.value : "";
+            const address = addressInput ? addressInput.value : "";
+            
+            const itemsList = cart.map(item => `${item.name} x${item.quantity}`).join(", ");
+            const total = calculateTotal();
+    
+            const orderPayload = {
+                customer_name: name,
+                customer_email: email,
+                items: `${itemsList} (Despacho: ${address})`,
+                total_amount: total
+            };
+    
+            // Simular validación bancaria
+            setTimeout(async () => {
+                try {
+                    const response = await fetch("/api/orders", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(orderPayload)
+                    });
+                    
+                    const resData = await response.json();
+                    
+                    if (processing) processing.style.display = "none";
+                    const successDiv = document.getElementById("payment-success");
+                    if (successDiv) successDiv.style.display = "block";
+                    
+                    const hashText = document.getElementById("sig-hash-text");
+                    if (hashText) hashText.textContent = resData.signature || "sha256:error_firma";
+                    
+                    // Si el usuario está autenticado, refrescar sus órdenes
+                    if (currentUser) {
+                        await loadUserOrders();
+                    }
+                    
+                } catch (err) {
+                    console.error("Error al enviar pedido a Cortex:", err);
+                    const fakeSig = "sha256:local_" + Math.random().toString(36).substring(2, 15);
+                    if (processing) processing.style.display = "none";
+                    const successDiv = document.getElementById("payment-success");
+                    if (successDiv) successDiv.style.display = "block";
+                    const hashText = document.getElementById("sig-hash-text");
+                    if (hashText) hashText.textContent = fakeSig + " (Cortex Offline - Firma Local)";
                 }
-                
-            } catch (err) {
-                console.error("Error al enviar pedido a Cortex:", err);
-                const fakeSig = "sha256:local_" + Math.random().toString(36).substring(2, 15);
-                processing.style.display = "none";
-                const successDiv = document.getElementById("payment-success");
-                successDiv.style.display = "block";
-                document.getElementById("sig-hash-text").textContent = fakeSig + " (Cortex Offline - Firma Local)";
-            }
-        }, 2000);
-    });
+            }, 2000);
+        });
+    }
 
     // Abrir Modal de Checkout
-    checkoutBtn.addEventListener("click", () => {
-        closeCart();
-        // Si hay usuario logueado, pre-llenar formulario
-        if (currentUser) {
-            document.getElementById("checkout-name").value = currentUser.name;
-            document.getElementById("checkout-email").value = currentUser.email;
-        }
-        checkoutModal.classList.add("open");
-    });
+    if (checkoutBtn) {
+        checkoutBtn.addEventListener("click", () => {
+            closeCart();
+            // Si hay usuario logueado, pre-llenar formulario
+            if (currentUser) {
+                const nameInput = document.getElementById("checkout-name");
+                const emailInput = document.getElementById("checkout-email");
+                if (nameInput) nameInput.value = currentUser.name;
+                if (emailInput) emailInput.value = currentUser.email;
+            }
+            if (checkoutModal) checkoutModal.classList.add("open");
+        });
+    }
 
     // Formulario de Inicio de Sesión
-    loginForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const email = document.getElementById("login-email").value;
-        const name = email.split("@")[0]; // Nombre simplificado
-        loginUser(email, name, "Email");
-    });
+    if (loginForm) {
+        loginForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const emailInput = document.getElementById("login-email");
+            if (emailInput) {
+                const email = emailInput.value;
+                const name = email.split("@")[0]; // Nombre simplificado
+                loginUser(email, name, "Email");
+            }
+        });
+    }
 
     // Conectar WebSocket para recibir actualizaciones de despacho en tiempo real
     connectClientWebSocket();
 
-    // Inicializar pestaña por defecto de estilos de vida
-    switchLifestyle('deportistas');
+    // Inicializar pestaña por defecto de estilos de vida si existe la sección
+    if (document.getElementById("lifestyle-content-card")) {
+        switchLifestyle('deportistas');
+    }
 });
 
 // ==========================================================================
@@ -393,12 +426,19 @@ function loginSocial(platform) {
 }
 
 function loginUser(email, name, provider) {
-    currentUser = { name, email, provider };
+    const role = email.toLowerCase().endsWith("@micelia.cl") ? "operator" : "customer";
+    currentUser = { name, email, provider, role };
     localStorage.setItem("micelia_current_user", JSON.stringify(currentUser));
     
     updateUserUI();
     closeLoginModal();
-    loadUserOrders();
+    
+    // Si es operador, redirigir inmediatamente a admin.html
+    if (role === "operator") {
+        window.location.href = "admin.html";
+    } else {
+        loadUserOrders();
+    }
 }
 
 function logoutUser() {
@@ -1059,6 +1099,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".slider-arrow, .slider-dot").forEach(el => {
         el.addEventListener("click", resetSliderInterval);
     });
+    // Inyectar y configurar asistente de ventas en todas las páginas
+    initSalesBotUI();
 });
 
 // ==========================================================================
@@ -1091,6 +1133,78 @@ function requestWhatsAppOrder(event) {
 // ==========================================================================
 // ASISTENTE DE VENTAS FLOTANTE CON IA (SALES BOT)
 // ==========================================================================
+function initSalesBotUI() {
+    if (localStorage.getItem("sales-bot-muted") === "true") return;
+    if (document.getElementById("sales-bot-bubble")) return;
+
+    const bubble = document.createElement("div");
+    bubble.id = "sales-bot-bubble";
+    bubble.style.cssText = "position: fixed; bottom: 2rem; right: 2rem; width: 60px; height: 60px; background: var(--accent-gold); color: black; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 8px 24px rgba(0,0,0,0.4); z-index: 999; transition: transform 0.3s ease;";
+    bubble.innerHTML = `
+        <span class="material-symbols-outlined" style="font-size: 2.1rem; color: black; display: flex; align-items: center; justify-content: center;">smart_toy</span>
+        <span style="position: absolute; top: -2px; right: -2px; width: 12px; height: 12px; background: #25d366; border-radius: 50%; border: 2px solid var(--bg-dark);"></span>
+    `;
+    
+    bubble.addEventListener("mouseenter", () => bubble.style.transform = 'scale(1.06)');
+    bubble.addEventListener("mouseleave", () => bubble.style.transform = 'scale(1)');
+    bubble.addEventListener("click", toggleSalesBot);
+
+    const chat = document.createElement("div");
+    chat.id = "sales-bot-chat";
+    chat.style.cssText = "position: fixed; bottom: 6.5rem; right: 2rem; width: 340px; height: 450px; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.6); display: none; flex-direction: column; overflow: hidden; z-index: 1000; font-family: var(--font-body); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);";
+    chat.innerHTML = `
+        <!-- Chat Header -->
+        <div style="background: var(--bg-dark); padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span class="material-symbols-outlined" style="color: var(--accent-gold); font-size: 1.5rem;">smart_toy</span>
+                <div>
+                    <strong style="color: var(--text-primary); font-size: 0.95rem; display: block;">Asistente Virtual Micelia</strong>
+                    <span style="color: #25d366; font-size: 0.72rem; display: flex; align-items: center; gap: 0.25rem;">
+                        <span style="width: 6px; height: 6px; background: #25d366; border-radius: 50%;"></span> En línea (IA)
+                    </span>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <button onclick="muteSalesBot()" title="Silenciar asistente permanentemente (Dejarme en paz)" style="background: none; border: none; color: rgba(220, 80, 80, 0.75); cursor: pointer; display: flex; align-items: center; gap: 0.2rem; font-size: 0.75rem; font-family: var(--font-body); transition: color 0.3s; padding: 0.2rem;" onmouseover="this.style.color='#ff4b4b'" onmouseout="this.style.color='rgba(220, 80, 80, 0.75)'">
+                    <span class="material-symbols-outlined" style="font-size: 1.1rem;">volume_off</span>
+                    Silenciar
+                </button>
+                <button onclick="toggleSalesBot()" style="background: none; border: none; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; padding: 0.2rem;">
+                    <span class="material-symbols-outlined" style="font-size: 1.2rem;">close</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Chat Messages -->
+        <div id="sales-bot-messages" style="flex: 1; padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; background: rgba(0,0,0,0.15);">
+            <div style="background: rgba(255,255,255,0.03); padding: 0.8rem; border-radius: 12px 12px 12px 0; align-self: flex-start; max-width: 85%; font-size: 0.9rem; line-height: 1.4; color: var(--text-primary);">
+                ¡Hola! Soy el asistente de compras de Micelia. 🍄 ¿Quieres saber sobre nuestras setas ostra, recetas o prefieres que arme tu pedido para enviarlo directamente a WhatsApp?
+            </div>
+        </div>
+
+        <!-- Chat Input -->
+        <form id="sales-bot-form" onsubmit="handleSalesBotSubmit(event)" style="padding: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 0.5rem; background: var(--bg-dark); margin: 0;">
+            <input type="text" id="sales-bot-input" placeholder="Pregúntame algo..." style="flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 0.7rem 1rem; border-radius: 20px; color: var(--text-primary); font-size: 0.9rem; outline: none; transition: border 0.3s;" onfocus="this.style.borderColor='var(--accent-gold)'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'">
+            <button type="submit" style="background: var(--accent-gold); border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                <span class="material-symbols-outlined" style="color: black; font-size: 1.2rem; transform: rotate(-45deg) translate(2px, -1px);">send</span>
+            </button>
+        </form>
+    `;
+
+    document.body.appendChild(bubble);
+    document.body.appendChild(chat);
+}
+
+function muteSalesBot() {
+    if (confirm("¿Deseas silenciar al asistente de IA permanentemente? No volverá a aparecer en ninguna página.")) {
+        localStorage.setItem("sales-bot-muted", "true");
+        const bubble = document.getElementById("sales-bot-bubble");
+        const chat = document.getElementById("sales-bot-chat");
+        if (bubble) bubble.remove();
+        if (chat) chat.remove();
+    }
+}
+
 function toggleSalesBot() {
     const chat = document.getElementById("sales-bot-chat");
     if (!chat) return;
@@ -1156,57 +1270,224 @@ function appendSalesBotMessage(text, sender) {
 function processSalesBotQuery(query) {
     const q = query.toLowerCase();
     
+    // Función auxiliar para abrir el panel del carrito
+    const openCart = () => {
+        const sidebar = document.getElementById("cart-sidebar");
+        const backdrop = document.getElementById("cart-backdrop");
+        if (sidebar && backdrop) {
+            sidebar.classList.add("open");
+            backdrop.classList.add("open");
+        }
+    };
+
+    // Función auxiliar para cerrar el panel del carrito
+    const closeCart = () => {
+        const sidebar = document.getElementById("cart-sidebar");
+        const backdrop = document.getElementById("cart-backdrop");
+        if (sidebar && backdrop) {
+            sidebar.classList.remove("open");
+            backdrop.classList.remove("open");
+        }
+    };
+    
+    // 1. Vaciar Carrito
+    if (q.includes("vaciar") || q.includes("limpiar carro") || q.includes("limpiar carrito") || q.includes("vaciar carro") || q.includes("vaciar carrito")) {
+        cart = [];
+        renderCart();
+        openCart();
+        return `¡Listo! He vaciado tu carrito de compras por ti. El carro ahora está vacío.`;
+    }
+
+    // 2. Quitar/Eliminar productos específicos
+    if (q.includes("quitar") || q.includes("eliminar") || q.includes("saca ") || q.includes("sacar") || q.includes("borrar")) {
+        let removed = false;
+        let itemName = "";
+        
+        if (q.includes("500") || q.includes("chico")) {
+            cart = cart.filter(item => item.id !== "1");
+            itemName = "Hongo Ostra Fresco 500g";
+            removed = true;
+        } else if (q.includes("1kg") || q.includes("1 kg") || q.includes("kilo") || q.includes("grande")) {
+            cart = cart.filter(item => item.id !== "2");
+            itemName = "Hongo Ostra Fresco 1kg";
+            removed = true;
+        } else if (q.includes("kit") || q.includes("autocultivo")) {
+            cart = cart.filter(item => item.id !== "4");
+            itemName = "Kit de Autocultivo Educativo";
+            removed = true;
+        } else if (q.includes("suscripcion") || q.includes("horeca") || q.includes("restaurante")) {
+            cart = cart.filter(item => item.id !== "3");
+            itemName = "Suscripción HORECA";
+            removed = true;
+        }
+        
+        if (removed) {
+            renderCart();
+            openCart();
+            return `He retirado **${itemName}** de tu carrito de compras. ¡Panel actualizado!`;
+        }
+    }
+
+    // 3. Ver/Mostrar/Abrir Carrito
+    if (q.includes("ver carrito") || q.includes("ver carro") || q.includes("que tengo") || q.includes("mi pedido") || q.includes("abrir carrito") || q.includes("mostrar carro")) {
+        openCart();
+        if (cart.length === 0) {
+            return `Tu carrito está vacío actualmente. ¿Quieres que te agregue una bandeja de 500g o 1kg?`;
+        }
+        const itemsList = cart.map(item => `• **${item.name}** (x${item.quantity}) - $${(item.price * item.quantity).toLocaleString("es-CL")} CLP`).join("<br>");
+        return `Aquí tienes el detalle de tu pedido:<br><br>${itemsList}<br><br><strong>Total:</strong> $${calculateTotal().toLocaleString("es-CL")} CLP.<br>¡Ya abrí el panel lateral para ti!`;
+    }
+
+    // 4. Cerrar Carrito
+    if (q.includes("cerrar carrito") || q.includes("ocultar carro") || q.includes("ocultar carrito") || q.includes("cerrar carro")) {
+        closeCart();
+        return `He cerrado el panel del carrito. ¿Hay algo más en lo que pueda ayudarte?`;
+    }
+
+    // 5. Proceder al pago / Checkout
+    if (q.includes("comprar") || q.includes("pagar") || q.includes("checkout") || q.includes("finalizar pedido") || q.includes("despachar")) {
+        if (cart.length === 0) {
+            return `No puedes finalizar la compra porque tu carrito está vacío. Pídeme agregar un producto primero, por ejemplo: *"Agrega 1kg"*`;
+        }
+        closeCart();
+        const checkoutModal = document.getElementById("checkout-modal");
+        if (checkoutModal) {
+            checkoutModal.classList.add("open");
+            return `¡Excelente elección! He cerrado el carrito y **abierto la pasarela de despacho y pago**. Por favor completa tus datos en el formulario central.`;
+        }
+    }
+
     // Lógica para agregar al carro mediante comandos de texto
-    if (q.includes("agregar") || q.includes("quiero comprar") || q.includes("llevar") || q.includes("pido")) {
-        if (q.includes("500g") || q.includes("500 g") || q.includes("chico") || q.includes("pequeño")) {
+    if (q.includes("agregar") || q.includes("quiero comprar") || q.includes("llevar") || q.includes("pido") || q.includes("pon ")) {
+        if (q.includes("500g") || q.includes("500 g") || q.includes("chico") || q.includes("pequeño") || q.includes("fresco 500")) {
             addToCart("1", "Hongo Ostra Fresco 500g", 4500);
+            openCart();
             return `¡Excelente! He agregado **Hongo Ostra Fresco 500g ($4.500 CLP)** a tu carrito. Abre el carro a la derecha para ver tu total o haz clic en "Pedir por WhatsApp" para automatizar tu compra.`;
         }
-        if (q.includes("1kg") || q.includes("1 kg") || q.includes("kilo") || q.includes("grande")) {
+        if (q.includes("1kg") || q.includes("1 kg") || q.includes("kilo") || q.includes("grande") || q.includes("fresco 1")) {
             addToCart("2", "Hongo Ostra Fresco 1kg", 8000);
+            openCart();
             return `¡Hecho! Agregué **Hongo Ostra Fresco 1kg ($8.000 CLP)** a tu carrito. Puedes revisar el carro a la derecha.`;
         }
-        if (q.includes("kit") || q.includes("autocultivo") || q.includes("educativo")) {
-            addToCart("4", "Kit de Autocultivo Educativo", 12000);
-            return `¡Listo! Sumé el **Kit de Autocultivo Educativo ($12.000 CLP)** a tu carrito. ¡Tus hijos aprenderán mucho viendo crecer sus setas!`;
+        if (q.includes("kit") || q.includes("autocultivo")) {
+            if (q.includes("familiar") || q.includes("xl") || q.includes("grande")) {
+                addToCart("5", "Kit de Autocultivo Familiar XL", 18000);
+                openCart();
+                return `¡Listo! Sumé el **Kit de Autocultivo Familiar XL ($18.000 CLP)** a tu carrito. ¡Es perfecto para cosechar setas en gran cantidad!`;
+            } else if (q.includes("exotico") || q.includes("rosa") || q.includes("djamor") || q.includes("amarillo")) {
+                addToCart("6", "Kit de Autocultivo Exótico", 15000);
+                openCart();
+                return `¡Hecho! Agregué el **Kit de Autocultivo Exótico ($15.000 CLP)** con setas rosadas tropicales a tu carrito.`;
+            } else {
+                addToCart("4", "Kit de Autocultivo Educativo", 12000);
+                openCart();
+                return `¡Listo! Sumé el **Kit de Autocultivo Educativo ($12.000 CLP)** a tu carrito. ¡Tus hijos aprenderán mucho viendo crecer sus setas!`;
+            }
         }
         if (q.includes("suscripcion") || q.includes("horeca") || q.includes("restaurante")) {
             addToCart("3", "Suscripción HORECA", 25000);
+            openCart();
             return `¡Agregado! He sumado la **Suscripción HORECA ($25.000 CLP/mes)** a tu carrito.`;
         }
     }
     
-    // Respuestas informativas generales
+    // Respuestas informativas generales e integraciones del proyecto
     if (q.includes("hola") || q.includes("buenos dias") || q.includes("buenas tardes")) {
-        return `¡Hola! Qué gusto saludarte. 😊 ¿Quieres que te asesore con los precios, te sugiera una receta de setas ostra o necesitas que agregue algún producto a tu carrito?`;
+        return `¡Hola! Qué gusto saludarte. 😊 Soy el asistente inteligente de **Micelia**. ¿Quieres saber sobre los precios de catálogo, nuestras recetas gourmet, cómo funciona la telemetría IoT S60, la integración ML en Rust, o el ledger TruthSync? ¡Pregúntame lo que quieras!`;
     }
     
-    if (q.includes("precio") || q.includes("cuanto cuesta") || q.includes("valor")) {
-        return `Nuestros valores comerciales vigentes son:\n
-• **Caja 500g**: $4.500 CLP\n
-• **Caja 1kg**: $8.000 CLP\n
-• **Kit Autocultivo**: $12.000 CLP\n
-• **Suscripción HORECA B2B**: $25.000 CLP/mes\n\n
+    if (q.includes("precio") || q.includes("cuanto cuesta") || q.includes("valor") || q.includes("catalogo") || q.includes("productos") || q.includes("kit")) {
+        return `Nuestros productos y valores comerciales oficiales son:
+<br><br>
+• **Hongo Ostra Fresco 500g**: $4.500 CLP (Formato familiar de consumo diario)<br>
+• **Hongo Ostra Fresco 1kg**: $8.000 CLP (Ideal para cocineros y conservación)<br>
+• **Suscripción HORECA B2B**: $25.000 CLP/mes (Suministro garantizado de 3.5kg mensuales)<br>
+• **Kit de Autocultivo Educativo**: $12.000 CLP (Proyecto STEM de 2kg para escuelas)<br>
+• **Kit de Autocultivo Familiar XL**: $18.000 CLP (Bloque de producción de 4.5kg para hogar)<br>
+• **Kit de Autocultivo Exótico**: $15.000 CLP (Setas rosadas Pleurotus djamor gourmet)<br><br>
 ¿Deseas que te agregue alguno al carro de compras?`;
     }
     
     if (q.includes("despacho") || q.includes("envio") || q.includes("entrega") || q.includes("a domicilio")) {
-        return `Realizamos despachos semanales todos los días **miércoles y sábados** a toda la Provincia de Arauco (Curanilahue, Cañete, Lebu, Arauco). El despacho es gratuito para pedidos desde $8.000 CLP.`;
+        return `Realizamos despachos directos todos los **miércoles y sábados** a toda la Provincia de Arauco (Curanilahue, Cañete, Lebu, Arauco). El despacho es gratuito para compras sobre $8.000 CLP.`;
     }
     
-    if (q.includes("whatsapp")) {
-        return `¡Claro! El pedido por WhatsApp es súper ágil. Simplemente agrega los productos que desees al carrito y haz clic en el botón verde **"Pedir por WhatsApp (IA)"**. Generaremos el mensaje de tu carro de inmediato y nuestro chatbot de WhatsApp tomará tus datos de envío automáticamente.`;
+    if (q.includes("whatsapp") || q.includes("celular") || q.includes("telefono")) {
+        return `¡Claro! Nuestra plataforma cuenta con una integración especial por WhatsApp. Al hacer clic en **"Pedir por WhatsApp (IA)"** en tu carrito de compras, o mediante nuestro enlace rápido, redactamos tu pedido de inmediato.`;
+    }
+
+    if (q.includes("adulto") || q.includes("mayor") || q.includes("abuelo") || q.includes("tercera edad") || q.includes("abuela")) {
+        return `Para evitar la fricción digital y asegurar la accesibilidad de nuestros adultos mayores, contamos con un flujo simplificado de un solo clic. El enlace de WhatsApp los redirige al número corporativo con el mensaje pre-redactado:
+<br><br>
+💬 <em>"Hola Micelia, quisiera pedir el Pack Adulto Mayor de setas de 500g"</em><br><br>
+De esta forma, pueden concretar su pedido sin formularios complejos.`;
     }
     
-    if (q.includes("receta") || q.includes("cocinar") || q.includes("comer")) {
-        return `¡Las setas ostra son deliciosas! Te recomiendo saltearlas a fuego muy alto en tiras delgadas con ajo y aceite de oliva sin moverlas al principio para que queden crujientes. Quedan espectaculares en tacos, risotto de champiñones o cremas para adultos mayores. Revisa nuestro carrusel de recetas en el **Camino del Micelio** para ver ingredientes y desgloses de nutrición.`;
+    if (q.includes("receta") || q.includes("cocinar") || q.includes("plat") || q.includes("gourmet") || q.includes("comida") || q.includes("tacos") || q.includes("risotto") || q.includes("steak") || q.includes("grill") || q.includes("ceviche") || q.includes("calamar") || q.includes("scampi") || q.includes("teriyaki") || q.includes("crema")) {
+        return `¡Nuestras recetas gourmet de Hongo Ostra son espectaculares! En nuestra **Biblioteca** puedes consultar las guías detalladas con paso a paso y valores nutricionales:<br><br>
+• 🌮 **[Tacos Deshilachados](view_doc.html?file=docs/receta_tacos.md&title=Tacos%20de%20Hongo%20Ostra)** (Textura idéntica a carne desmechada)<br>
+• 🥩 **[Clusters al Grill con Ajo](view_doc.html?file=docs/receta_grill.md&title=Clusters%20al%20Grill)** (Firme, ideal para parrilla)<br>
+• 🍚 **[Risotto Cremoso de Trufa](view_doc.html?file=docs/receta_risotto.md&title=Risotto%20Cremoso%20de%20Setas)** (El sabor umami definitivo)<br>
+• 🥗 **[Ceviche del Mar del Sur](view_doc.html?file=docs/receta_ceviche.md&title=Ceviche%20del%20Mar%20del%20Sur)** (Fresco, curado con limón)<br>
+• 🦑 **[Calamares Crujientes Tempura](view_doc.html?file=docs/receta_calamares.md&title=%22Calamares%22%20Veganos)** (Aros crujientes sin mariscos)<br>
+• 🧄 **[Scampi de Setas al Vino](view_doc.html?file=docs/receta_scampi.md&title=Scampi%20de%20Setas%20Ostra)** (Emulsión de mantequilla y ajo)<br>
+• 🍱 **[Setas Teriyaki Wok](view_doc.html?file=docs/receta_teriyaki.md&title=Hongos%20Ostra%20Teriyaki)** (Glaseadas con soja y jengibre)<br>
+• 🥣 **[Crema de Ostra al Tomillo](view_doc.html?file=docs/receta_crema.md&title=Crema%20de%20Hongo%20Ostra)** (Alta digestibilidad para Adulto Mayor)<br><br>
+Pincha en cualquiera de los enlaces para ver los ingredientes y su preparación.`;
     }
     
-    if (q.includes("s60") || q.includes("yatra") || q.includes("sensor")) {
-        return `Operamos bajo el Estándar de Telemetría **Yatra S60** en base sexagesimal para controlar de forma óptima el crecimiento fúngico (Humedad ideal 85%-95% y CO₂ < 900ppm). El historial de logs es auditado y firmado con hash criptográficos SHA-256 en TruthSync para total transparencia.`;
+    if (q.includes("biblioteca") || q.includes("articulo") || q.includes("leer") || q.includes("documento") || q.includes("conocimiento") || q.includes("saber")) {
+        return `Nuestra **Biblioteca Científica** contiene guías de cultivo, artículos sobre tecnología y biología de setas:<br><br>
+• 🔬 **[Biología del Hongo Ostra](view_doc.html?file=docs/biologia_hongo_ostra.md&title=Biologia%20del%20Hongo%20Ostra)** (Ciclo de vida y Reino Fungi)<br>
+• 🧬 **[Superalimento e Inmunología](view_doc.html?file=docs/compendio_nutricional.md&title=Poder%20Nutricional%20del%20Hongo%20Ostra)** (Beta-glucanos y lovastatina)<br>
+• 📡 **[Telemetría IoT S60](view_doc.html?file=docs/telemetria_s60.md&title=Telemetria%20IoT%20S60)** (Monitoreo con microcontroladores)<br>
+• ⚡ **[Rust Cortex Daemon](view_doc.html?file=docs/cortex_daemon.md&title=Rust%20Cortex%20Daemon)** (Backend de telemetría concurrente)<br>
+• 🔗 **[TruthSync Criptografía](view_doc.html?file=docs/truthsync_ledger.md&title=TruthSync%20Ledger)** (Inmutabilidad criptográfica de despachos)<br>
+• ♻️ **[Economía Circular en Arauco](view_doc.html?file=docs/economia_circular.md&title=Economia%20Circular)** (Residuos orgánicos converted a alimento)<br>
+• 📦 **[Guía de Autocultivo Educativo](view_doc.html?file=docs/guia_autocultivo.md&title=Guia%20de%20Autocultivo)** (Tutorial del kit STEM)<br><br>
+¡Te sugiero visitarla en el menú superior para ver las fotos y el vapor animado en recetas!`;
+    }
+
+    if (q.includes("registrar") || q.includes("cuenta") || q.includes("sesion") || q.includes("perfil") || q.includes("login") || q.includes("usuario") || q.includes("ingresar") || q.includes("entrar") || q.includes("registro") || q.includes("beneficio")) {
+        return `¡Registrarte como cliente en **Micelia** te brinda grandes ventajas exclusivas! 🌟:<br><br>
+1. 📦 **Seguimiento Criptográfico en Tiempo Real**: Rastrea el estado exacto de tu despacho con validación de hash TruthSync.<br>
+2. 🚨 **Alertas IoT de Cultivo Personalizadas**: Si tienes un Kit de Autocultivo, puedes enlazar tus sensores y recibir alertas automáticas en tu teléfono si la humedad cae de 85% o el CO₂ supera los 900 ppm (óptimos fúngicos).<br>
+3. 📜 **Historial Completo**: Guarda tus compras anteriores y descarga boletas o certificados de trazabilidad orgánica.<br><br>
+Para registrarte o ingresar, haz clic en **"Iniciar Sesión"** en la barra superior del menú principal.`;
+    }
+
+    if (q.includes("pedido") || q.includes("seguimiento") || q.includes("despacho") || q.includes("enviar") || q.includes("estado") || q.includes("rastrear") || q.includes("compra") || q.includes("donde esta") || q.includes("transaccion")) {
+        return `Cada pedido en Micelia cuenta con trazabilidad inmutable mediante **TruthSync**. El flujo es el siguiente:<br><br>
+1. **Recibido**: Confirmado y registrado en PostgreSQL.<br>
+2. **Cosechando**: Seleccionamos y cosechamos las setas frescas del sustrato.<br>
+3. **En Reparto**: Nuestro despachador sale en ruta por la Provincia de Arauco (despachos miércoles y sábados).<br>
+4. **Entregado**: Pedido firmado y sellado criptográficamente.<br><br>
+Cada actualización de estado calcula un hash **SHA-256** único que asegura que la información es inmutable. Si inicias sesión con tu cuenta, verás un mapa interactivo con el estado de tu pedido en tiempo real y su firma digital de validación.`;
     }
     
-    return `Entiendo. Puedo asesorarte con información de despacho, precios de catálogo, recetas o ayudarte a cargar tu carrito de compras. Por ejemplo, dime: *"Quiero agregar un kit"* y yo lo haré por ti.`;
+    if (q.includes("s60") || q.includes("yatra") || q.includes("sensor") || q.includes("humedad") || q.includes("temperatura") || q.includes("co2") || q.includes("optimo") || q.includes("ideal")) {
+        return `El sistema de telemetría IoT **Yatra S60** recopila lecturas de sensores (Temperatura, Humedad, CO₂) y las procesa en **base sexagesimal (s60)** en el firmware ESP32 y en el backend Cortex. 
+<br><br>
+Los rangos biológicos saludables ideales para el crecimiento del *Pleurotus ostreatus* son:<br>
+• 💧 **Humedad**: 85% - 95% (crítico para inducción de primordios)<br>
+• 🫧 **CO₂**: &lt; 900 ppm (evita que las setas crezcan fibrosas o elongadas)<br>
+• 🌡️ **Temperatura**: 18°C - 22°C (crecimiento celular equilibrado)<br><br>
+Puedes auditar las lecturas en tiempo real en nuestro dashboard de operador.`;
+    }
+
+    if (q.includes("truthsync") || q.includes("blockchain") || q.includes("hash") || q.includes("seguro") || q.includes("sha256") || q.includes("inmutable") || q.includes("ledger")) {
+        return `**TruthSync** es nuestro ledger de transacciones inmutable. Cada vez que se crea un pedido o se actualiza un despacho, el sistema calcula un hash criptográfico **SHA256** (enlazando el ID del pedido, los datos del cliente, el estado anterior y el nuevo, junto con el hash anterior). Las firmas se guardan de forma incorruptible en la tabla PostgreSQL \`truthsync_orders\`.`;
+    }
+
+    if (q.includes("rust") || q.includes("pyo3") || q.includes("cortex") || q.includes("inteligencia") || q.includes("ml") || q.includes("machine learning") || q.includes("pronostico") || q.includes("predecir")) {
+        return `Nuestra capa analítica Cortex cuenta con algoritmos de Machine Learning (mínimos cuadrados para regresión lineal de proyecciones de ventas) programados en **Rust** e integrados como módulo nativo ejecutable de Python usando **PyO3**. Para soporte óptimo de Python 3.14 bajo Linux RedHat/Fedora en producción, inyectamos la variable de entorno \`PYO3_USE_ABI3_FORWARD_COMPATIBILITY = "1"\`.`;
+    }
+
+    if (q.includes("sustrato") || q.includes("circular") || q.includes("arauco") || q.includes(" forestal") || q.includes("paja") || q.includes("cal")) {
+        return `Micelia valoriza los residuos forestales y agrícolas de la Provincia de Arauco (paja de trigo y aserrín) como sustrato de cultivo. Implementamos una **desinfección alcalina** ecológica usando hidróxido de calcio (cal apagada al 1% durante 16 horas) en lugar de pasteurización por vapor, logrando una **Eficiencia Biológica (BE) del 65% al 80%** y con una huella hídrica ultra baja (solo 70 litros de agua por kg de hongo fresco).`;
+    }
+    
+    return `Entiendo tu pregunta. Puedo guiarte con información sobre el catálogo de precios, sugerirte recetas y artículos técnicos, detallar los beneficios de registrarte como cliente, explicar el sistema de seguimiento de pedidos TruthSync, el Estándar Yatra S60 o la integración de Rust/PyO3 en Cortex ML.`;
 }
 
 // ==========================================================================
@@ -1368,6 +1649,10 @@ function initMycelium3D() {
     const maxDistance = 2.4;
     
     function animate() {
+        if (!isMycelium3DEnabled) {
+            renderer.clear();
+            return;
+        }
         requestAnimationFrame(animate);
 
         // Deriva lenta de los nodos
@@ -1430,4 +1715,379 @@ function initMycelium3D() {
     });
 }
 
+// ==========================================================================
+// CONTROL DEL SLIDER DE HÉROE (INICIO)
+// ==========================================================================
+let currentHeroSlide = 0;
+let heroInterval = null;
 
+function initHeroSlider() {
+    const slides = document.querySelectorAll(".hero-slide");
+    const dots = document.querySelectorAll(".hero-dot");
+    if (slides.length === 0) return;
+
+    // Iniciar con diapositiva aleatoria para dinamismo de entrada
+    currentHeroSlide = Math.floor(Math.random() * slides.length);
+    showHeroSlide(currentHeroSlide);
+
+    startHeroInterval();
+}
+
+function showHeroSlide(index) {
+    const slides = document.querySelectorAll(".hero-slide");
+    const dots = document.querySelectorAll(".hero-dot");
+    if (slides.length === 0) return;
+
+    if (index >= slides.length) currentHeroSlide = 0;
+    else if (index < 0) currentHeroSlide = slides.length - 1;
+    else currentHeroSlide = index;
+
+    slides.forEach((slide, i) => {
+        if (i === currentHeroSlide) {
+            slide.classList.add("active");
+        } else {
+            slide.classList.remove("active");
+        }
+    });
+
+    dots.forEach((dot, i) => {
+        if (i === currentHeroSlide) {
+            dot.classList.add("active");
+        } else {
+            dot.classList.remove("active");
+        }
+    });
+}
+
+function setHeroSlide(index) {
+    showHeroSlide(index);
+    resetHeroInterval();
+}
+
+function startHeroInterval() {
+    if (heroInterval) clearInterval(heroInterval);
+    heroInterval = setInterval(() => {
+        showHeroSlide(currentHeroSlide + 1);
+    }, 8500); // Rotación automática cada 8.5 segundos
+}
+
+function resetHeroInterval() {
+    clearInterval(heroInterval);
+    startHeroInterval();
+}
+
+// Inicializar sliders y widgets de accesibilidad en la carga de la página
+document.addEventListener("DOMContentLoaded", () => {
+    initHeroSlider();
+    initAccessibilityUI();
+});
+
+// ==========================================================================
+// MÓDULO DE ACCESIBILIDAD Y TEMAS (A11Y)
+// ==========================================================================
+let ttsActive = false;
+let ttsUtterance = null;
+let isMycelium3DEnabled = true;
+
+function initAccessibilityUI() {
+    if (document.getElementById("a11y-widget-bubble")) return;
+
+    // Crear Burbuja de Accesibilidad (Esquina Inferior Izquierda)
+    const bubble = document.createElement("div");
+    bubble.id = "a11y-widget-bubble";
+    bubble.style.cssText = "position: fixed; bottom: 2rem; left: 2rem; width: 60px; height: 60px; background: #2b4c7e; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 8px 24px rgba(0,0,0,0.4); z-index: 999; transition: transform 0.3s ease;";
+    bubble.innerHTML = `<span class="material-symbols-outlined" style="font-size: 2.1rem; color: white; display: flex; align-items: center; justify-content: center;">accessibility_new</span>`;
+    
+    bubble.addEventListener("mouseenter", () => bubble.style.transform = 'scale(1.06)');
+    bubble.addEventListener("mouseleave", () => bubble.style.transform = 'scale(1)');
+    bubble.addEventListener("click", toggleAccessibilityPanel);
+
+    // Crear Panel de Accesibilidad
+    const panel = document.createElement("div");
+    panel.id = "a11y-panel";
+    panel.className = "a11y-panel";
+    panel.innerHTML = `
+        <div class="a11y-header">
+            <span class="a11y-title">Accesibilidad y Temas</span>
+            <button class="a11y-close" onclick="toggleAccessibilityPanel()" style="background:none; border:none; color:var(--text-muted); cursor:pointer;">
+                <span class="material-symbols-outlined" style="font-size: 1.2rem;">close</span>
+            </button>
+        </div>
+        
+        <!-- Tema Claro / Oscuro -->
+        <div class="a11y-option">
+            <span>Tema visual:</span>
+            <div class="a11y-btn-group">
+                <button class="a11y-btn" id="theme-btn-dark" onclick="setA11yTheme('dark')">Oscuro</button>
+                <button class="a11y-btn" id="theme-btn-light" onclick="setA11yTheme('light')">Claro</button>
+            </div>
+        </div>
+
+        <!-- Contraste Alto -->
+        <div class="a11y-option">
+            <span>Contraste Alto:</span>
+            <div class="a11y-btn-group">
+                <button class="a11y-btn" id="contrast-btn-off" onclick="setA11yContrast(false)">Normal</button>
+                <button class="a11y-btn" id="contrast-btn-on" onclick="setA11yContrast(true)">Alto</button>
+            </div>
+        </div>
+
+        <!-- Ajuste de Fuente -->
+        <div class="a11y-option">
+            <span>Tamaño de Texto:</span>
+            <div class="a11y-btn-group">
+                <button class="a11y-btn" id="font-btn-sm" onclick="setA11yFontSize('sm')">A-</button>
+                <button class="a11y-btn" id="font-btn-md" onclick="setA11yFontSize('md')">Normal</button>
+                <button class="a11y-btn" id="font-btn-lg" onclick="setA11yFontSize('lg')">A+</button>
+            </div>
+        </div>
+
+        <!-- Carga Rápida (Sin Animaciones) -->
+        <div class="a11y-option">
+            <span>Carga Rápida (Sin Anim.):</span>
+            <div class="a11y-btn-group">
+                <button class="a11y-btn" id="anim-btn-off" onclick="setA11yAnimations(true)">No</button>
+                <button class="a11y-btn" id="anim-btn-on" onclick="setA11yAnimations(false)">Sí</button>
+            </div>
+        </div>
+
+        <!-- Lector de Pantalla por Voz -->
+        <div class="a11y-option">
+            <span>Lector de Voz (TTS):</span>
+            <button class="a11y-btn" id="tts-btn" onclick="toggleA11yTTS()">Activar Lector</button>
+        </div>
+
+        <!-- Acceso Directo Adulto Mayor -->
+        <div class="a11y-option" style="border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 0.75rem; margin-top: 0.25rem;">
+            <a href="https://wa.me/56912345678?text=Hola%20Micelia%2C%20quisiera%20pedir%20el%20Pack%20Adulto%20Mayor%20de%20setas%20de%20500g" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; gap: 0.4rem; text-decoration: none; color: var(--accent-gold); width: 100%; justify-content: center; font-weight: bold; font-size: 0.82rem;">
+                <span class="material-symbols-outlined" style="font-size: 1.2rem;">elderly</span> Pedido Rápido Adulto Mayor
+            </a>
+        </div>
+    `;
+
+    document.body.appendChild(bubble);
+    document.body.appendChild(panel);
+
+    // Cargar preferencias del usuario y detectar preferencias del navegador/sistema
+    applySavedA11ySettings();
+}
+
+function toggleAccessibilityPanel() {
+    const panel = document.getElementById("a11y-panel");
+    if (panel) {
+        panel.classList.toggle("active");
+    }
+}
+
+function setA11yTheme(theme) {
+    if (theme === "light") {
+        document.body.classList.add("light-theme");
+        localStorage.setItem("a11y-theme", "light");
+    } else {
+        document.body.classList.remove("light-theme");
+        localStorage.setItem("a11y-theme", "dark");
+    }
+    updateActiveButtons();
+}
+
+function setA11yContrast(highContrast) {
+    if (highContrast) {
+        document.body.classList.add("high-contrast");
+        localStorage.setItem("a11y-contrast", "true");
+    } else {
+        document.body.classList.remove("high-contrast");
+        localStorage.setItem("a11y-contrast", "false");
+    }
+    updateActiveButtons();
+}
+
+function setA11yFontSize(size) {
+    document.body.classList.remove("font-scale-lg", "font-scale-xl");
+    if (size === "lg") {
+        document.body.classList.add("font-scale-lg");
+        localStorage.setItem("a11y-font-size", "lg");
+    } else if (size === "xl") {
+        document.body.classList.add("font-scale-xl");
+        localStorage.setItem("a11y-font-size", "xl");
+    } else {
+        localStorage.setItem("a11y-font-size", "md");
+    }
+    updateActiveButtons();
+}
+
+function setA11yAnimations(enabled) {
+    if (enabled) {
+        document.body.classList.remove("no-animations");
+        localStorage.setItem("a11y-no-animations", "false");
+        isMycelium3DEnabled = true;
+        
+        // Re-inicializar Three.js si es necesario
+        if (typeof initMycelium3D === 'function') {
+            const canvasContainer = document.getElementById('canvas-container');
+            if (canvasContainer && canvasContainer.children.length === 0) {
+                initMycelium3D();
+            }
+        }
+        
+        // Reactivar rotaciones
+        startHeroInterval();
+    } else {
+        document.body.classList.add("no-animations");
+        localStorage.setItem("a11y-no-animations", "true");
+        isMycelium3DEnabled = false;
+        
+        // Limpiar el lienzo Three.js para liberar CPU/GPU al 100%
+        const canvasContainer = document.getElementById('canvas-container');
+        if (canvasContainer) {
+            canvasContainer.innerHTML = ''; 
+        }
+        
+        // Detener los intervalos de los sliders para que queden fijos
+        if (heroInterval) clearInterval(heroInterval);
+    }
+    updateActiveButtons();
+}
+
+function toggleA11yTTS() {
+    const btn = document.getElementById("tts-btn");
+    if (!btn) return;
+
+    if (!ttsActive) {
+        ttsActive = true;
+        btn.textContent = "Detener Lector";
+        btn.style.background = "#ff4b4b";
+        btn.style.color = "white";
+        
+        speakPageText();
+    } else {
+        ttsActive = false;
+        btn.textContent = "Activar Lector";
+        btn.style.background = "";
+        btn.style.color = "";
+        
+        if (window.speechSynthesis) {
+            window.speechSynthesis.cancel();
+        }
+    }
+}
+
+function speakPageText() {
+    if (!window.speechSynthesis) {
+        alert("La síntesis de voz no está soportada en este navegador.");
+        return;
+    }
+    window.speechSynthesis.cancel();
+
+    // Recolectar texto del cuerpo principal (títulos y párrafos)
+    const elements = document.querySelectorAll("h1, h2, h3, p");
+    let textToSpeak = "Panel de lectura de Micelia. ";
+    elements.forEach(el => {
+        if (el.closest("#a11y-panel") || el.closest("#sales-bot-chat") || el.closest(".navbar")) return;
+        textToSpeak += el.innerText + ". ";
+    });
+
+    ttsUtterance = new SpeechSynthesisUtterance(textToSpeak);
+    ttsUtterance.lang = "es-CL";
+    ttsUtterance.rate = 1.0;
+    
+    ttsUtterance.onend = () => {
+        if (ttsActive) toggleA11yTTS();
+    };
+
+    window.speechSynthesis.speak(ttsUtterance);
+}
+
+function applySavedA11ySettings() {
+    // 1. Detección automática del tema del sistema o preferencia guardada
+    const savedTheme = localStorage.getItem("a11y-theme");
+    const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+
+    if (savedTheme === "light" || (!savedTheme && prefersLight)) {
+        document.body.classList.add("light-theme");
+    } else {
+        document.body.classList.remove("light-theme");
+    }
+
+    // Escuchar cambios dinámicos del sistema en tiempo real si no hay preferencia explícita guardada
+    window.matchMedia("(prefers-color-scheme: light)").addEventListener("change", (e) => {
+        if (!localStorage.getItem("a11y-theme")) {
+            if (e.matches) {
+                document.body.classList.add("light-theme");
+            } else {
+                document.body.classList.remove("light-theme");
+            }
+            updateActiveButtons();
+        }
+    });
+
+    // 2. Cargar contraste guardado
+    const savedContrast = localStorage.getItem("a11y-contrast");
+    if (savedContrast === "true") {
+        document.body.classList.add("high-contrast");
+    }
+
+    // 3. Cargar escala de fuente guardada
+    const savedFontSize = localStorage.getItem("a11y-font-size");
+    if (savedFontSize === "lg") {
+        document.body.classList.add("font-scale-lg");
+    } else if (savedFontSize === "xl") {
+        // Mapeamos xl a font-scale-xl para mayor adaptabilidad
+        document.body.classList.add("font-scale-xl");
+    }
+
+    // 4. Cargar estado de animaciones y carga rápida
+    const savedNoAnimations = localStorage.getItem("a11y-no-animations");
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (savedNoAnimations === "true" || (!savedNoAnimations && prefersReducedMotion)) {
+        setA11yAnimations(false);
+    } else {
+        setA11yAnimations(true);
+    }
+
+    updateActiveButtons();
+}
+
+function updateActiveButtons() {
+    // Resetear clases activas de botones
+    document.querySelectorAll(".a11y-btn").forEach(btn => btn.classList.remove("active"));
+
+    // Botones de Tema
+    if (document.body.classList.contains("light-theme")) {
+        const btn = document.getElementById("theme-btn-light");
+        if (btn) btn.classList.add("active");
+    } else {
+        const btn = document.getElementById("theme-btn-dark");
+        if (btn) btn.classList.add("active");
+    }
+
+    // Botones de Contraste
+    if (document.body.classList.contains("high-contrast")) {
+        const btn = document.getElementById("contrast-btn-on");
+        if (btn) btn.classList.add("active");
+    } else {
+        const btn = document.getElementById("contrast-btn-off");
+        if (btn) btn.classList.add("active");
+    }
+
+    // Botones de Letra
+    if (document.body.classList.contains("font-scale-lg")) {
+        const btn = document.getElementById("font-btn-lg");
+        if (btn) btn.classList.add("active");
+    } else if (document.body.classList.contains("font-scale-xl")) {
+        const btn = document.getElementById("font-btn-lg");
+        if (btn) btn.classList.add("active");
+    } else {
+        const btn = document.getElementById("font-btn-md");
+        if (btn) btn.classList.add("active");
+    }
+
+    // Botones de Animaciones (Carga Rápida)
+    if (isMycelium3DEnabled) {
+        const btn = document.getElementById("anim-btn-off");
+        if (btn) btn.classList.add("active");
+    } else {
+        const btn = document.getElementById("anim-btn-on");
+        if (btn) btn.classList.add("active");
+    }
+}
