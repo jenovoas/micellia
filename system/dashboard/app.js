@@ -385,22 +385,26 @@ updateCO2(rangeCo2.value);
 // ==========================================================================
 const btnDashboard = document.getElementById("btn-dashboard");
 const btnDeliveries = document.getElementById("btn-deliveries");
+const btnTasks = document.getElementById("btn-tasks");
 const btnMlForecast = document.getElementById("btn-ml-forecast");
 const btnDossier = document.getElementById("btn-dossier");
 
 const viewDashboard = document.getElementById("view-dashboard");
 const viewDeliveries = document.getElementById("view-deliveries");
+const viewTasks = document.getElementById("view-tasks");
 const viewMlForecast = document.getElementById("view-ml-forecast");
 const viewDossier = document.getElementById("view-dossier");
 
 function switchView(target) {
     viewDashboard.style.display = "none";
     viewDeliveries.style.display = "none";
+    if (viewTasks) viewTasks.style.display = "none";
     viewMlForecast.style.display = "none";
     if (viewDossier) viewDossier.style.display = "none";
     
     btnDashboard.classList.remove("active");
     btnDeliveries.classList.remove("active");
+    if (btnTasks) btnTasks.classList.remove("active");
     btnMlForecast.classList.remove("active");
     if (btnDossier) btnDossier.classList.remove("active");
 
@@ -411,6 +415,10 @@ function switchView(target) {
         viewDeliveries.style.display = "block";
         btnDeliveries.classList.add("active");
         loadAdminOrders();
+    } else if (target === "tasks") {
+        if (viewTasks) viewTasks.style.display = "block";
+        if (btnTasks) btnTasks.classList.add("active");
+        loadAndRenderTasks();
     } else if (target === "ml-forecast") {
         viewMlForecast.style.display = "block";
         btnMlForecast.classList.add("active");
@@ -425,6 +433,7 @@ function switchView(target) {
 
 btnDashboard.addEventListener("click", (e) => { e.preventDefault(); switchView("dashboard"); });
 btnDeliveries.addEventListener("click", (e) => { e.preventDefault(); switchView("deliveries"); });
+if (btnTasks) btnTasks.addEventListener("click", (e) => { e.preventDefault(); switchView("tasks"); });
 btnMlForecast.addEventListener("click", (e) => { e.preventDefault(); switchView("ml-forecast"); });
 if (btnDossier) btnDossier.addEventListener("click", (e) => { e.preventDefault(); switchView("dossier"); });
 
@@ -568,6 +577,234 @@ if (btnLogout) {
         window.location.href = "index.html";
     });
 }
+
+// ==========================================================================
+// LABOUR LOAD BALANCING & TASK MANAGEMENT
+// ==========================================================================
+const EMPLOYEES = [
+    { email: "maria.angelica@micelia.cl", name: "Maria Angélica" },
+    { email: "cristian.novoa@micelia.cl", name: "Cristian Novoa" },
+    { email: "jaime.novoa@micelia.cl", name: "Jaime Novoa" }
+];
+
+function getTasks() {
+    const raw = localStorage.getItem("micelia_tasks");
+    if (!raw) {
+        const defaults = [
+            { id: 1, desc: "Revisar filtros HEPA y sensores SHT31", assignee: "cristian.novoa@micelia.cl", priority: "Alta", status: "Pendiente" },
+            { id: 2, desc: "Pasteurizar sustrato para nuevo lote", assignee: "jaime.novoa@micelia.cl", priority: "Alta", status: "Iniciada" },
+            { id: 3, desc: "Registrar peso de cosecha en Ledger TruthSync", assignee: "maria.angelica@micelia.cl", priority: "Media", status: "Pendiente" },
+            { id: 4, desc: "Ajustar compuertas de CO2 según Yatra S60", assignee: "cristian.novoa@micelia.cl", priority: "Baja", status: "Completada" }
+        ];
+        localStorage.setItem("micelia_tasks", JSON.stringify(defaults));
+        return defaults;
+    }
+    return JSON.parse(raw);
+}
+
+function saveTasks(tasks) {
+    localStorage.setItem("micelia_tasks", JSON.stringify(tasks));
+}
+
+function loadAndRenderTasks() {
+    const tasks = getTasks();
+    const currentUser = JSON.parse(localStorage.getItem("micelia_current_user"));
+    const userEmail = currentUser ? currentUser.email.toLowerCase() : "";
+    const isAdmin = (userEmail === "maria.angelica@micelia.cl");
+
+    // 1. Mostrar/Ocultar paneles según privilegios
+    const adminPanel = document.getElementById("admin-task-creation-panel");
+    const autoAssignBtn = document.getElementById("btn-auto-assign");
+    if (adminPanel) adminPanel.style.display = isAdmin ? "block" : "none";
+    if (autoAssignBtn) autoAssignBtn.style.display = isAdmin ? "flex" : "none";
+
+    // 2. Calcular carga laboral por empleado (solo contamos tareas no completadas)
+    const counts = {
+        "maria.angelica@micelia.cl": 0,
+        "cristian.novoa@micelia.cl": 0,
+        "jaime.novoa@micelia.cl": 0
+    };
+    tasks.forEach(t => {
+        if (t.status !== "Completada" && counts[t.assignee] !== undefined) {
+            counts[t.assignee]++;
+        }
+    });
+
+    // Renderizar contadores en la UI
+    document.getElementById("load-maria").textContent = `${counts["maria.angelica@micelia.cl"]} pendiente(s)`;
+    document.getElementById("load-cristian").textContent = `${counts["cristian.novoa@micelia.cl"]} pendiente(s)`;
+    document.getElementById("load-jaime").textContent = `${counts["jaime.novoa@micelia.cl"]} pendiente(s)`;
+
+    // Calcular porcentajes de barra de progreso (máximo de 5 tareas para 100%)
+    const getPercent = (count) => Math.min((count / 5) * 100, 100);
+    document.getElementById("progress-maria").style.width = `${getPercent(counts["maria.angelica@micelia.cl"])}%`;
+    document.getElementById("progress-cristian").style.width = `${getPercent(counts["cristian.novoa@micelia.cl"])}%`;
+    document.getElementById("progress-jaime").style.width = `${getPercent(counts["jaime.novoa@micelia.cl"])}%`;
+
+    // Cambiar color de barras según carga
+    const updateBarColor = (el, count) => {
+        if (count >= 4) el.style.background = "var(--accent-red)";
+        else if (count >= 2) el.style.background = "var(--accent-gold)";
+        else el.style.background = "var(--accent-green)";
+    };
+    updateBarColor(document.getElementById("progress-maria"), counts["maria.angelica@micelia.cl"]);
+    updateBarColor(document.getElementById("progress-cristian"), counts["cristian.novoa@micelia.cl"]);
+    updateBarColor(document.getElementById("progress-jaime"), counts["jaime.novoa@micelia.cl"]);
+
+    // 3. Renderizar la tabla de tareas
+    const tbody = document.getElementById("tasks-table-body");
+    if (!tbody) return;
+
+    if (tasks.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="padding: 1.5rem; text-align: center; color: var(--text-muted);">No hay tareas asignadas.</td></tr>`;
+        return;
+    }
+
+    let html = "";
+    tasks.forEach(t => {
+        const isOwnTask = (t.assignee.toLowerCase() === userEmail);
+        const canEdit = isAdmin || isOwnTask;
+
+        let statusClass = "state-badge";
+        if (t.status === "Completada") statusClass += " green";
+        else if (t.status === "Iniciada") statusClass += " yellow";
+
+        let selectStatus = "";
+        if (canEdit) {
+            selectStatus = `
+                <select onchange="updateTaskStatus(${t.id}, this.value)" style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 0.25rem 0.5rem; color: #fff; font-size: 0.8rem; cursor: pointer;">
+                    <option value="Pendiente" ${t.status === "Pendiente" ? "selected" : ""}>Pendiente</option>
+                    <option value="Iniciada" ${t.status === "Iniciada" ? "selected" : ""}>Iniciada</option>
+                    <option value="Completada" ${t.status === "Completada" ? "selected" : ""}>Completada</option>
+                </select>
+            `;
+        } else {
+            selectStatus = `<span class="${statusClass}">${t.status}</span>`;
+        }
+
+        // Acciones: los admins pueden reasignar o eliminar; los usuarios comunes solo pueden ver
+        let actionsHtml = "";
+        if (isAdmin) {
+            actionsHtml = `
+                <button onclick="deleteTask(${t.id})" class="btn btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 0.25rem;">
+                    <span class="material-symbols-outlined" style="font-size: 0.9rem;">delete</span> Borrar
+                </button>
+            `;
+        } else {
+            actionsHtml = `<span style="color: var(--text-muted); font-size: 0.75rem;">Solo lectura</span>`;
+        }
+
+        const employeeName = EMPLOYEES.find(e => e.email === t.assignee)?.name || t.assignee;
+
+        html += `
+            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.05); vertical-align: middle;">
+                <td style="padding: 0.75rem;">#${t.id}</td>
+                <td style="padding: 0.75rem; font-weight: 500; color: #fff;">${t.desc}</td>
+                <td style="padding: 0.75rem;"><code>${employeeName}</code></td>
+                <td style="padding: 0.75rem;"><span style="color: ${t.priority === 'Alta' ? 'var(--accent-red)' : t.priority === 'Media' ? 'var(--accent-gold)' : 'var(--text-muted)'}">${t.priority}</span></td>
+                <td style="padding: 0.75rem;">${selectStatus}</td>
+                <td style="padding: 0.75rem; text-align: right;">${actionsHtml}</td>
+            </tr>
+        `;
+    });
+    tbody.innerHTML = html;
+}
+
+// Balanceador automático de carga: asigna la tarea al empleado con menos tareas pendientes
+function balanceTaskAssignee() {
+    const tasks = getTasks();
+    const counts = {
+        "maria.angelica@micelia.cl": 0,
+        "cristian.novoa@micelia.cl": 0,
+        "jaime.novoa@micelia.cl": 0
+    };
+    tasks.forEach(t => {
+        if (t.status !== "Completada" && counts[t.assignee] !== undefined) {
+            counts[t.assignee]++;
+        }
+    });
+
+    let bestAssignee = "cristian.novoa@micelia.cl";
+    let minLoad = Infinity;
+
+    // Buscamos el empleado con menor carga. Preferimos operarios sobre el admin si empatan
+    const checkOrder = ["cristian.novoa@micelia.cl", "jaime.novoa@micelia.cl", "maria.angelica@micelia.cl"];
+    checkOrder.forEach(email => {
+        if (counts[email] < minLoad) {
+            minLoad = counts[email];
+            bestAssignee = email;
+        }
+    });
+
+    return bestAssignee;
+}
+
+window.updateTaskStatus = function(id, status) {
+    const tasks = getTasks();
+    const task = tasks.find(t => t.id === id);
+    if (task) {
+        task.status = status;
+        saveTasks(tasks);
+        loadAndRenderTasks();
+        logsObs.push({ time: new Date().toLocaleTimeString('es-CL'), type: "info", text: `Tarea #${id} actualizada a: ${status}` });
+        renderLogs();
+    }
+};
+
+window.deleteTask = function(id) {
+    let tasks = getTasks();
+    tasks = tasks.filter(t => t.id !== id);
+    saveTasks(tasks);
+    loadAndRenderTasks();
+};
+
+// Listeners para Creación y Balanceo automático
+document.addEventListener("DOMContentLoaded", () => {
+    const taskForm = document.getElementById("task-creation-form");
+    if (taskForm) {
+        taskForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const desc = document.getElementById("task-desc-input").value;
+            let assignee = document.getElementById("task-assignee-select").value;
+            const priority = document.getElementById("task-priority-select").value;
+
+            if (assignee === "auto") {
+                assignee = balanceTaskAssignee();
+            }
+
+            const tasks = getTasks();
+            const nextId = tasks.length > 0 ? Math.max(...tasks.map(t => t.id)) + 1 : 1;
+            
+            tasks.push({
+                id: nextId,
+                desc,
+                assignee,
+                priority,
+                status: "Pendiente"
+            });
+
+            saveTasks(tasks);
+            loadAndRenderTasks();
+            taskForm.reset();
+        });
+    }
+
+    const autoAssignBtn = document.getElementById("btn-auto-assign");
+    if (autoAssignBtn) {
+        autoAssignBtn.addEventListener("click", () => {
+            const tasks = getTasks();
+            // Balancear todas las tareas no completadas de forma equitativa
+            tasks.forEach(t => {
+                if (t.status !== "Completada") {
+                    t.assignee = balanceTaskAssignee();
+                }
+            });
+            saveTasks(tasks);
+            loadAndRenderTasks();
+            alert("Carga laboral balanceada automáticamente según pendientes.");
+        });
+    }
+});
 
 // Iniciar conexión real con Cortex
 connectWebSocket();

@@ -44,6 +44,10 @@
                     <span class="icon material-symbols-outlined">local_shipping</span>
                     Gestión de Despachos
                 </a>
+                <a href="#" class="nav-item" id="btn-tasks">
+                    <span class="icon material-symbols-outlined">assignment_ind</span>
+                    Asignaciones y Tareas
+                </a>
                 <a href="#" class="nav-item" id="btn-ml-forecast">
                     <span class="icon material-symbols-outlined">neurology</span>
                     Predicciones (ML)
@@ -264,6 +268,117 @@
                     <div style="display: flex; justify-content: center; gap: 2rem; font-size: 0.85rem; margin-top: 1rem;">
                         <span style="display: flex; align-items: center; gap: 0.5rem;"><span style="width: 12px; height: 12px; background: var(--accent-green-light); border-radius: 2px;"></span>Histórico Real</span>
                         <span style="display: flex; align-items: center; gap: 0.5rem;"><span style="width: 12px; height: 12px; background: var(--accent-gold); border-radius: 2px;"></span>Predicción ML</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vista Asignaciones Laborales y Tareas -->
+            <div class="glass-card" id="view-tasks" style="display: none; padding: 2.5rem; margin-top: 2rem; border-radius: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                    <div>
+                        <h3 style="font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 0.5rem; color: #fff;">Asignaciones Laborales y Carga Automática</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">Gestión de pendientes, turnos y balanceo automático de carga laboral para el equipo.</p>
+                    </div>
+                    <!-- Botón de asignación automática (Solo para Admin) -->
+                    <button id="btn-auto-assign" class="btn btn-primary" style="display: none; display: flex; align-items: center; gap: 0.5rem;">
+                        <span class="material-symbols-outlined" style="font-size: 1.1rem;">smart_toy</span>
+                        Balancear Carga Automáticamente
+                    </button>
+                </div>
+
+                <!-- Grid de Empleados y Cargas -->
+                <div class="employees-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+                    <!-- Maria Angélica -->
+                    <div class="glass-card employee-card" style="padding: 1.5rem; border: 1px solid rgba(195,181,159,0.2); border-radius: 16px; background: rgba(0,0,0,0.2);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <h4 style="color: var(--accent-gold); margin: 0; font-size: 1.1rem;">Maria Angélica</h4>
+                            <span style="font-size: 0.75rem; background: rgba(195,181,159,0.2); color: var(--accent-gold); padding: 0.25rem 0.5rem; border-radius: 12px; font-weight: 600;">Admin</span>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Correo: <code>maria.angelica@micelia.cl</code></p>
+                        <div style="font-size: 0.85rem; margin-bottom: 0.5rem;">Carga Laboral: <strong id="load-maria">0 tareas</strong></div>
+                        <div class="progress-bar-container" style="background: rgba(255,255,255,0.05); height: 8px; border-radius: 4px; overflow: hidden; margin-top: 0.5rem;">
+                            <div id="progress-maria" style="height: 100%; width: 0%; background: var(--accent-green); transition: width 0.3s ease;"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Cristian Novoa -->
+                    <div class="glass-card employee-card" style="padding: 1.5rem; border: 1px solid rgba(195,181,159,0.2); border-radius: 16px; background: rgba(0,0,0,0.2);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <h4 style="color: var(--accent-gold); margin: 0; font-size: 1.1rem;">Cristian Novoa</h4>
+                            <span style="font-size: 0.75rem; background: rgba(255,255,255,0.05); color: #fff; padding: 0.25rem 0.5rem; border-radius: 12px;">Operaciones</span>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Correo: <code>cristian.novoa@micelia.cl</code></p>
+                        <div style="font-size: 0.85rem; margin-bottom: 0.5rem;">Carga Laboral: <strong id="load-cristian">0 tareas</strong></div>
+                        <div class="progress-bar-container" style="background: rgba(255,255,255,0.05); height: 8px; border-radius: 4px; overflow: hidden; margin-top: 0.5rem;">
+                            <div id="progress-cristian" style="height: 100%; width: 0%; background: var(--accent-green); transition: width 0.3s ease;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Jaime Novoa -->
+                    <div class="glass-card employee-card" style="padding: 1.5rem; border: 1px solid rgba(195,181,159,0.2); border-radius: 16px; background: rgba(0,0,0,0.2);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <h4 style="color: var(--accent-gold); margin: 0; font-size: 1.1rem;">Jaime Novoa</h4>
+                            <span style="font-size: 0.75rem; background: rgba(255,255,255,0.05); color: #fff; padding: 0.25rem 0.5rem; border-radius: 12px;">Operaciones</span>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Correo: <code>jaime.novoa@micelia.cl</code></p>
+                        <div style="font-size: 0.85rem; margin-bottom: 0.5rem;">Carga Laboral: <strong id="load-jaime">0 tareas</strong></div>
+                        <div class="progress-bar-container" style="background: rgba(255,255,255,0.05); height: 8px; border-radius: 4px; overflow: hidden; margin-top: 0.5rem;">
+                            <div id="progress-jaime" style="height: 100%; width: 0%; background: var(--accent-green); transition: width 0.3s ease;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección de Tareas -->
+                <div style="display: grid; grid-template-columns: 1fr; gap: 2rem;">
+                    <!-- Formulario Crear Tareas (Solo para Admin) -->
+                    <div id="admin-task-creation-panel" class="glass-card" style="padding: 1.5rem; border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; display: none;">
+                        <h4 style="margin-top: 0; margin-bottom: 1rem; font-family: var(--font-display); color: var(--accent-gold);">Asignar Nueva Tarea Manual</h4>
+                        <form id="task-creation-form" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; align-items: end;">
+                            <div>
+                                <label style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.25rem;">Descripción</label>
+                                <input type="text" id="task-desc-input" placeholder="Ej: Sanitizar Cámara 001" required style="width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 0.6rem; color: #fff;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.25rem;">Asignado A</label>
+                                <select id="task-assignee-select" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 0.6rem; color: #fff; cursor: pointer;">
+                                    <option value="auto">Asignación Automática (Balanceador)</option>
+                                    <option value="maria.angelica@micelia.cl">Maria Angélica</option>
+                                    <option value="cristian.novoa@micelia.cl">Cristian Novoa</option>
+                                    <option value="jaime.novoa@micelia.cl">Jaime Novoa</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.25rem;">Prioridad</label>
+                                <select id="task-priority-select" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 0.6rem; color: #fff; cursor: pointer;">
+                                    <option value="Baja">Baja</option>
+                                    <option value="Media" selected>Media</option>
+                                    <option value="Alta">Alta</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="padding: 0.6rem 1.2rem;">Crear Tarea</button>
+                        </form>
+                    </div>
+
+                    <!-- Tabla/Lista de Pendientes -->
+                    <div class="glass-card" style="padding: 1.5rem; border: 1px solid rgba(255,255,255,0.05); border-radius: 16px;">
+                        <h4 style="margin-top: 0; margin-bottom: 1.5rem; font-family: var(--font-display); color: var(--accent-gold);">Lista de Tareas Pendientes y Asignaciones</h4>
+                        <div style="overflow-x: auto;">
+                            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; min-width: 600px;">
+                                <thead>
+                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--accent-gold);">
+                                        <th style="padding: 0.75rem;">ID</th>
+                                        <th style="padding: 0.75rem;">Tarea</th>
+                                        <th style="padding: 0.75rem;">Asignado A</th>
+                                        <th style="padding: 0.75rem;">Prioridad</th>
+                                        <th style="padding: 0.75rem;">Estado</th>
+                                        <th style="padding: 0.75rem; text-align: right;">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tasks-table-body">
+                                    <!-- Tareas cargadas dinámicamente -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
