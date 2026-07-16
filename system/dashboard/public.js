@@ -579,10 +579,21 @@ function closeArticleModal() {
 }
 
 // ==========================================================================
-// ESTUDIO CIENTÍFICO Y TELEMETRÍA EN VIVO (SENSORES CLIENTE)
+// BITÁCORA Y HISTORIAL DE SENSORES EN VIVO (SENSORES CLIENTE)
 // ==========================================================================
 let telemetryHistory = [];
 let isTelemetryStudyOpen = false;
+
+function generateTelemetryHash(temp, hum, co2, timeStr) {
+    const seed = `${temp.toFixed(2)}-${hum.toFixed(2)}-${Math.round(co2)}-${timeStr}-truthsync-micelia`;
+    let hash = 0;
+    for (let i = 0; i < seed.length; i++) {
+        hash = (hash << 5) - hash + seed.charCodeAt(i);
+        hash |= 0;
+    }
+    const hex = Math.abs(hash).toString(16).padEnd(8, '0') + Math.abs(hash * 31).toString(16).padEnd(8, '0');
+    return `0x${hex.substring(0, 8)}...${hex.substring(hex.length - 4)}`;
+}
 
 function openTelemetryStudyModal() {
     isTelemetryStudyOpen = true;
@@ -590,19 +601,19 @@ function openTelemetryStudyModal() {
     const container = document.getElementById("article-content");
     container.innerHTML = `
         <div class="article-content-body">
-            <span class="metadata">Estudio Científico • Camino del Micelio</span>
-            <h1>Estudio de Telemetría y Sensorización Micológica</h1>
-            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">Monitorea y analiza las lecturas en tiempo real de temperatura, humedad y CO₂ de nuestras cámaras de fructificación activas bajo el Protocolo Yatra S60 de TruthSync.</p>
+            <span class="metadata">Historial de logs • Camino del Micelio</span>
+            <h1>Bitácora de Sensores y Cultivo Autónomo</h1>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">Audita el registro de telemetría de temperatura, humedad y CO₂ de nuestras cámaras en base sexagesimal (s60) firmados criptográficamente en TruthSync.</p>
             
             <div class="telemetry-study-dashboard" style="display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1.5rem;">
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
                     <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 1.25rem; border-radius: 12px; text-align: center;">
                         <span style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Temperatura Celular</span>
-                        <strong style="font-size: 1.6rem; color: var(--accent-gold);" id="telemetry-temp">19.5 °C</strong>
+                        <strong style="font-size: 1.6rem; color: var(--accent-gold);" id="telemetry-temp">19.50 °C</strong>
                     </div>
                     <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 1.25rem; border-radius: 12px; text-align: center;">
                         <span style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Humedad Relativa</span>
-                        <strong style="font-size: 1.6rem; color: var(--accent-green-light);" id="telemetry-hum">92.1 %</strong>
+                        <strong style="font-size: 1.6rem; color: var(--accent-green-light);" id="telemetry-hum">92.15 %</strong>
                     </div>
                     <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 1.25rem; border-radius: 12px; text-align: center;">
                         <span style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">CO₂ Ambiental</span>
@@ -610,15 +621,16 @@ function openTelemetryStudyModal() {
                     </div>
                 </div>
                 
+                <!-- Gráfico de Fluctuación -->
                 <div style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 16px;">
                     <h4 style="margin: 0 0 1rem 0; font-size: 0.95rem; color: var(--accent-gold); display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-display);">
                         <span class="material-symbols-outlined" style="font-size: 1.2rem;">timeline</span>
                         Gráfico de Fluctuación de Humedad (%) y Temperatura (°C)
                     </h4>
-                    <div id="telemetry-live-chart" style="width: 100%; height: 180px; display: flex; align-items: flex-end; justify-content: space-between; border-left: 2px solid rgba(255,255,255,0.08); border-bottom: 2px solid rgba(255,255,255,0.08); padding-left: 10px; position: relative;">
+                    <div id="telemetry-live-chart" style="width: 100%; height: 140px; display: flex; align-items: flex-end; justify-content: space-between; border-left: 2px solid rgba(255,255,255,0.08); border-bottom: 2px solid rgba(255,255,255,0.08); padding-left: 10px; position: relative;">
                         <!-- Puntos de gráfico cargados dinámicamente -->
                         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--text-muted); font-size: 0.85rem;" id="chart-waiting-msg">
-                            Esperando lecturas de sensores en tiempo real...
+                            Esperando lecturas de sensores...
                         </div>
                     </div>
                     <div style="display: flex; justify-content: center; gap: 2rem; font-size: 0.8rem; margin-top: 1rem;">
@@ -626,10 +638,31 @@ function openTelemetryStudyModal() {
                         <span style="display: flex; align-items: center; gap: 0.5rem;"><span style="width: 8px; height: 8px; background: var(--accent-gold); border-radius: 50%;"></span>Temperatura (°C)</span>
                     </div>
                 </div>
-                
-                <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-muted); margin: 0;">
-                    <strong>Explicación de Parámetros:</strong> El cultivo de <em>Pleurotus ostreatus</em> requiere alta humedad relativa (85% a 95%) durante su fructificación para emular la neblina del bosque nativo. El CO₂ debe ser extraído activamente (idealmente bajo 900 ppm) para asegurar la oxigenación celular, evitando que el cuerpo fructífero crezca alargado y fibroso. Las transiciones críticas de humedad y CO₂ son firmadas de forma inmutable en TruthSync para auditorías de inocuidad.
-                </p>
+
+                <!-- Tabla de Logs Científicos -->
+                <div style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 16px;">
+                    <h4 style="margin: 0 0 1rem 0; font-size: 0.95rem; color: var(--accent-gold); display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-display);">
+                        <span class="material-symbols-outlined" style="font-size: 1.2rem;">dataset</span>
+                        Registro Histórico de Logs (Yatra S60 / TruthSync)
+                    </h4>
+                    <div style="overflow-x: auto; max-height: 250px;">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--text-muted);">
+                                    <th style="padding: 0.5rem;">Hora</th>
+                                    <th style="padding: 0.5rem;">Temperatura (°C)</th>
+                                    <th style="padding: 0.5rem;">Humedad (%)</th>
+                                    <th style="padding: 0.5rem;">CO₂ (ppm)</th>
+                                    <th style="padding: 0.5rem;">Firma Ledger</th>
+                                    <th style="padding: 0.5rem;">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="telemetry-logs-tbody">
+                                <!-- Se poblará de forma dinámica -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     `;
@@ -638,15 +671,30 @@ function openTelemetryStudyModal() {
     
     // Iniciar con datos de simulación si la conexión no ha enviado nada aún
     if (telemetryHistory.length === 0) {
-        for (let i = 0; i < 15; i++) {
+        let baseTime = Date.now() - 12 * 60000;
+        for (let i = 0; i < 12; i++) {
+            const temp = 18 + Math.random() * 3;
+            const hum = 88 + Math.random() * 6;
+            const co2 = 700 + Math.random() * 200;
+            const time = new Date(baseTime + i * 5000);
+            const timeStr = time.toTimeString().split(' ')[0];
+            
             telemetryHistory.push({
-                temp: 18 + Math.random() * 3,
-                hum: 88 + Math.random() * 6,
-                co2: 700 + Math.random() * 200
+                temp,
+                hum,
+                co2,
+                rawTemp: Math.round(temp * 216000),
+                rawHum: Math.round(hum * 216000),
+                rawCo2: Math.round(co2 * 216000),
+                timeStr,
+                hash: generateTelemetryHash(temp, hum, co2, timeStr),
+                status: (hum >= 85 && hum <= 95 && co2 < 900) ? "Óptimo" : "Alerta"
             });
         }
     }
+    
     renderTelemetryChart();
+    renderTelemetryLogsTable();
 }
 
 function updateLiveTelemetryStudy(temp, hum, co2) {
@@ -665,13 +713,27 @@ function updateLiveTelemetryStudy(temp, hum, co2) {
     const waiting = document.getElementById("chart-waiting-msg");
     if (waiting) waiting.style.display = "none";
 
+    const timeStr = new Date().toTimeString().split(' ')[0];
+    
     // Registrar en histórico
-    telemetryHistory.push({ temp, hum, co2 });
+    telemetryHistory.push({
+        temp,
+        hum,
+        co2,
+        rawTemp: Math.round(temp * 216000),
+        rawHum: Math.round(hum * 216000),
+        rawCo2: Math.round(co2 * 216000),
+        timeStr,
+        hash: generateTelemetryHash(temp, hum, co2, timeStr),
+        status: (hum >= 85 && hum <= 95 && co2 < 900) ? "Óptimo" : "Alerta"
+    });
+    
     if (telemetryHistory.length > 20) {
         telemetryHistory.shift();
     }
 
     renderTelemetryChart();
+    renderTelemetryLogsTable();
 }
 
 function renderTelemetryChart() {
@@ -679,8 +741,7 @@ function renderTelemetryChart() {
     if (!chart) return;
 
     let html = "";
-    telemetryHistory.forEach((pt) => {
-        // Graficar humedad como barra de fondo y temperatura como punto/línea
+    telemetryHistory.slice(-15).forEach((pt) => {
         const humHeight = (pt.hum / 100) * 85; 
         const tempHeight = (pt.temp / 30) * 85; 
         
@@ -695,6 +756,27 @@ function renderTelemetryChart() {
         `;
     });
     chart.innerHTML = html;
+}
+
+function renderTelemetryLogsTable() {
+    const tbody = document.getElementById("telemetry-logs-tbody");
+    if (!tbody) return;
+
+    let html = "";
+    [...telemetryHistory].reverse().forEach((pt) => {
+        const statusColor = pt.status === "Óptimo" ? "#5aa469" : "#ff5e5e";
+        html += `
+            <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 0.6rem 0.5rem; font-family: monospace;">${pt.timeStr}</td>
+                <td style="padding: 0.6rem 0.5rem;">${pt.temp.toFixed(2)}°C <span style="font-size: 0.7rem; color: var(--text-muted); display: block;">(s60: ${pt.rawTemp.toLocaleString()})</span></td>
+                <td style="padding: 0.6rem 0.5rem;">${pt.hum.toFixed(2)}% <span style="font-size: 0.7rem; color: var(--text-muted); display: block;">(s60: ${pt.rawHum.toLocaleString()})</span></td>
+                <td style="padding: 0.6rem 0.5rem;">${Math.round(pt.co2)} ppm <span style="font-size: 0.7rem; color: var(--text-muted); display: block;">(s60: ${pt.rawCo2.toLocaleString()})</span></td>
+                <td style="padding: 0.6rem 0.5rem; font-family: monospace; color: var(--accent-gold);">${pt.hash}</td>
+                <td style="padding: 0.6rem 0.5rem; color: ${statusColor}; font-weight: 600;">${pt.status}</td>
+            </tr>
+        `;
+    });
+    tbody.innerHTML = html;
 }
 
 function closeCheckoutModal() {
