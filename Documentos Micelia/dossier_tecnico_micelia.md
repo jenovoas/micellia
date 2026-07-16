@@ -30,11 +30,11 @@ graph TD
         ESP32 -->|GPIO / Relevadores| Actuadores["Actuadores Climatización: Split Inverter, Extractores, Humidificador"]
     end
 
-    subgraph "Servidor Central Cloud (Host: 'fan' - 157.254.174.40)"
+    subgraph "Servidor Central Cloud (Host: fan - 157.254.174.40)"
         ESP32 -->|TCP Port 4000: Firmware IoT| Daemon["Cortex Daemon (Rust TCP Listener)"]
         Daemon -->|Procesa & Valida S60| Core["Cortex Core System"]
-        Core -->|Historial / Alertas| DB[("Base de Datos PostgreSQL")]
-        Core -->|Firmado Criptográfico SHA256| TS[("Ledger Ledger TruthSync (truthsync_orders)")]
+        Core -->|Historial / Alertas| DB["Base de Datos PostgreSQL"]
+        Core -->|Firmado Criptográfico SHA256| TS["Ledger TruthSync (truthsync_orders)"]
         
         Nginx["Servidor Web Nginx (Proxy Reverso)"] -->|Puerto 8080/ws| Daemon
     end
@@ -59,10 +59,10 @@ Toda la lectura de los sensores climáticos es capturada por el firmware del ESP
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Sensor as Sensor SHT31 / CO2
-    participant Edge as ESP32 (Edge)
-    participant Cortex as Cortex Daemon (Rust)
-    participant DB as PostgreSQL (Telemetry DB)
+    participant Sensor as "Sensor SHT31 / CO2"
+    participant Edge as "ESP32 (Edge)"
+    participant Cortex as "Cortex Daemon (Rust)"
+    participant DB as "PostgreSQL (Telemetry DB)"
 
     Note over Sensor, Edge: Lectura cíclica de variables físicas
     Sensor->>Edge: Voltajes y tramas digitales (I2C)
