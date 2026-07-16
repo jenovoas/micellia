@@ -830,6 +830,7 @@ function renderCart() {
     const countBadge = document.querySelector(".cart-count");
     const totalPriceText = document.getElementById("cart-total-price");
     const checkoutBtn = document.getElementById("checkout-btn");
+    const waBtn = document.getElementById("whatsapp-order-btn");
     
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     countBadge.textContent = totalItems;
@@ -838,10 +839,19 @@ function renderCart() {
         container.innerHTML = `<div class="empty-cart-message">El carrito está vacío.</div>`;
         totalPriceText.textContent = "$0 CLP";
         checkoutBtn.disabled = true;
+        if (waBtn) {
+            waBtn.style.opacity = "0.6";
+            waBtn.style.cursor = "not-allowed";
+        }
         return;
     }
     
     checkoutBtn.disabled = false;
+    if (waBtn) {
+        waBtn.style.opacity = "1";
+        waBtn.style.cursor = "pointer";
+    }
+    
     let html = "";
     
     cart.forEach(item => {
@@ -1047,5 +1057,153 @@ document.addEventListener("DOMContentLoaded", () => {
         el.addEventListener("click", resetSliderInterval);
     });
 });
+
+// ==========================================================================
+// BOTÓN DE DESPACHO / PEDIDO DE CARRITO POR WHATSAPP (IA AUTOMATIZADO)
+// ==========================================================================
+function requestWhatsAppOrder(event) {
+    if (event) event.preventDefault();
+    if (cart.length === 0) return;
+
+    const orderId = "MC-" + Math.floor(100000 + Math.random() * 900000);
+    const total = calculateTotal();
+    
+    let message = `¡Hola Micelia! 🍄 Quisiera realizar un pedido automatizado con IA para los siguientes productos del carrito:\n\n`;
+    
+    cart.forEach(item => {
+        message += `• ${item.quantity}x ${item.name} ($${(item.price * item.quantity).toLocaleString("es-CL")} CLP)\n`;
+    });
+    
+    message += `\n*Total Pedido:* $${total.toLocaleString("es-CL")} CLP.\n`;
+    message += `*Referencia de Pedido:* ${orderId}\n\n`;
+    message += `Quedo a la espera de que el bot de IA me tome los datos de envío. ¡Muchas gracias!`;
+
+    const encodedText = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/56912345678?text=${encodedText}`;
+    
+    // Abrir WhatsApp en pestaña nueva
+    window.open(whatsappUrl, "_blank");
+}
+
+// ==========================================================================
+// ASISTENTE DE VENTAS FLOTANTE CON IA (SALES BOT)
+// ==========================================================================
+function toggleSalesBot() {
+    const chat = document.getElementById("sales-bot-chat");
+    if (!chat) return;
+    
+    if (chat.style.display === "none" || chat.style.display === "") {
+        chat.style.display = "flex";
+        // Desplazarse al final del chat al abrir
+        const msgs = document.getElementById("sales-bot-messages");
+        if (msgs) msgs.scrollTop = msgs.scrollHeight;
+    } else {
+        chat.style.display = "none";
+    }
+}
+
+function handleSalesBotSubmit(event) {
+    if (event) event.preventDefault();
+    
+    const input = document.getElementById("sales-bot-input");
+    const msgsContainer = document.getElementById("sales-bot-messages");
+    if (!input || !msgsContainer || input.value.trim() === "") return;
+    
+    const userText = input.value.trim();
+    input.value = "";
+    
+    // 1. Mostrar mensaje del usuario
+    appendSalesBotMessage(userText, "user");
+    
+    // 2. Analizar respuesta de la IA (Simulación inteligente local)
+    setTimeout(() => {
+        const responseText = processSalesBotQuery(userText);
+        appendSalesBotMessage(responseText, "bot");
+    }, 600);
+}
+
+function appendSalesBotMessage(text, sender) {
+    const msgsContainer = document.getElementById("sales-bot-messages");
+    if (!msgsContainer) return;
+    
+    const div = document.createElement("div");
+    if (sender === "user") {
+        div.style.background = "var(--accent-gold)";
+        div.style.color = "black";
+        div.style.alignSelf = "flex-end";
+        div.style.borderRadius = "12px 12px 0 12px";
+    } else {
+        div.style.background = "rgba(255,255,255,0.03)";
+        div.style.color = "var(--text-primary)";
+        div.style.alignSelf = "flex-start";
+        div.style.borderRadius = "12px 12px 12px 0";
+    }
+    
+    div.style.padding = "0.8rem";
+    div.style.maxWidth = "85%";
+    div.style.fontSize = "0.9rem";
+    div.style.lineHeight = "1.4";
+    div.style.wordBreak = "break-word";
+    div.innerHTML = text;
+    
+    msgsContainer.appendChild(div);
+    msgsContainer.scrollTop = msgsContainer.scrollHeight;
+}
+
+function processSalesBotQuery(query) {
+    const q = query.toLowerCase();
+    
+    // Lógica para agregar al carro mediante comandos de texto
+    if (q.includes("agregar") || q.includes("quiero comprar") || q.includes("llevar") || q.includes("pido")) {
+        if (q.includes("500g") || q.includes("500 g") || q.includes("chico") || q.includes("pequeño")) {
+            addToCart("1", "Hongo Ostra Fresco 500g", 4500);
+            return `¡Excelente! He agregado **Hongo Ostra Fresco 500g ($4.500 CLP)** a tu carrito. Abre el carro a la derecha para ver tu total o haz clic en "Pedir por WhatsApp" para automatizar tu compra.`;
+        }
+        if (q.includes("1kg") || q.includes("1 kg") || q.includes("kilo") || q.includes("grande")) {
+            addToCart("2", "Hongo Ostra Fresco 1kg", 8000);
+            return `¡Hecho! Agregué **Hongo Ostra Fresco 1kg ($8.000 CLP)** a tu carrito. Puedes revisar el carro a la derecha.`;
+        }
+        if (q.includes("kit") || q.includes("autocultivo") || q.includes("educativo")) {
+            addToCart("4", "Kit de Autocultivo Educativo", 12000);
+            return `¡Listo! Sumé el **Kit de Autocultivo Educativo ($12.000 CLP)** a tu carrito. ¡Tus hijos aprenderán mucho viendo crecer sus setas!`;
+        }
+        if (q.includes("suscripcion") || q.includes("horeca") || q.includes("restaurante")) {
+            addToCart("3", "Suscripción HORECA", 25000);
+            return `¡Agregado! He sumado la **Suscripción HORECA ($25.000 CLP/mes)** a tu carrito.`;
+        }
+    }
+    
+    // Respuestas informativas generales
+    if (q.includes("hola") || q.includes("buenos dias") || q.includes("buenas tardes")) {
+        return `¡Hola! Qué gusto saludarte. 😊 ¿Quieres que te asesore con los precios, te sugiera una receta de setas ostra o necesitas que agregue algún producto a tu carrito?`;
+    }
+    
+    if (q.includes("precio") || q.includes("cuanto cuesta") || q.includes("valor")) {
+        return `Nuestros valores comerciales vigentes son:\n
+• **Caja 500g**: $4.500 CLP\n
+• **Caja 1kg**: $8.000 CLP\n
+• **Kit Autocultivo**: $12.000 CLP\n
+• **Suscripción HORECA B2B**: $25.000 CLP/mes\n\n
+¿Deseas que te agregue alguno al carro de compras?`;
+    }
+    
+    if (q.includes("despacho") || q.includes("envio") || q.includes("entrega") || q.includes("a domicilio")) {
+        return `Realizamos despachos semanales todos los días **miércoles y sábados** a toda la Provincia de Arauco (Curanilahue, Cañete, Lebu, Arauco). El despacho es gratuito para pedidos desde $8.000 CLP.`;
+    }
+    
+    if (q.includes("whatsapp")) {
+        return `¡Claro! El pedido por WhatsApp es súper ágil. Simplemente agrega los productos que desees al carrito y haz clic en el botón verde **"Pedir por WhatsApp (IA)"**. Generaremos el mensaje de tu carro de inmediato y nuestro chatbot de WhatsApp tomará tus datos de envío automáticamente.`;
+    }
+    
+    if (q.includes("receta") || q.includes("cocinar") || q.includes("comer")) {
+        return `¡Las setas ostra son deliciosas! Te recomiendo saltearlas a fuego muy alto en tiras delgadas con ajo y aceite de oliva sin moverlas al principio para que queden crujientes. Quedan espectaculares en tacos, risotto de champiñones o cremas para adultos mayores. Revisa nuestro carrusel de recetas en el **Camino del Micelio** para ver ingredientes y desgloses de nutrición.`;
+    }
+    
+    if (q.includes("s60") || q.includes("yatra") || q.includes("sensor")) {
+        return `Operamos bajo el Estándar de Telemetría **Yatra S60** en base sexagesimal para controlar de forma óptima el crecimiento fúngico (Humedad ideal 85%-95% y CO₂ < 900ppm). El historial de logs es auditado y firmado con hash criptográficos SHA-256 en TruthSync para total transparencia.`;
+    }
+    
+    return `Entiendo. Puedo asesorarte con información de despacho, precios de catálogo, recetas o ayudarte a cargar tu carrito de compras. Por ejemplo, dime: *"Quiero agregar un kit"* y yo lo haré por ti.`;
+}
 
 

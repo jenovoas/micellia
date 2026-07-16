@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +8,15 @@
     <!-- Google Fonts & Material Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@400;500;700&display=swap"
+        rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     <!-- Estilos -->
     <link rel="stylesheet" href="public.css">
     <link rel="icon" type="image/png" href="logo.png">
 </head>
+
 <body>
     <!-- Navbar Superior -->
     <nav class="navbar">
@@ -28,8 +32,11 @@
                 <a href="#tienda" class="nav-link">Comprar</a>
                 <a href="#" class="nav-link" id="login-nav-btn">Iniciar Sesión</a>
                 <div class="profile-nav-container" id="profile-nav-container" style="display: none; cursor: pointer;">
-                    <span class="avatar-icon material-symbols-outlined" style="font-size: 1.5rem; vertical-align: middle; color: var(--accent-gold);">account_circle</span>
-                    <span class="profile-name" id="profile-name-text" style="font-size: 0.95rem; font-weight: 500; color: var(--accent-gold); margin-left: 0.25rem;">María G.</span>
+                    <span class="avatar-icon material-symbols-outlined"
+                        style="font-size: 1.5rem; vertical-align: middle; color: var(--accent-gold);">account_circle</span>
+                    <span class="profile-name" id="profile-name-text"
+                        style="font-size: 0.95rem; font-weight: 500; color: var(--accent-gold); margin-left: 0.25rem;">María
+                        G.</span>
                 </div>
                 <a href="admin.html" class="nav-link nav-btn-admin">Acceso Operador</a>
             </div>
@@ -46,7 +53,9 @@
             <div class="hero-content">
                 <span class="hero-tag">Frescura Radical</span>
                 <h1>Hongos Ostra Cosechados y Entregados en &lt; 24 Horas</h1>
-                <p class="hero-desc">Democratizando el acceso a una nutrición noble de alta calidad en la Provincia de Arauco. Cultivo técnico automatizado e incorruptible, sustentado en la economía circular y la honestidad ecológica.</p>
+                <p class="hero-desc">Democratizando el acceso a una nutrición noble de alta calidad en la Provincia de
+                    Arauco. Cultivo técnico automatizado e incorruptible, sustentado en la economía circular y la
+                    honestidad ecológica.</p>
                 <div class="hero-cta-container">
                     <a href="#tienda" class="btn btn-primary">Ver Tienda</a>
                     <a href="#biblioteca" class="btn btn-secondary">Aprender del Cultivo</a>
@@ -61,14 +70,20 @@
     <!-- Sección Estilos de Vida / Perfiles de Cliente -->
     <section id="estilos-vida" class="lifestyle-section" style="max-width: 1200px; margin: 0 auto; padding: 6rem 2rem;">
         <div class="section-header" style="text-align: center; margin-bottom: 3.5rem;">
-            <span class="section-tag" style="color: var(--accent-gold); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 0.75rem;">Micelia Para Ti</span>
-            <h2 style="font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem;">Beneficios según tu Estilo de Vida</h2>
-            <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto; font-size: 1rem; line-height: 1.6;">Descubre cómo el hongo ostra se adapta a tu día a día y potencia tu salud, rendimiento y cocina con recetas y consejos a tu medida.</p>
+            <span class="section-tag"
+                style="color: var(--accent-gold); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 0.75rem;">Micelia
+                Para Ti</span>
+            <h2 style="font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem;">
+                Beneficios según tu Estilo de Vida</h2>
+            <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto; font-size: 1rem; line-height: 1.6;">
+                Descubre cómo el hongo ostra se adapta a tu día a día y potencia tu salud, rendimiento y cocina con
+                recetas y consejos a tu medida.</p>
         </div>
 
         <div class="lifestyle-container" style="display: flex; flex-direction: column; gap: 2rem;">
             <!-- Tabs Navigation -->
-            <div class="lifestyle-tabs" style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 1.5rem;">
+            <div class="lifestyle-tabs"
+                style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 1.5rem;">
                 <button class="lifestyle-tab active" data-tab="deportistas" onclick="switchLifestyle('deportistas')">
                     <span class="material-symbols-outlined">directions_run</span>
                     <span>Deportistas</span>
@@ -99,14 +114,21 @@
     </section>
 
     <!-- Sección Recetas e Info Nutricional / Slider -->
-    <section id="recetas-nutricion" class="slider-section-container" style="background: rgba(0, 0, 0, 0.25); padding: 6rem 2rem; border-top: 1px solid rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.02);">
+    <section id="recetas-nutricion" class="slider-section-container"
+        style="background: rgba(0, 0, 0, 0.25); padding: 6rem 2rem; border-top: 1px solid rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.02);">
         <div class="section-header" style="text-align: center; margin-bottom: 3.5rem;">
-            <span class="section-tag" style="color: var(--accent-gold); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 0.75rem;">Inspiración Micológica</span>
-            <h2 style="font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem;">Recetas que Abren el Apetito</h2>
-            <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto; font-size: 1rem; line-height: 1.6;">Explora platos gourmet de fácil preparación y descubre la potencia nutricional oculta en cada bocado de setas ostra.</p>
+            <span class="section-tag"
+                style="color: var(--accent-gold); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 0.75rem;">Inspiración
+                Micológica</span>
+            <h2 style="font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem;">
+                Recetas que Abren el Apetito</h2>
+            <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto; font-size: 1rem; line-height: 1.6;">
+                Explora platos gourmet de fácil preparación y descubre la potencia nutricional oculta en cada bocado de
+                setas ostra.</p>
         </div>
 
-        <div class="slider-container" style="max-width: 1100px; margin: 0 auto; position: relative; overflow: hidden; border-radius: 24px; box-shadow: 0 30px 60px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); min-height: 480px; background: rgba(12, 18, 14, 0.7);">
+        <div class="slider-container"
+            style="max-width: 1100px; margin: 0 auto; position: relative; overflow: hidden; border-radius: 24px; box-shadow: 0 30px 60px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); min-height: 480px; background: rgba(12, 18, 14, 0.7);">
             <!-- Slide 1: Tacos -->
             <div class="slide active" data-slide="0">
                 <div class="slide-image-wrapper">
@@ -115,7 +137,9 @@
                 <div class="slide-content">
                     <span class="slide-badge">Bajo en Calorías • Alto en Fibra</span>
                     <h3>Tacos de Hongo Ostra Deshilachado</h3>
-                    <p class="slide-description">Una explosión de frescura y sabor mexicano. Setas ostra desmenuzadas longitudinalmente a mano, doradas a la plancha con cebollas, cilantro fresco y un toque de crema de palta artesanal sobre tortillas artesanales.</p>
+                    <p class="slide-description">Una explosión de frescura y sabor mexicano. Setas ostra desmenuzadas
+                        longitudinalmente a mano, doradas a la plancha con cebollas, cilantro fresco y un toque de crema
+                        de palta artesanal sobre tortillas artesanales.</p>
                     <div class="slide-nutrition-grid">
                         <div class="nutrition-item"><strong>92 kcal</strong><span>Por taco</span></div>
                         <div class="nutrition-item"><strong>3.8g</strong><span>Proteínas</span></div>
@@ -133,7 +157,9 @@
                 <div class="slide-content">
                     <span class="slide-badge">Potasio • Complejo B</span>
                     <h3>Clusters al Grill con Mantequilla de Ajo</h3>
-                    <p class="slide-description">El plato estrella para apreciar la textura carnosa del hongo ostra. Racimos enteros asados con bordes caramelizados y crujientes, sazonados con perejil fresco y ajo picado fino.</p>
+                    <p class="slide-description">El plato estrella para apreciar la textura carnosa del hongo ostra.
+                        Racimos enteros asados con bordes caramelizados y crujientes, sazonados con perejil fresco y ajo
+                        picado fino.</p>
                     <div class="slide-nutrition-grid">
                         <div class="nutrition-item"><strong>145 kcal</strong><span>Por porción</span></div>
                         <div class="nutrition-item"><strong>5.2g</strong><span>Proteínas</span></div>
@@ -151,7 +177,9 @@
                 <div class="slide-content">
                     <span class="slide-badge">Beta-glucanos • Umami Puro</span>
                     <h3>Risotto Cremoso de Setas con Aceite de Trufa</h3>
-                    <p class="slide-description">Lujo gastronómico reconfortante en tu mesa. Arroz arborio cocido a fuego lento, coronado con hongos ostra salteados al dente, queso parmesano maduro y unas gotas de aceite de trufa.</p>
+                    <p class="slide-description">Lujo gastronómico reconfortante en tu mesa. Arroz arborio cocido a
+                        fuego lento, coronado con hongos ostra salteados al dente, queso parmesano maduro y unas gotas
+                        de aceite de trufa.</p>
                     <div class="slide-nutrition-grid">
                         <div class="nutrition-item"><strong>320 kcal</strong><span>Por plato</span></div>
                         <div class="nutrition-item"><strong>8.4g</strong><span>Proteínas</span></div>
@@ -183,7 +211,8 @@
         <div class="section-header">
             <span class="section-tag">Camino del Micelio</span>
             <h2>Educación, Ecología y Telemetría Científica</h2>
-            <p>Creemos que la sustentabilidad florece al educar a la comunidad. Explora nuestras guías de cultivo orgánico y estudia las condiciones biológicas de nuestras cámaras de producción en tiempo real.</p>
+            <p>Creemos que la sustentabilidad florece al educar a la comunidad. Explora nuestras guías de cultivo
+                orgánico y estudia las condiciones biológicas de nuestras cámaras de producción en tiempo real.</p>
         </div>
 
         <div class="articles-grid">
@@ -193,8 +222,10 @@
                     <span class="material-symbols-outlined">psychology</span>
                 </div>
                 <h3>¿Qué es realmente el hongo ostra?</h3>
-                <p>Descubre la biología fúngica básica, sus ciclos de vida y las propiedades del Pleurotus ostreatus.</p>
-                <span class="read-more">Leer Publicación <span class="material-symbols-outlined">arrow_forward</span></span>
+                <p>Descubre la biología fúngica básica, sus ciclos de vida y las propiedades del Pleurotus ostreatus.
+                </p>
+                <span class="read-more">Leer Publicación <span
+                        class="material-symbols-outlined">arrow_forward</span></span>
             </div>
 
             <!-- Artículo 2 -->
@@ -203,8 +234,10 @@
                     <span class="material-symbols-outlined">ecg_heart</span>
                 </div>
                 <h3>¿Por qué incorporarlo a tu dieta?</h3>
-                <p>Compendio nutricional sobre beta-glucanos, aminoácidos esenciales y beneficios metabólicos de las setas.</p>
-                <span class="read-more">Leer Publicación <span class="material-symbols-outlined">arrow_forward</span></span>
+                <p>Compendio nutricional sobre beta-glucanos, aminoácidos esenciales y beneficios metabólicos de las
+                    setas.</p>
+                <span class="read-more">Leer Publicación <span
+                        class="material-symbols-outlined">arrow_forward</span></span>
             </div>
 
             <!-- Artículo 3 -->
@@ -213,8 +246,10 @@
                     <span class="material-symbols-outlined">restaurant</span>
                 </div>
                 <h3>5 errores comunes al cocinar setas</h3>
-                <p>Cómo lograr la textura crujiente perfecta y evitar los errores culinarios clásicos de la cocina casera.</p>
-                <span class="read-more">Leer Publicación <span class="material-symbols-outlined">arrow_forward</span></span>
+                <p>Cómo lograr la textura crujiente perfecta y evitar los errores culinarios clásicos de la cocina
+                    casera.</p>
+                <span class="read-more">Leer Publicación <span
+                        class="material-symbols-outlined">arrow_forward</span></span>
             </div>
 
             <!-- Artículo 4 -->
@@ -223,8 +258,10 @@
                     <span class="material-symbols-outlined">eco</span>
                 </div>
                 <h3>Cultivo sin químicos ni pesticidas</h3>
-                <p>Detalle de nuestro proceso biológico de digestión enzimática y por qué no requerimos aditivos sintéticos.</p>
-                <span class="read-more">Leer Publicación <span class="material-symbols-outlined">arrow_forward</span></span>
+                <p>Detalle de nuestro proceso biológico de digestión enzimática y por qué no requerimos aditivos
+                    sintéticos.</p>
+                <span class="read-more">Leer Publicación <span
+                        class="material-symbols-outlined">arrow_forward</span></span>
             </div>
 
             <!-- Artículo 5 -->
@@ -233,18 +270,23 @@
                     <span class="material-symbols-outlined">recycling</span>
                 </div>
                 <h3>Valorización de residuos agrícolas</h3>
-                <p>El pilar de nuestra economía circular: transformando la paja de trigo y avena local en proteína pura.</p>
-                <span class="read-more">Leer Publicación <span class="material-symbols-outlined">arrow_forward</span></span>
+                <p>El pilar de nuestra economía circular: transformando la paja de trigo y avena local en proteína pura.
+                </p>
+                <span class="read-more">Leer Publicación <span
+                        class="material-symbols-outlined">arrow_forward</span></span>
             </div>
 
             <!-- Artículo 6: Bitácora e Historial de Sensores -->
-            <div class="article-card" onclick="openTelemetryStudyModal()" style="border: 1px dashed rgba(195,181,159,0.3); background: rgba(195,181,159,0.02);">
+            <div class="article-card" onclick="openTelemetryStudyModal()"
+                style="border: 1px dashed rgba(195,181,159,0.3); background: rgba(195,181,159,0.02);">
                 <div class="article-icon" style="color: var(--accent-gold);">
                     <span class="material-symbols-outlined">history_toggle_off</span>
                 </div>
                 <h3>Bitácora e Historial de Sensores</h3>
-                <p>Audita el registro histórico de logs de cultivo (Temperatura, Humedad, CO₂) firmados criptográficamente en el ledger inmutable TruthSync.</p>
-                <span class="read-more" style="color: var(--accent-gold);">Ver Bitácora de Cultivo <span class="material-symbols-outlined">arrow_forward</span></span>
+                <p>Audita el registro histórico de logs de cultivo (Temperatura, Humedad, CO₂) firmados
+                    criptográficamente en el ledger inmutable TruthSync.</p>
+                <span class="read-more" style="color: var(--accent-gold);">Ver Bitácora de Cultivo <span
+                        class="material-symbols-outlined">arrow_forward</span></span>
             </div>
         </div>
     </section>
@@ -254,7 +296,8 @@
         <div class="section-header">
             <span class="section-tag">Tienda Local</span>
             <h2>Pedidos y Suscripciones B2B</h2>
-            <p>Llevamos la frescura directo a tu cocina familiar o restaurante en Curanilahue. Elige el formato ideal.</p>
+            <p>Llevamos la frescura directo a tu cocina familiar o restaurante en Curanilahue. Elige el formato ideal.
+            </p>
         </div>
 
         <div class="products-grid">
@@ -266,8 +309,10 @@
                 </div>
                 <h3>Hongo Ostra Fresco - 500g</h3>
                 <p class="price">$4.500 CLP</p>
-                <p class="desc">Caja de cultivo familiar de hongo fresco cosechado en la mañana y entregado en la tarde. Turgencia y frescura inigualable.</p>
-                <button class="btn btn-primary add-to-cart-btn" data-id="1" data-name="Hongo Ostra Fresco 500g" data-price="4500">Añadir al Carrito</button>
+                <p class="desc">Caja de cultivo familiar de hongo fresco cosechado en la mañana y entregado en la tarde.
+                    Turgencia y frescura inigualable.</p>
+                <button class="btn btn-primary add-to-cart-btn" data-id="1" data-name="Hongo Ostra Fresco 500g"
+                    data-price="4500">Añadir al Carrito</button>
             </div>
 
             <!-- Producto 2 -->
@@ -277,8 +322,10 @@
                 </div>
                 <h3>Hongo Ostra Fresco - 1kg</h3>
                 <p class="price">$8.000 CLP</p>
-                <p class="desc">Formato familiar XL o para cocineros aficionados. Perfecto para conservar en escabeche, deshidratar o cocinar en banquetes.</p>
-                <button class="btn btn-primary add-to-cart-btn" data-id="2" data-name="Hongo Ostra Fresco 1kg" data-price="8000">Añadir al Carrito</button>
+                <p class="desc">Formato familiar XL o para cocineros aficionados. Perfecto para conservar en escabeche,
+                    deshidratar o cocinar en banquetes.</p>
+                <button class="btn btn-primary add-to-cart-btn" data-id="2" data-name="Hongo Ostra Fresco 1kg"
+                    data-price="8000">Añadir al Carrito</button>
             </div>
 
             <!-- Producto 3 -->
@@ -289,8 +336,10 @@
                 </div>
                 <h3>Suscripción Restaurante (HORECA)</h3>
                 <p class="price">$25.000 CLP <small>/mes</small></p>
-                <p class="desc">Suministro garantizado de 3.5kg mensuales de calibre premium estandarizado, entregado semanalmente. Exclusivo para locales de Arauco.</p>
-                <button class="btn btn-secondary add-to-cart-btn" data-id="3" data-name="Suscripción HORECA" data-price="25000">Suscribirse</button>
+                <p class="desc">Suministro garantizado de 3.5kg mensuales de calibre premium estandarizado, entregado
+                    semanalmente. Exclusivo para locales de Arauco.</p>
+                <button class="btn btn-secondary add-to-cart-btn" data-id="3" data-name="Suscripción HORECA"
+                    data-price="25000">Suscribirse</button>
             </div>
         </div>
     </section>
@@ -312,7 +361,14 @@
                 <span>Total:</span>
                 <span class="cart-total-price" id="cart-total-price">$0 CLP</span>
             </div>
-            <button class="btn btn-primary checkout-btn" id="checkout-btn" disabled>Proceder al Despacho</button>
+            <button class="btn btn-primary checkout-btn" id="checkout-btn" disabled
+                style="margin-bottom: 0.5rem;">Proceder al Despacho</button>
+            <a href="#" class="btn" id="whatsapp-order-btn"
+                style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; background: #25d366; color: white; border-radius: 8px; padding: 0.8rem; font-weight: 600; text-decoration: none; border: none; width: 100%; box-sizing: border-box; font-size: 0.95rem; cursor: not-allowed; opacity: 0.6; transition: all 0.3s;"
+                onclick="requestWhatsAppOrder(event)">
+                <span class="material-symbols-outlined" style="font-size: 1.2rem;">chat</span>
+                Pedir por WhatsApp (IA)
+            </a>
         </div>
     </aside>
     <div class="cart-backdrop" id="cart-backdrop"></div>
@@ -369,7 +425,7 @@
                 <span class="material-symbols-outlined">lock</span>
                 <span>Webpay Plus</span>
             </div>
-            
+
             <div class="payment-summary">
                 <p>Monto a transferir:</p>
                 <h3 id="payment-amount-text">$0 CLP</h3>
@@ -381,7 +437,8 @@
                     <label>Número de Tarjeta</label>
                     <div class="input-icon-container">
                         <span class="material-symbols-outlined input-icon">credit_card</span>
-                        <input type="text" required placeholder="XXXX XXXX XXXX XXXX" max-length="19" value="4559 1200 4589 1267">
+                        <input type="text" required placeholder="XXXX XXXX XXXX XXXX" max-length="19"
+                            value="4559 1200 4589 1267">
                     </div>
                 </div>
                 <div class="form-row">
@@ -401,7 +458,8 @@
 
                 <div class="payment-actions">
                     <button type="button" class="btn btn-secondary" onclick="abortPayment()">Cancelar</button>
-                    <button type="submit" class="btn btn-primary" id="confirm-payment-btn">Pagar de forma Segura</button>
+                    <button type="submit" class="btn btn-primary" id="confirm-payment-btn">Pagar de forma
+                        Segura</button>
                 </div>
             </form>
 
@@ -431,21 +489,27 @@
                 <span class="material-symbols-outlined">close</span>
             </button>
             <h2 style="font-family: var(--font-display); margin-bottom: 0.5rem;">Entrar a Micelia</h2>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem;">Inicia sesión para guardar tu historial de compras y acceder a predicciones de consumo.</p>
-            
-            <div class="social-login-container" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
-                <button class="btn btn-secondary btn-social" onclick="loginSocial('Google')" style="display: flex; align-items: center; justify-content: center; gap: 0.85rem; padding: 0.75rem;">
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem;">Inicia sesión para guardar tu
+                historial de compras y acceder a predicciones de consumo.</p>
+
+            <div class="social-login-container"
+                style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
+                <button class="btn btn-secondary btn-social" onclick="loginSocial('Google')"
+                    style="display: flex; align-items: center; justify-content: center; gap: 0.85rem; padding: 0.75rem;">
                     <img src="https://www.google.com/favicon.ico" alt="Google logo" style="width: 18px; height: 18px;">
                     Continuar con Google
                 </button>
-                <button class="btn btn-secondary btn-social" onclick="loginSocial('Facebook')" style="display: flex; align-items: center; justify-content: center; gap: 0.85rem; padding: 0.75rem;">
+                <button class="btn btn-secondary btn-social" onclick="loginSocial('Facebook')"
+                    style="display: flex; align-items: center; justify-content: center; gap: 0.85rem; padding: 0.75rem;">
                     <span class="material-symbols-outlined" style="color: #1877f2; font-size: 1.3rem;">facebook</span>
                     Continuar con Facebook
                 </button>
             </div>
-            
-            <div class="login-separator" style="text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); line-height: 0.1em; margin: 2rem 0; color: var(--text-muted); font-size: 0.8rem;"><span style="background: var(--bg-sidebar); padding: 0 10px;">O CON CORREO</span></div>
-            
+
+            <div class="login-separator"
+                style="text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); line-height: 0.1em; margin: 2rem 0; color: var(--text-muted); font-size: 0.8rem;">
+                <span style="background: var(--bg-sidebar); padding: 0 10px;">O CON CORREO</span></div>
+
             <form id="login-form" class="login-form">
                 <div class="form-group">
                     <label for="login-email">Correo Electrónico</label>
@@ -468,36 +532,50 @@
             <button class="close-modal-btn" onclick="closeProfileModal()">
                 <span class="material-symbols-outlined">close</span>
             </button>
-            
-            <div class="profile-header-main" style="display: flex; align-items: center; gap: 1.5rem; padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 2rem; position: relative;">
-                <span class="material-symbols-outlined" style="font-size: 4rem; color: var(--accent-gold);">account_circle</span>
+
+            <div class="profile-header-main"
+                style="display: flex; align-items: center; gap: 1.5rem; padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 2rem; position: relative;">
+                <span class="material-symbols-outlined"
+                    style="font-size: 4rem; color: var(--accent-gold);">account_circle</span>
                 <div style="flex-grow: 1;">
-                    <h2 id="profile-user-name" style="font-family: var(--font-display); font-size: 1.6rem; font-weight: 700;">María González</h2>
-                    <p id="profile-user-email" style="color: var(--text-muted); font-size: 0.95rem;">maria@ejemplo.com</p>
+                    <h2 id="profile-user-name"
+                        style="font-family: var(--font-display); font-size: 1.6rem; font-weight: 700;">María González
+                    </h2>
+                    <p id="profile-user-email" style="color: var(--text-muted); font-size: 0.95rem;">maria@ejemplo.com
+                    </p>
                 </div>
-                <button class="btn btn-secondary" onclick="logoutUser()" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Cerrar Sesión</button>
+                <button class="btn btn-secondary" onclick="logoutUser()"
+                    style="padding: 0.5rem 1rem; font-size: 0.9rem;">Cerrar Sesión</button>
             </div>
 
             <!-- Sección ML Predictor -->
-            <div class="profile-ml-predictor" style="background: rgba(195, 181, 159, 0.04); border: 1px solid rgba(195, 181, 159, 0.1); border-radius: 16px; padding: 2rem; margin-bottom: 2.5rem;">
-                <div class="ml-badge" style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--accent-gold-glow); color: var(--accent-gold); padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 1rem;">
+            <div class="profile-ml-predictor"
+                style="background: rgba(195, 181, 159, 0.04); border: 1px solid rgba(195, 181, 159, 0.1); border-radius: 16px; padding: 2rem; margin-bottom: 2.5rem;">
+                <div class="ml-badge"
+                    style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--accent-gold-glow); color: var(--accent-gold); padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 1rem;">
                     <span class="material-symbols-outlined" style="font-size: 1.1rem;">neurology</span>
                     <span>Cortex ML Engine</span>
                 </div>
-                <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.5rem;">Estimador de Próxima Compra</h3>
+                <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.5rem;">Estimador de
+                    Próxima Compra</h3>
                 <div class="ml-prediction-body">
-                    <p id="ml-prediction-text" style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; margin-bottom: 1rem;">No tienes suficientes pedidos para entrenar el modelo predictivo. ¡Realiza tu primera compra!</p>
+                    <p id="ml-prediction-text"
+                        style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; margin-bottom: 1rem;">No
+                        tienes suficientes pedidos para entrenar el modelo predictivo. ¡Realiza tu primera compra!</p>
                     <div id="ml-action-container" style="display: none;">
-                        <button class="btn btn-primary" onclick="orderPredictedItem()" style="padding: 0.5rem 1.5rem; font-size: 0.9rem;">Programar Despacho Sugerido</button>
+                        <button class="btn btn-primary" onclick="orderPredictedItem()"
+                            style="padding: 0.5rem 1.5rem; font-size: 0.9rem;">Programar Despacho Sugerido</button>
                     </div>
                 </div>
             </div>
 
             <!-- Sección Seguimiento de Pedidos -->
             <div class="profile-orders-section">
-                <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 1.5rem;">Tus Pedidos y Seguimiento</h3>
+                <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 1.5rem;">Tus Pedidos y
+                    Seguimiento</h3>
                 <div id="profile-orders-list" style="display: flex; flex-direction: column; gap: 1.5rem;">
-                    <p style="color: var(--text-muted); font-size: 0.95rem; text-align: center; margin: 2rem 0;">Aún no has realizado ningún pedido.</p>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; text-align: center; margin: 2rem 0;">Aún no
+                        has realizado ningún pedido.</p>
                 </div>
             </div>
         </div>
@@ -507,7 +585,7 @@
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-brand">
-                <img src="logo.jpeg" class="brand-logo-img" alt="Micelia Logo">
+                <img src="logo.png" class="brand-logo-img" alt="Micelia Logo">
                 <span>MICELIA</span>
             </div>
             <p>Cultivo Técnico de Hongos Ostra • Soberanía Alimentaria Arauco</p>
@@ -515,7 +593,67 @@
         </div>
     </footer>
 
+    <!-- Asistente de Ventas Inteligente (IA Sales Bot) -->
+    <div id="sales-bot-bubble"
+        style="position: fixed; bottom: 2rem; right: 2rem; width: 60px; height: 60px; background: var(--accent-gold); color: black; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 8px 24px rgba(0,0,0,0.4); z-index: 999; transition: transform 0.3s ease;"
+        onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"
+        onclick="toggleSalesBot()">
+        <span class="material-symbols-outlined" style="font-size: 2rem;">smart_toy</span>
+        <span
+            style="position: absolute; top: -2px; right: -2px; width: 12px; height: 12px; background: #25d366; border-radius: 50%; border: 2px solid var(--bg-dark);"></span>
+    </div>
+
+    <div id="sales-bot-chat"
+        style="position: fixed; bottom: 6.5rem; right: 2rem; width: 340px; height: 450px; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.6); display: none; flex-direction: column; overflow: hidden; z-index: 1000; font-family: var(--font-body);">
+        <!-- Chat Header -->
+        <div
+            style="background: var(--bg-dark); padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span class="material-symbols-outlined"
+                    style="color: var(--accent-gold); font-size: 1.5rem;">smart_toy</span>
+                <div>
+                    <strong style="color: var(--text-primary); font-size: 0.95rem; display: block;">Asistente Virtual
+                        Micelia</strong>
+                    <span style="color: #25d366; font-size: 0.75rem; display: flex; align-items: center; gap: 0.25rem;">
+                        <span style="width: 6px; height: 6px; background: #25d366; border-radius: 50%;"></span> En línea
+                        (IA)
+                    </span>
+                </div>
+            </div>
+            <button onclick="toggleSalesBot()"
+                style="background: none; border: none; color: var(--text-muted); cursor: pointer; display: flex; align-items: center;">
+                <span class="material-symbols-outlined" style="font-size: 1.2rem;">close</span>
+            </button>
+        </div>
+
+        <!-- Chat Messages -->
+        <div id="sales-bot-messages"
+            style="flex: 1; padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; background: rgba(0,0,0,0.15);">
+            <div
+                style="background: rgba(255,255,255,0.03); padding: 0.8rem; border-radius: 12px 12px 12px 0; align-self: flex-start; max-width: 85%; font-size: 0.9rem; line-height: 1.4; color: var(--text-primary);">
+                ¡Hola! Soy el asistente de compras de Micelia. 🍄 ¿Quieres saber sobre nuestras setas ostra, recetas o
+                prefieres que arme tu pedido para enviarlo directamente a WhatsApp?
+            </div>
+        </div>
+
+        <!-- Chat Input -->
+        <form id="sales-bot-form" onsubmit="handleSalesBotSubmit(event)"
+            style="padding: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 0.5rem; background: var(--bg-dark); margin: 0;">
+            <input type="text" id="sales-bot-input" placeholder="Pregúntame algo..."
+                style="flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 0.7rem 1rem; border-radius: 20px; color: var(--text-primary); font-size: 0.9rem; outline: none; transition: border 0.3s;"
+                onfocus="this.style.borderColor='var(--accent-gold)'"
+                onblur="this.style.borderColor='rgba(255,255,255,0.08)'">
+            <button type="submit"
+                style="background: var(--accent-gold); border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s;"
+                onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                <span class="material-symbols-outlined"
+                    style="color: black; font-size: 1.2rem; transform: rotate(-45deg) translate(2px, -1px);">send</span>
+            </button>
+        </form>
+    </div>
+
     <!-- Scripts de la Landing Page -->
     <script src="public.js"></script>
 </body>
+
 </html>
