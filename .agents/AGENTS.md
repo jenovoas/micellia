@@ -46,6 +46,27 @@ Los precios y productos en la landing page y el carrito deben coincidir exactame
 
 ---
 
-## 7. Entorno de Producción
-* **Servidor Destino**: `157.254.174.40` (Hostname: `fan`).
-* **Dominios**: Gestión autoritativa de `micelia.cl` y subdominios mediante BIND9 y Nginx.
+## 7. Entorno de Producción y Despliegue
+* **Servidor Destino**: `157.254.174.40` (Hostname: `fan`, usuario `jnovoas`, llaves SSH configuradas).
+* **Zonas DNS Autoritativas (BIND9)**: El puerto 53 (UDP/TCP) de `fan` responde consultas de nombres de forma autoritativa para:
+  * `micelia.cl`
+  * `pinguinoseguro.cl` (registrado en NIC Chile con Glue Records `ns1.pinguinoseguro.cl` y `ns2.pinguinoseguro.cl` a la IP `157.254.174.40`).
+  * `laespiguita.cl` (delegado a los nameservers de `pinguinoseguro.cl`).
+* **Puertos de Aplicación**:
+  * **Puerto 3000**: Next.js Standalone de `pinguinoseguro_web` (`~/pinguinoseguro_web/.next/standalone/server.js`).
+  * **Puerto 8080**: API Gateway & WebSockets del Cortex daemon de Micelia (`~/micellia/target/release/cortex`).
+  * **Puerto 4000**: TCP Listener del Cortex daemon para recibir lecturas de firmware IoT.
+* **Enrutamiento Nginx (`/etc/nginx/conf.d/`)**:
+  * **`pinguinoseguro.cl.conf` (también maneja IP `157.254.174.40` y `_`)**:
+    * `/` (Raíz) ➔ Proxy reverso a `http://127.0.0.1:3000` (Next.js).
+    * `/portfolio` ➔ Alias a `/var/www/pinguinoseguro.cl/portfolio/` (Vite static). Tiene una regla de redirección estricta para forzar barra diagonal al final (`/portfolio/`).
+    * `/micelia` ➔ Alias a `/var/www/micelia.cl/dashboard/` (Estáticos de Micelia + Fondo Three.js).
+    * `/ws` ➔ Proxy reverso WebSocket a `http://127.0.0.1:8080/ws` (Cortex daemon).
+  * **`laespiguita.cl.conf`**:
+    * `/` (Raíz) ➔ Carpeta `/var/www/laespiguita.cl/` (React Vite static).
+* **Políticas de Seguridad de Sistema (SELinux)**:
+  * Todas las carpetas en `/var/www/` deben estar etiquetadas con el contexto `httpd_sys_content_t` y permisos `chmod 755` para ser legibles por Nginx.
+  * El booleano de SELinux `httpd_can_network_connect` debe permanecer en `1` (on) para permitir a Nginx redirigir tráfico a los puertos 3000 y 8080.
+* **Certificados SSL (Certbot)**:
+  * Administrados mediante el script helper en el servidor en `/usr/local/bin/issue_ssl.sh`. Ejecutar por dominio bajo demanda una vez propagado el DNS (`sudo /usr/local/bin/issue_ssl.sh <dominio>`).
+
