@@ -87,6 +87,9 @@ const ARTICLES = {
 // INICIALIZACIÓN
 // ==========================================================================
 document.addEventListener("DOMContentLoaded", () => {
+    // Inicializar Fondo 3D Mycelium
+    initMycelium3D();
+
     // Referencias DOM
     const openCartBtn = document.getElementById("open-cart-btn");
     const closeCartBtn = document.getElementById("close-cart-btn");
@@ -1204,6 +1207,140 @@ function processSalesBotQuery(query) {
     }
     
     return `Entiendo. Puedo asesorarte con información de despacho, precios de catálogo, recetas o ayudarte a cargar tu carrito de compras. Por ejemplo, dime: *"Quiero agregar un kit"* y yo lo haré por ti.`;
+}
+
+// ==========================================================================
+// FONDO 3D DE RED DE MICELIO (THREE.JS)
+// ==========================================================================
+function initMycelium3D() {
+    const container = document.getElementById('canvas-container');
+    if (!container || typeof THREE === 'undefined') return;
+
+    // 1. Escena, cámara y renderizador
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 8;
+
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    container.appendChild(renderer.domElement);
+
+    // 2. Generación de nodos de micelio
+    const nodeCount = 90;
+    const positions = [];
+    const velocities = [];
+    
+    for (let i = 0; i < nodeCount; i++) {
+        const x = (Math.random() - 0.5) * 12;
+        const y = (Math.random() - 0.5) * 10;
+        const z = (Math.random() - 0.5) * 8;
+        positions.push(new THREE.Vector3(x, y, z));
+        
+        const vx = (Math.random() - 0.5) * 0.003;
+        const vy = (Math.random() - 0.5) * 0.003;
+        const vz = (Math.random() - 0.5) * 0.003;
+        velocities.push(new THREE.Vector3(vx, vy, vz));
+    }
+
+    // 3. Puntos de crecimiento (Tip Points)
+    const pointsGeometry = new THREE.BufferGeometry();
+    const pointsArray = new Float32Array(nodeCount * 3);
+    updatePointsArray();
+
+    function updatePointsArray() {
+        for (let i = 0; i < nodeCount; i++) {
+            pointsArray[i * 3] = positions[i].x;
+            pointsArray[i * 3 + 1] = positions[i].y;
+            pointsArray[i * 3 + 2] = positions[i].z;
+        }
+        pointsGeometry.setAttribute('position', new THREE.BufferAttribute(pointsArray, 3));
+    }
+
+    const pointsMaterial = new THREE.PointsMaterial({
+        size: 0.08,
+        color: 0xc3b59f,
+        transparent: true,
+        opacity: 0.9,
+        blending: THREE.AdditiveBlending
+    });
+
+    const pointsMesh = new THREE.Points(pointsGeometry, pointsMaterial);
+    scene.add(pointsMesh);
+
+    // 4. Conexiones del micelio (Líneas/Hifas)
+    const lineMaterial = new THREE.LineBasicMaterial({
+        color: 0xc3b59f,
+        transparent: true,
+        opacity: 0.15,
+        blending: THREE.AdditiveBlending
+    });
+
+    const lineGeometry = new THREE.BufferGeometry();
+    const lineMesh = new THREE.LineSegments(lineGeometry, lineMaterial);
+    scene.add(lineMesh);
+
+    // 5. Interacción del ratón
+    let mouseX = 0, mouseY = 0;
+    document.addEventListener('mousemove', (e) => {
+        mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+        mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+    });
+
+    // 6. Bucle de animación
+    const maxDistance = 2.4;
+    
+    function animate() {
+        requestAnimationFrame(animate);
+
+        for (let i = 0; i < nodeCount; i++) {
+            positions[i].add(velocities[i]);
+            
+            if (Math.abs(positions[i].x) > 7.5) velocities[i].x *= -1;
+            if (Math.abs(positions[i].y) > 6.0) velocities[i].y *= -1;
+            if (Math.abs(positions[i].z) > 5.0) velocities[i].z *= -1;
+        }
+
+        updatePointsArray();
+        pointsGeometry.attributes.position.needsUpdate = true;
+
+        const lineVertices = [];
+        for (let i = 0; i < nodeCount; i++) {
+            for (let j = i + 1; j < nodeCount; j++) {
+                const dist = positions[i].distanceTo(positions[j]);
+                if (dist < maxDistance) {
+                    lineVertices.push(positions[i].x, positions[i].y, positions[i].z);
+                    lineVertices.push(positions[j].x, positions[j].y, positions[j].z);
+                }
+            }
+        }
+
+        if (lineVertices.length > 0) {
+            lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(lineVertices, 3));
+            lineGeometry.computeBoundingSphere();
+        } else {
+            lineGeometry.deleteAttribute('position');
+        }
+
+        pointsMesh.rotation.y += 0.0006;
+        pointsMesh.rotation.x += 0.0002;
+        lineMesh.rotation.y += 0.0006;
+        lineMesh.rotation.x += 0.0002;
+
+        camera.position.x += (mouseX * 2.0 - camera.position.x) * 0.03;
+        camera.position.y += (mouseY * 1.5 - camera.position.y) * 0.03;
+        camera.lookAt(scene.position);
+
+        renderer.render(scene, camera);
+    }
+
+    animate();
+
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
 }
 
 
