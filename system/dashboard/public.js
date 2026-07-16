@@ -340,6 +340,64 @@ function runMLPrediction() {
     }
     
     mlActionContainer.style.display = "block";
+
+    // Determinar hábito / perfil de consumo y personalizar contenido
+    let kitCount = 0;
+    let freshCount = 0;
+    let horecaCount = 0;
+
+    myOrders.forEach(order => {
+        const desc = order.items.toLowerCase();
+        if (desc.includes("kit")) kitCount++;
+        if (desc.includes("fresco") || desc.includes("500g") || desc.includes("1kg")) freshCount++;
+        if (desc.includes("horeca")) horecaCount++;
+    });
+
+    const habitsContainer = document.getElementById("profile-habits-container");
+    const habitBadge = document.getElementById("habit-profile-badge");
+    const habitContent = document.getElementById("habit-personalized-content");
+
+    if (habitsContainer && habitBadge && habitContent) {
+        habitsContainer.style.display = "block";
+        
+        if (horecaCount > 0) {
+            habitBadge.textContent = "Socio Gastronómico HORECA";
+            habitBadge.style.background = "#c3b59f";
+            habitBadge.style.color = "#000";
+            habitContent.innerHTML = `
+                <p>Como socio gastronómico HORECA, tu flujo constante de setas ostra frescas es ideal para cocinas comerciales. Te recomendamos revisar el dossier de almacenamiento a granel y conservación de calidad:</p>
+                <ul style="margin-top: 0.5rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                    <li>📖 <a href="view_doc.html?doc=compendio_nutricional.md" style="color: var(--accent-gold); text-decoration: underline;">Compendio Nutricional y Conservación</a></li>
+                    <li>♻️ <a href="view_doc.html?doc=economia_circular.md" style="color: var(--accent-gold); text-decoration: underline;">Economía Circular y Aprovechamiento de Mermas</a></li>
+                </ul>
+            `;
+        } else if (kitCount >= freshCount && kitCount > 0) {
+            habitBadge.textContent = "Cultivador Educativo / Hobbista";
+            habitBadge.style.background = "#5aa469";
+            habitBadge.style.color = "#fff";
+            habitContent.innerHTML = `
+                <p>¡Hola, cultivador! Vemos que prefieres nuestros Kits de Autocultivo. Para mejorar tu tasa de fructificación y el cuidado de tu micelio, te sugerimos leer las siguientes guías técnicas:</p>
+                <ul style="margin-top: 0.5rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                    <li>🍄 <a href="view_doc.html?doc=guia_autocultivo.md" style="color: var(--accent-gold); text-decoration: underline;">Guía de Autocultivo Paso a Paso</a></li>
+                    <li>🔬 <a href="view_doc.html?doc=biologia_hongo_ostra.md" style="color: var(--accent-gold); text-decoration: underline;">Biología y Fisiología del Hongo Ostra</a></li>
+                </ul>
+            `;
+        } else if (freshCount > 0) {
+            habitBadge.textContent = "Gourmet Saludable / Cocinero";
+            habitBadge.style.background = "#8e7f6e";
+            habitBadge.style.color = "#fff";
+            habitContent.innerHTML = `
+                <p>Vemos que eres un entusiasta de las setas ostra frescas en la cocina. Para potenciar tus platos y aprovechar al máximo su textura y sabor, te sugerimos explorar estas recetas de autor de nuestro chef:</p>
+                <ul style="margin-top: 0.5rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.5rem; list-style: none;">
+                    <li>🥘 <a href="view_doc.html?doc=receta_risotto.md" style="color: var(--accent-gold); text-decoration: underline;">Risotto Cremoso de Setas Ostra</a></li>
+                    <li>🥗 <a href="view_doc.html?doc=receta_ceviche.md" style="color: var(--accent-gold); text-decoration: underline;">Ceviche Vegano Fiel de Setas</a></li>
+                    <li>🌮 <a href="view_doc.html?doc=receta_tacos.md" style="color: var(--accent-gold); text-decoration: underline;">Tacos Rústicos de Setas Salteadas</a></li>
+                </ul>
+            `;
+        } else {
+            habitsContainer.style.display = "none";
+        }
+    }
 }
 
 function orderPredictedItem() {
