@@ -13,6 +13,12 @@
     <link rel="icon" type="image/png" href="logo.png">
     <script>
         (function() {
+            if (window.self !== window.top) {
+                document.addEventListener("DOMContentLoaded", () => {
+                    document.body.classList.add("is-embedded");
+                });
+                return;
+            }
             const savedUser = localStorage.getItem("micelia_current_user");
             if (!savedUser) {
                 alert("Acceso denegado. Debes iniciar sesión como operador.");
@@ -26,6 +32,18 @@
             }
         })();
     </script>
+    <style>
+        body.is-embedded .sidebar {
+            display: none !important;
+        }
+        body.is-embedded .main-content {
+            padding: 1.5rem !important;
+            max-height: 100vh !important;
+        }
+        body.is-embedded #wa-bot-widget {
+            display: none !important;
+        }
+    </style>
 </head>
 <body>
     <div class="app-container">

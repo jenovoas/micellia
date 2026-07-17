@@ -391,6 +391,34 @@
             btnNextText: "Continuar Inspección"
         },
         {
+            titulo: "🖥️ Panel del Productor: Centro de Control Cortex",
+            mensaje: "Para la gestión interna, el productor dispone de un **Centro de Control y Telemetría**. He abierto una vista previa interactiva en pantalla: en este panel puedes visualizar en tiempo real el estado microclimático de la cámara 001, bitácora de tareas operativas y el planificador predictivo de siembra basado en Machine Learning.",
+            accion: () => {
+                clearHighlights();
+                closeWhatsAppWidget();
+                
+                const pathSection = document.getElementById('camino-micelia');
+                if (pathSection) {
+                    pathSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                
+                setTimeout(() => {
+                    const artModal = document.getElementById("article-modal");
+                    const artContent = document.getElementById("article-content");
+                    if (artModal && artContent) {
+                        artModal.classList.add("tour-active-modal");
+                        artContent.innerHTML = `
+                            <div class="article-content-body" style="height: 100%; margin: 0; padding: 0; display: flex; flex-direction: column;">
+                                <iframe src="admin.html?v=${Date.now()}" style="width: 100%; flex-grow: 1; height: 100%; border: none; border-radius: 12px; background: transparent;"></iframe>
+                            </div>
+                        `;
+                        artModal.classList.add("open");
+                    }
+                }, 600);
+            },
+            btnNextText: "Continuar Inspección"
+        },
+        {
             titulo: "📊 Estándar Yatra S60 y el Peligro de Etiloamento",
             mensaje: "Procesamos las lecturas en **base sexagesimal (s60)** para simplificar cálculos horarios. El control microclimático debe mantener la Humedad entre **85%-95%** (crítico para inducir primordios) y el CO₂ **< 900 ppm**. Si el CO₂ se acumula, el hongo sufre **etiloamento**: una deformación hormonal que alarga y vuelve fibroso el tallo, reduciendo el sombrero y perdiendo su valor comercial. Hemos abierto la especificación técnica en el modal.",
             accion: () => {
@@ -448,8 +476,47 @@
             accion: () => {
                 clearHighlights();
                 closeWhatsAppWidget();
+                
+                const artModal = document.getElementById("article-modal");
+                if (artModal) {
+                    artModal.classList.remove("open");
+                    artModal.classList.remove("tour-active-modal");
+                }
+                
                 const event = new CustomEvent('triggerTruthSyncDemo');
                 window.dispatchEvent(event);
+            },
+            btnNextText: "Ver Trazabilidad"
+        },
+        {
+            titulo: "📜 Pasaporte de Cosecha y Trazabilidad de Lote",
+            mensaje: "Una vez completado el pago firmado, el cliente accede a su **Pasaporte de Cosecha**. Aquí se certifica el origen del lote, el sustrato de trigo y cal hidratada utilizado, y se exponen las gráficas microclimáticas (humedad y temperatura) del cultivo de su lote específico directo del ledger de PostgreSQL, garantizando confianza absoluta.",
+            accion: () => {
+                clearHighlights();
+                closeWhatsAppWidget();
+                
+                const payModal = document.getElementById("payment-modal");
+                if (payModal) payModal.classList.remove("open");
+                
+                setTimeout(() => {
+                    const artModal = document.getElementById("article-modal");
+                    const artContent = document.getElementById("article-content");
+                    if (artModal && artContent) {
+                        artModal.classList.add("tour-active-modal");
+                        const hashEl = document.getElementById("sig-hash-text");
+                        let hashVal = "8f3c9a62efd32a83e0291ba29103de281f9a2e8c2810a7281f1ab98273cf";
+                        if (hashEl && hashEl.textContent && hashEl.textContent.includes("sha256:")) {
+                            hashVal = hashEl.textContent.replace("sha256:", "").split("\n")[0].trim();
+                        }
+                        
+                        artContent.innerHTML = `
+                            <div class="article-content-body" style="height: 100%; margin: 0; padding: 0; display: flex; flex-direction: column;">
+                                <iframe src="view_lote.html?v=${Date.now()}&hash=${hashVal}" style="width: 100%; flex-grow: 1; height: 100%; border: none; border-radius: 12px; background: transparent;"></iframe>
+                            </div>
+                        `;
+                        artModal.classList.add("open");
+                    }
+                }, 600);
             },
             btnNextText: "Finalizar Tour"
         },
@@ -459,6 +526,13 @@
             accion: () => {
                 clearHighlights();
                 closeWhatsAppWidget();
+                
+                const artModal = document.getElementById("article-modal");
+                if (artModal) {
+                    artModal.classList.remove("open");
+                    artModal.classList.remove("tour-active-modal");
+                }
+                
                 const payModal = document.getElementById("payment-modal");
                 if (payModal) payModal.classList.remove("open");
                 window.scrollTo({ top: 0, behavior: 'smooth' });
