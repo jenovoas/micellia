@@ -18,8 +18,8 @@
     --accent-green-light: #4e8261;
     
     /* Tipografías */
-    --font-sans: 'Space Grotesk', sans-serif;
-    --font-display: 'Outfit', sans-serif;
+    --font-sans: 'DM Sans', sans-serif;
+    --font-display: 'Cormorant Garamond', serif;
 }
 
 * {
@@ -254,12 +254,12 @@ img {
 }
 
 .hero-tag {
-    font-family: var(--font-display);
+    font-family: var(--font-sans);
     color: var(--accent-gold);
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 4px;
-    font-size: 0.9rem;
+    font-size: 0.78rem;
     display: inline-block;
     margin-bottom: 1.5rem;
     padding: 0.3rem 1rem;
