@@ -392,7 +392,7 @@
         },
         {
             titulo: "🖥️ Panel del Productor: Centro de Control Cortex",
-            mensaje: "Para la gestión interna, el productor dispone de un **Centro de Control y Telemetría**. He abierto una vista previa interactiva en pantalla: en este panel puedes visualizar en tiempo real el estado microclimático de la cámara 001, bitácora de tareas operativas y el planificador predictivo de siembra basado en Machine Learning.",
+            mensaje: "Para la gestión interna, el productor dispone de un **Centro de Control y Telemetría**. He abierto una vista previa interactiva en pantalla: en este panel puedes visualizar en tiempo real el estado microclimático de la cámara 001, la bitácora de tareas para los operarios y el planificador predictivo de siembra basado en Machine Learning.",
             accion: () => {
                 clearHighlights();
                 closeWhatsAppWidget();
@@ -416,7 +416,32 @@
                     }
                 }, 600);
             },
-            btnNextText: "Continuar Inspección"
+            btnNextText: "Ver Despachos"
+        },
+        {
+            titulo: "🚚 Gestión de Despachos y Cadena de Custodia",
+            mensaje: "El sistema también automatiza la logística. He activado la vista de **Gestión de Despachos** en el panel de control. Desde aquí, el productor coordina las entregas B2B a restaurantes. Cada actualización de estado (en preparación, en camino, despachado) se firma criptográficamente en el ledger para certificar la inmutabilidad de la cadena de frío y frescura.",
+            accion: () => {
+                clearHighlights();
+                closeWhatsAppWidget();
+                
+                // Asegurar que el modal esté abierto
+                const artModal = document.getElementById("article-modal");
+                if (artModal && !artModal.classList.contains("open")) {
+                    artModal.classList.add("tour-active-modal");
+                    artModal.classList.add("open");
+                }
+
+                // Esperar a que el iframe esté listo y activar la pestaña de despachos
+                setTimeout(() => {
+                    const iframe = document.querySelector("#article-content iframe");
+                    if (iframe && iframe.contentWindow) {
+                        const btn = iframe.contentWindow.document.getElementById("btn-deliveries");
+                        if (btn) btn.click();
+                    }
+                }, 400);
+            },
+            btnNextText: "Ver Estándar S60"
         },
         {
             titulo: "📊 Estándar Yatra S60 y el Peligro de Etiloamento",
