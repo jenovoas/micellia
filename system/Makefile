@@ -1,4 +1,4 @@
-.PHONY: check test build run-dashboard
+.PHONY: check test build run-dashboard build-seo
 
 check:
 	PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1 cargo check
@@ -11,6 +11,9 @@ build:
 
 run-dashboard:
 	@echo "Para ver el dashboard local, abre file:///home/jnovoas/Dev/micellia/system/dashboard/index.html en tu navegador."
+
+build-seo:
+	node dashboard/scripts/build-seo-pages.mjs
 
 deploy:
 	ssh fan "mkdir -p ~/micellia"

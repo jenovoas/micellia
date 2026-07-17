@@ -6,8 +6,24 @@ let currentUser = null;
 let userOrders = []; // Órdenes del usuario logueado
 let socket = null;
 
+// Base de Datos de Usuarios (Inicialización de prueba local)
+const DEFAULT_USERS = [
+    { name: "Juan Pérez", email: "juan@gmail.com", role: "customer" },
+    { name: "María González", email: "maria@gmail.com", role: "customer" },
+    { name: "Sofía Editora", email: "editor@micelia.cl", role: "editor" },
+    { name: "Admin Micelia", email: "admin@micelia.cl", role: "operator" }
+];
+let miceliaUsers = [];
+const savedUsers = localStorage.getItem("micelia_users");
+if (savedUsers) {
+    miceliaUsers = JSON.parse(savedUsers);
+} else {
+    miceliaUsers = [...DEFAULT_USERS];
+    localStorage.setItem("micelia_users", JSON.stringify(miceliaUsers));
+}
+
 // Base de Datos de Artículos (Camino Micelia)
-const ARTICLES = {
+const PUBLIC_ARTICLES = {
     1: {
         title: "¿Qué es realmente el hongo ostra?",
         tag: "Fundamentos Micológicos",
@@ -220,7 +236,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (successDiv) successDiv.style.display = "block";
                     
                     const hashText = document.getElementById("sig-hash-text");
-                    if (hashText) hashText.textContent = resData.signature || "sha256:error_firma";
+                    const signatureVal = resData.signature || "sha256:error_firma";
+                    if (hashText) hashText.textContent = signatureVal;
+                    
+                    // Asignar lote dinámico para pasaporte de cosecha
+                    setupHarvestPassportLink(signatureVal);
                     
                     // Si el usuario está autenticado, refrescar sus órdenes
                     if (currentUser) {
@@ -235,6 +255,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (successDiv) successDiv.style.display = "block";
                     const hashText = document.getElementById("sig-hash-text");
                     if (hashText) hashText.textContent = fakeSig + " (Cortex Offline - Firma Local)";
+                    
+                    // Asignar lote dinámico para pasaporte de cosecha (offline fallback)
+                    setupHarvestPassportLink(fakeSig);
                 }
             }, 2000);
         });
@@ -484,7 +507,22 @@ function loginSocial(platform) {
 }
 
 function loginUser(email, name, provider) {
-    const role = email.toLowerCase().endsWith("@micelia.cl") ? "operator" : "customer";
+    let role = "customer";
+    const foundUser = miceliaUsers.find(u => u.email.toLowerCase() === email.toLowerCase());
+    if (foundUser) {
+        role = foundUser.role;
+    } else {
+        // Fallback dinámico por patrón
+        if (email.toLowerCase().endsWith("@micelia.cl")) {
+            role = "operator";
+        } else if (email.toLowerCase().includes("editor")) {
+            role = "editor";
+        }
+        // Registrar en nuestra base de datos simulada para futura gestión
+        miceliaUsers.push({ name, email, role });
+        localStorage.setItem("micelia_users", JSON.stringify(miceliaUsers));
+    }
+
     currentUser = { name, email, provider, role };
     localStorage.setItem("micelia_current_user", JSON.stringify(currentUser));
     
@@ -659,7 +697,7 @@ function closeLoginModal() {
 }
 
 function openArticleModal(id) {
-    const article = ARTICLES[id];
+    const article = PUBLIC_ARTICLES[id];
     if (!article) return;
     
     const container = document.getElementById("article-content");
@@ -1160,8 +1198,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".slider-arrow, .slider-dot").forEach(el => {
         el.addEventListener("click", resetSliderInterval);
     });
-    // Inyectar y configurar asistente de ventas en todas las páginas
-    initSalesBotUI();
+    // Inyectar y configurar asistente de ventas en todas las páginas (Desactivado el bot antiguo)
+    // initSalesBotUI();
 });
 
 // ==========================================================================
@@ -2152,3 +2190,309 @@ function updateActiveButtons() {
         if (btn) btn.classList.add("active");
     }
 }
+
+// Integración de pasaporte de lote en el éxito del pago
+function setupHarvestPassportLink(signatureHash) {
+    const today = new Date();
+    const dateStr = today.getFullYear().toString().substring(2) + 
+                    (today.getMonth() + 1).toString().padStart(2, '0') + 
+                    today.getDate().toString().padStart(2, '0');
+    const loteId = `M${dateStr}-A`;
+    const passportLink = document.getElementById("lote-passport-link");
+    if (passportLink) {
+        passportLink.setAttribute("href", `view_lote.html?lote=${loteId}`);
+        passportLink.innerHTML = `<span class="material-symbols-outlined" style="font-size: 1.15rem;">qr_code_scanner</span> Ver Pasaporte del Lote ${loteId}`;
+    }
+}
+
+
+// ==========================================================================
+// WIDGET DE WHATSAPP GLOBAL
+// ==========================================================================
+(function() {
+    const chatHtml = `<!-- Widget del Bot de WhatsApp (Simulador Web) -->
+    <div id="wa-bot-widget" style="position: fixed; bottom: 2rem; right: 2rem; z-index: 10005; font-family: var(--font-sans);">
+        <!-- Burbuja Flotante -->
+        <button id="wa-bot-bubble" onclick="toggleWaBot(event)" style="width: 60px; height: 60px; border-radius: 50%; background: #25d366; border: none; color: white; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(0,0,0,0.3); cursor: pointer; transition: transform 0.3s; position: relative;">
+            <span class="material-symbols-outlined" style="font-size: 2rem;">chat</span>
+            <!-- Indicador de Notificación -->
+            <span style="position: absolute; top: -2px; right: -2px; width: 14px; height: 14px; background: #ff4757; border-radius: 50%; border: 2px solid #25d366;"></span>
+        </button>
+
+        <!-- Ventana de Chat (Oculta al inicio) -->
+        <div id="wa-bot-window" style="display: none; width: 360px; height: 500px; background: var(--bg-sidebar); border: 1px solid rgba(195, 181, 159, 0.25); border-radius: 20px; box-shadow: 0 12px 36px rgba(0,0,0,0.5); flex-direction: column; overflow: hidden; position: absolute; bottom: 75px; right: 0; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);">
+            <!-- Cabecera de Chat -->
+            <div style="background: rgba(18, 28, 22, 0.85); padding: 1.2rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <div style="position: relative;">
+                        <span class="material-symbols-outlined" style="font-size: 2.2rem; color: var(--accent-gold); background: rgba(195, 181, 159, 0.08); padding: 0.25rem; border-radius: 50%;">account_circle</span>
+                        <span style="position: absolute; bottom: 2px; right: 2px; width: 10px; height: 10px; background: #25d366; border-radius: 50%; border: 2px solid var(--bg-sidebar);"></span>
+                    </div>
+                    <div>
+                        <h4 style="margin: 0; font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; color: var(--text-primary);">Asistente Micelia</h4>
+                        <span style="font-size: 0.75rem; color: #25d366; font-weight: 600;">En línea (Simulación IA)</span>
+                    </div>
+                </div>
+                <button id="wa-bot-close" onclick="toggleWaBot(event)" style="background: none; border: none; color: var(--text-muted); cursor: pointer;">
+                    <span class="material-symbols-outlined" style="font-size: 1.25rem;">close</span>
+                </button>
+            </div>
+
+            <!-- Cuerpo del Chat (Mensajes) -->
+            <div id="wa-bot-messages" style="flex: 1; padding: 1.25rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; scrollbar-width: thin;">
+                <!-- Mensaje Inicial -->
+                <div style="align-self: flex-start; max-width: 80%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); padding: 0.85rem 1.1rem; border-radius: 16px 16px 16px 4px; font-size: 0.88rem; line-height: 1.45; color: #c8d5c4;">
+                    Hola, soy el bot de Micelia. 🌱<br><br>Puedo ayudarte a hacer pedidos, gestionar tu suscripción B2B o responder preguntas biológicas sobre nuestros hongos y cultivo. ¿En qué te gustaría profundizar hoy?
+                </div>
+            </div>
+
+            <!-- Panel de Acciones Rápidas (Accesibilidad) -->
+            <div style="padding: 0.5rem 1rem; border-top: 1px solid rgba(255,255,255,0.02); background: rgba(0,0,0,0.1); display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <button class="wa-quick-btn" data-msg="¿Cómo se cultiva el hongo ostra?" style="background: rgba(195,181,159,0.08); border: 1px solid rgba(195,181,159,0.18); color: var(--accent-gold); font-size: 0.72rem; padding: 0.35rem 0.65rem; border-radius: 12px; cursor: pointer; transition: all 0.2s; outline: none;">📖 Guía de Cultivo</button>
+                <button class="wa-quick-btn" data-msg="Quiero encargar Hongo Fresco 500g" style="background: rgba(195,181,159,0.08); border: 1px solid rgba(195,181,159,0.18); color: var(--accent-gold); font-size: 0.72rem; padding: 0.35rem 0.65rem; border-radius: 12px; cursor: pointer; transition: all 0.2s; outline: none;">🛍️ Pedir setas 500g</button>
+                <button class="wa-quick-btn" id="wa-audio-sim-btn" style="background: rgba(78,130,97,0.12); border: 1px solid rgba(78,130,97,0.25); color: #4e8261; font-size: 0.72rem; padding: 0.35rem 0.65rem; border-radius: 12px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.25rem; outline: none;">
+                    <span class="material-symbols-outlined" style="font-size: 0.9rem;">mic</span>
+                    Simular Nota de Voz
+                </button>
+            </div>
+
+            <!-- Entrada de Mensaje -->
+            <form id="wa-bot-form" style="padding: 1rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 0.5rem; background: rgba(10, 15, 12, 0.45); align-items: center;">
+                <input type="text" id="wa-bot-input" required placeholder="Escribe tu mensaje..." style="flex: 1; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 0.6rem 1rem; font-size: 0.88rem; color: white; outline: none;">
+                <button type="button" id="wa-mic-real-btn" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); width: 36px; height: 36px; border-radius: 50%; color: #bab8b0; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; outline: none;" title="Grabar pregunta por voz (Speech-to-Text)">
+                    <span class="material-symbols-outlined" id="mic-icon-element" style="font-size: 1.15rem;">mic</span>
+                </button>
+                <button type="submit" style="background: var(--accent-gold); border: none; width: 36px; height: 36px; border-radius: 50%; color: black; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s;">
+                    <span class="material-symbols-outlined" style="font-size: 1.15rem;">send</span>
+                </button>
+            </form>
+        </div>
+    </div>`;
+    document.body.insertAdjacentHTML('beforeend', chatHtml);
+    
+    // Configurar la funcion global toggleWaBot en window
+    window.toggleWaBot = function(event) {
+        if (event) event.preventDefault();
+        const windowDiv = document.getElementById("wa-bot-window");
+        const bubble = document.getElementById("wa-bot-bubble");
+        if (windowDiv) {
+            const isHidden = windowDiv.style.display === "none" || windowDiv.style.display === "";
+            windowDiv.style.display = isHidden ? "flex" : "none";
+        }
+        if (bubble) {
+            const dot = bubble.querySelector("span:nth-child(2)");
+            if (dot) dot.style.display = "none";
+        }
+    };
+
+        function toggleWaBot(event) {
+            if (event) event.preventDefault();
+            const windowDiv = document.getElementById("wa-bot-window");
+            const bubble = document.getElementById("wa-bot-bubble");
+            if (windowDiv) {
+                const isHidden = windowDiv.style.display === "none" || windowDiv.style.display === "";
+                windowDiv.style.display = isHidden ? "flex" : "none";
+            }
+            if (bubble) {
+                const dot = bubble.querySelector("span:nth-child(2)");
+                if (dot) dot.style.display = "none";
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById("wa-bot-form");
+            const input = document.getElementById("wa-bot-input");
+            const container = document.getElementById("wa-bot-messages");
+            const quickBtns = document.querySelectorAll(".wa-quick-btn");
+            const audioBtn = document.getElementById("wa-audio-sim-btn");
+            const micRealBtn = document.getElementById("wa-mic-real-btn");
+
+            // Lógica de Reconocimiento de Voz Real (Web Speech API)
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            let recognition = null;
+            let isRecording = false;
+
+            if (SpeechRecognition) {
+                recognition = new SpeechRecognition();
+                recognition.lang = 'es-CL';
+                recognition.interimResults = false;
+                recognition.maxAlternatives = 1;
+
+                recognition.onstart = () => {
+                    isRecording = true;
+                    if (micRealBtn) {
+                        micRealBtn.style.background = "#ff4757";
+                        micRealBtn.style.borderColor = "#ff4757";
+                        micRealBtn.style.color = "white";
+                    }
+                    if (input) {
+                        input.placeholder = "Escuchando... habla ahora...";
+                    }
+                };
+
+                recognition.onresult = (event) => {
+                    const speechToText = event.results[0][0].transcript;
+                    if (input) {
+                        input.value = speechToText;
+                    }
+                    appendMessage(speechToText, true);
+                    if (input) {
+                        input.value = "";
+                        input.placeholder = "Escribe tu mensaje...";
+                    }
+                    simulateBotResponse(speechToText);
+                };
+
+                recognition.onerror = (event) => {
+                    console.error("Speech recognition error", event.error);
+                    if (input) {
+                        input.placeholder = "Error de voz: " + event.error;
+                        setTimeout(() => {
+                            input.placeholder = "Escribe tu mensaje...";
+                        }, 2000);
+                    }
+                };
+
+                recognition.onend = () => {
+                    isRecording = false;
+                    if (micRealBtn) {
+                        micRealBtn.style.background = "rgba(255,255,255,0.05)";
+                        micRealBtn.style.borderColor = "rgba(255,255,255,0.1)";
+                        micRealBtn.style.color = "#bab8b0";
+                    }
+                    if (input && input.placeholder.startsWith("Escuchando")) {
+                        input.placeholder = "Escribe tu mensaje...";
+                    }
+                };
+
+                if (micRealBtn) {
+                    micRealBtn.addEventListener("click", (e) => {
+                        e.preventDefault();
+                        if (isRecording) {
+                            recognition.stop();
+                        } else {
+                            try {
+                                recognition.start();
+                            } catch (err) {
+                                console.error(err);
+                            }
+                        }
+                    });
+                }
+            } else {
+                if (micRealBtn) {
+                    micRealBtn.title = "Reconocimiento de voz no soportado";
+                    micRealBtn.style.opacity = "0.3";
+                    micRealBtn.style.cursor = "not-allowed";
+                }
+            }
+
+            function appendMessage(text, isUser = false) {
+                const msgDiv = document.createElement("div");
+                msgDiv.style.alignSelf = isUser ? "flex-end" : "flex-start";
+                msgDiv.style.maxWidth = "80%";
+                msgDiv.style.padding = "0.85rem 1.1rem";
+                msgDiv.style.borderRadius = isUser ? "16px 16px 4px 16px" : "16px 16px 16px 4px";
+                msgDiv.style.fontSize = "0.88rem";
+                msgDiv.style.lineHeight = "1.45";
+                
+                if (isUser) {
+                    msgDiv.style.background = "var(--accent-green)";
+                    msgDiv.style.border = "1px solid rgba(78, 130, 97, 0.3)";
+                    msgDiv.style.color = "var(--text-primary)";
+                } else {
+                    msgDiv.style.background = "rgba(255,255,255,0.04)";
+                    msgDiv.style.border = "1px solid rgba(255,255,255,0.06)";
+                    msgDiv.style.color = "#c8d5c4";
+                }
+                
+                msgDiv.innerHTML = text;
+                container.appendChild(msgDiv);
+                container.scrollTop = container.scrollHeight;
+            }
+
+            function simulateBotResponse(userText) {
+                const typingDiv = document.createElement("div");
+                typingDiv.style.alignSelf = "flex-start";
+                typingDiv.style.color = "var(--text-muted)";
+                typingDiv.style.fontSize = "0.82rem";
+                typingDiv.style.fontStyle = "italic";
+                typingDiv.style.padding = "0.2rem 1.1rem";
+                typingDiv.textContent = "Asistente escribiendo...";
+                container.appendChild(typingDiv);
+                container.scrollTop = container.scrollHeight;
+
+                setTimeout(() => {
+                    typingDiv.remove();
+                    let reply = "";
+                    const text = userText.toLowerCase();
+
+                    if (text.includes("fresco") || text.includes("pedir") || text.includes("encargar") || text.includes("comprar")) {
+                        reply = "¡Por supuesto! Cosechamos hongos frescos cada mañana. Los formatos disponibles en Curanilahue son:<br><br>" +
+                                "• <strong>Hongo Fresco 500g</strong> ($4.500 CLP): Ideal para probar en tus platos semanales.<br>" +
+                                "• <strong>Hongo Fresco 1kg</strong> ($8.000 CLP): Para compartir en familia.<br><br>" +
+                                "¿Te gustaría que agregue uno de estos formatos a tu carrito de compras de inmediato?";
+                    } else if (text.includes("cultiv") || text.includes("kit") || text.includes("crece") || text.includes("aprender")) {
+                        reply = "El cultivo de setas es una experiencia hermosa. 🌱<br><br>" +
+                                "Nuestros **Kits de Autocultivo** ($12.000 CLP el educativo y $18.000 CLP el XL) vienen completamente colonizados por el micelio sobre paja de trigo. Solo necesitas realizar una incisión, pulverizar agua 2 veces al día y verás brotar los primeros primordios en 10-14 días.<br><br>" +
+                                "¿Deseas agregar un Kit Educativo a tu pedido?";
+                    } else if (text.includes("suscri") || text.includes("horeca") || text.includes("restaurante") || text.includes("b2b")) {
+                        reply = "Ofrecemos una **Suscripción Gastronómica B2B** ($25.000 CLP/mes) diseñada para restaurantes conscientes de la Provincia de Arauco.<br><br>" +
+                                "Incluye suministro constante de 3.5kg mensuales de setas premium seleccionadas, entregados semanalmente directos de la cosecha. ¿Te gustaría registrar tus datos de contacto para coordinar?";
+                    } else if (text.includes("micelio") || text.includes("bosque") || text.includes("residu") || text.includes("sostenib")) {
+                        reply = "En Micelia nos inspiramos en el rol ecológico de los hongos. El micelio actúa como la red conectora del suelo forestal. Cultivamos setas valorizando paja de trigo y borra de café local. Al finalizar las cosechas, el sustrato residual se reintegra a la tierra como recuperador de suelos, cerrando un ciclo de residuo cero. ♻️";
+                    } else if (text.includes("hola") || text.includes("buenas")) {
+                        reply = "¡Hola! Qué gusto saludarte. ¿Te interesa conocer nuestros formatos de setas frescas, adquirir un kit de autocultivo para el hogar, o tienes alguna pregunta científica sobre los hongos?";
+                    } else {
+                        reply = "Entiendo perfectamente. Investigamos y compartimos el conocimiento biológico micológico para promover una alimentación más consciente. Si deseas realizar un pedido, puedes decirme 'quiero un kit de cultivo' o 'quiero setas frescas', y te asistiré.";
+                    }
+
+                    appendMessage(reply, false);
+                }, 1200);
+            }
+
+            if (form && input) {
+                form.addEventListener("submit", (e) => {
+                    e.preventDefault();
+                    const val = input.value.trim();
+                    if (!val) return;
+                    appendMessage(val, true);
+                    input.value = "";
+                    simulateBotResponse(val);
+                });
+            }
+
+            if (quickBtns) {
+                quickBtns.forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        const msg = btn.getAttribute("data-msg");
+                        if (msg) {
+                            appendMessage(msg, true);
+                            simulateBotResponse(msg);
+                        }
+                    });
+                });
+            }
+
+            if (audioBtn) {
+                audioBtn.addEventListener("click", () => {
+                    appendMessage("🎙️ <em>[Nota de voz simulada de 6 segundos]</em>", true);
+                    
+                    const transDiv = document.createElement("div");
+                    transDiv.style.alignSelf = "flex-end";
+                    transDiv.style.fontSize = "0.75rem";
+                    transDiv.style.color = "var(--accent-gold)";
+                    transDiv.style.marginTop = "-0.5rem";
+                    transDiv.style.fontStyle = "italic";
+                    transDiv.innerHTML = "Transcripción: \"Quiero pedir el Pack Adulto Mayor de setas de 500g por favor\"";
+                    container.appendChild(transDiv);
+                    container.scrollTop = container.scrollHeight;
+
+                    setTimeout(() => {
+                        simulateBotResponse("Quiero pedir el Pack Adulto Mayor de setas de 500g");
+                    }, 1000);
+                });
+            }
+        });
+
+})();

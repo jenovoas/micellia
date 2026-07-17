@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cortex Daemon: El Backend de Telemetría Multihilo en Rust · Micelia</title>
+    <meta name="description" content="Categoría: Tecnología de Cultivo · Tiempo de lectura: 6 min La arquitectura de telemetría y procesamiento de datos en Micelia está controlada por el daemon…">
+    <link rel="canonical" href="https://pinguinoseguro.cl/micelia/articulos/cortex_daemon/">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="es_CL">
+    <meta property="og:site_name" content="Micelia">
+    <meta property="og:title" content="Cortex Daemon: El Backend de Telemetría Multihilo en Rust">
+    <meta property="og:description" content="Categoría: Tecnología de Cultivo · Tiempo de lectura: 6 min La arquitectura de telemetría y procesamiento de datos en Micelia está controlada por el daemon…">
+    <meta property="og:url" content="https://pinguinoseguro.cl/micelia/articulos/cortex_daemon/">
+    <link rel="stylesheet" href="/micelia/public.css?v=2">
+    <style>
+        .seo-article { max-width: 880px; margin: 0 auto; padding: 7rem 1.5rem 4rem; }
+        .seo-article__meta { color: var(--accent-green-light); font-size: .9rem; }
+        .seo-article .prose { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 2.5rem; line-height: 1.8; }
+        .seo-article figure { margin: 2rem 0; }
+        .seo-article figure img { width: 100%; border-radius: 14px; }
+        .seo-article pre { white-space: pre-wrap; overflow-wrap: anywhere; padding: 1rem; border-radius: 10px; background: rgba(0,0,0,.3); }
+        .seo-article a { color: var(--accent-gold); }
+    </style>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Cortex Daemon: El Backend de Telemetría Multihilo en Rust","description":"Categoría: Tecnología de Cultivo · Tiempo de lectura: 6 min La arquitectura de telemetría y procesamiento de datos en Micelia está controlada por el daemon…","inLanguage":"es-CL","publisher":{"@type":"Organization","name":"Micelia","url":"https://pinguinoseguro.cl/micelia"},"mainEntityOfPage":"https://pinguinoseguro.cl/micelia/articulos/cortex_daemon/"}</script>
+</head>
+<body>
+    <main class="seo-article">
+        <p><a href="/micelia/biblioteca.html">← Biblioteca Micelia</a></p>
+        <p class="seo-article__meta">Tecnología de Cultivo</p>
+        <article class="prose"><h1>Cortex Daemon: El Backend de Telemetría Multihilo en Rust</h1>
+<p><em>Categoría: Tecnología de Cultivo · Tiempo de lectura: 6 min</em></p>
+<figure><img src="/micelia/raw_mushrooms.png" alt="Cortex Daemon Telemetry Backend" loading="lazy"> </figure>
+<p>La arquitectura de telemetría y procesamiento de datos en Micelia está controlada por el <strong>daemon Cortex</strong>, un núcleo robusto programado en <strong>Rust</strong> que gestiona la alta concurrencia de sensores y clientes en tiempo real.</p>
+<h2>Concurrencia y Sockets TCP en el Puerto 4000</h2>
+<p>El daemon levanta un listener TCP asíncrono en el puerto <code>4000</code> optimizado con la librería <code>tokio</code> de Rust. Cada nodo de cultivo IoT (equipado con chips ESP32) se conecta directamente mediante socket TCP persistente para reportar de forma periódica sus lecturas ambientales en formato <strong>Yatra S60</strong>.</p>
+<ul><li><strong>Concurrencia sin bloqueos</strong>: Rust permite gestionar miles de lecturas concurrentes con un impacto mínimo en el uso de memoria (menos de 15MB de RAM en reposo).</li><li><strong>Procesamiento sexagesimal nativo</strong>: La decodificación de las métricas IoT a base <code>s60</code> se realiza en hilos dedicados mediante un pool de ejecución gestionado.</li></ul>
+<h2>API Gateway &amp; WebSockets en el Puerto 8080</h2>
+<p>El mismo daemon expone una API REST y un canal WebSockets bidireccional en el puerto <code>8080</code> (ruteado a través de Nginx bajo la ruta <code>/ws</code>):</p>
+<ul><li><strong>Websockets en Tiempo Real</strong>: Envía las lecturas ambientales a los dashboards de administración abiertos sin necesidad de recarga.</li><li><strong>Seguridad y Control de Hilos</strong>: Utiliza semáforos asíncronos y mutexes de lectura-escritura (<code>RwLock</code>) para garantizar que múltiples analistas de datos lean de forma consistente el estado del cultivo sin corrupción.</li></ul>
+<h2>Extensión Machine Learning con PyO3</h2>
+<p>Cortex expone sus algoritmos matemáticos más pesados (regresión de mínimos cuadrados) a Python mediante la biblioteca de enlace de Rust <strong>PyO3</strong>, lo que acelera en un 400% el cómputo de predicciones de demanda del negocio B2B.</p></article>
+    </main>
+</body>
+</html>

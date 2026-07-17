@@ -8,7 +8,7 @@
     <link rel="icon" type="image/png" href="logo.png">
 
     <!-- Stylesheets compartidos de la plataforma -->
-    <link rel="stylesheet" href="public.css">
+    <link rel="stylesheet" href="public.css?v=2">
 
     <!-- Fonts y símbolos -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
@@ -21,7 +21,7 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     <!-- JS de la plataforma para sincronización de sesión y carrito -->
-    <script src="public.js" defer></script>
+    <script src="public.js?v=3" defer></script>
 
     <!-- MathJax for formulas -->
     <script>
@@ -37,7 +37,30 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
     <style>
-        /* Variables específicas del lector en armonía con public.css */
+        /* Estilos cuando se carga dentro de un iframe (Modal del Tour) */
+        body.is-embedded {
+            background: transparent !important;
+        }
+        body.is-embedded .navbar,
+        body.is-embedded .doc-nav {
+            display: none !important;
+        }
+        body.is-embedded .article-wrapper {
+            padding: 0.5rem 0 1rem !important;
+        }
+        body.is-embedded #canvas-container {
+            display: none !important;
+        }
+        body.is-embedded .prose {
+            background: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Variables específicas del lector en armonía con public.css?v=2 */
         :root {
             --bg-card-reader: rgba(12, 25, 15, 0.92);
             --border-reader: rgba(195, 181, 159, 0.12);
@@ -595,9 +618,10 @@
             </div>
             <div class="nav-links">
                 <a href="index.html#inicio" class="nav-link">Inicio</a>
-                <a href="index.html#estilos-vida" class="nav-link">Para Ti</a>
                 <a href="biblioteca.html" class="nav-link active">Biblioteca</a>
-                <a href="index.html#tienda" class="nav-link">Comprar</a>
+                <a href="index.html#camino-micelia" class="nav-link">Camino Micelia</a>
+                <a href="index.html#tienda" class="nav-link">Productos</a>
+                <a href="index.html#nosotros" class="nav-link">Nosotros</a>
                 <a href="#" class="nav-link" id="login-nav-btn">Iniciar Sesión</a>
                 <div class="profile-nav-container" id="profile-nav-container" style="display: none; cursor: pointer;">
                     <span class="avatar-icon material-symbols-outlined"
@@ -618,7 +642,13 @@
     <div class="article-wrapper">
         <!-- Barra de Utilidades de Lector -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; gap: 1rem; flex-wrap: wrap;">
-            <span class="doc-category" id="doc-category">Cargando...</span>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <span class="doc-category" id="doc-category">Cargando...</span>
+                <button id="quick-edit-btn" onclick="openQuickEditModal()" style="display: none; align-items: center; gap: 0.35rem; background: rgba(195,181,159,0.1); border: 1px solid var(--accent-gold); color: var(--accent-gold); padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.8rem; cursor: pointer; font-family: var(--font-body); font-weight: 600; transition: all 0.3s; outline: none;">
+                    <span class="material-symbols-outlined" style="font-size: 1.05rem;">edit</span>
+                    Editar Artículo
+                </button>
+            </div>
             
             <!-- Botón de voz en off (Accesibilidad) -->
             <div class="audio-control-bar" id="audio-control-bar" style="margin-bottom: 0; padding: 0.35rem 0.75rem;">
@@ -654,14 +684,40 @@
                 <span class="material-symbols-outlined">storefront</span>
                 Volver al Portal
             </a>
-        </nav>
     </div>
 
     <script>
+    // Detectar si está en un iframe y aplicar clase
+    if (window.self !== window.top) {
+        document.body.classList.add('is-embedded');
+    }
+
     // Parse URL params
     const params = new URLSearchParams(window.location.search);
-    const filePath = params.get('file');
-    const titleParam = params.get('title');
+    let filePath = params.get('file');
+    let titleParam = params.get('title');
+
+    let docId = params.get('id');
+    if (!docId && filePath) {
+        const parts = filePath.split('/');
+        const filename = parts[parts.length - 1];
+        docId = filename.replace('.md', '');
+    }
+
+    // Mapeo retrocompatible si se pasa 'doc' en lugar de 'file'
+    const docParam = params.get('doc');
+    if (!filePath && docParam) {
+        filePath = `docs/${docParam}.md`;
+        if (!docId) docId = docParam;
+        
+        // Mapear un título por defecto según el nombre del doc para que no quede vacío
+        if (!titleParam) {
+            if (docParam === 'alim_tiene_proteinas') titleParam = 'La Revolución de la Proteína Fúngica';
+            else if (docParam === 'cienc_economia_circular') titleParam = 'Economía Circular y Suelo Vivo';
+            else if (docParam === 'alim_como_cocinarlo') titleParam = 'Guía y Secretos Gastronómicos';
+            else titleParam = 'Artículo Científico';
+        }
+    }
 
     // Set page title
     if (titleParam) {
@@ -673,6 +729,23 @@
         if (!filePath) {
             showError('No se especificó ningún documento.');
             return;
+        }
+
+        // Mostrar botón de edición si corresponde
+        const userStr = localStorage.getItem("micelia_current_user");
+        const currentUser = userStr ? JSON.parse(userStr) : null;
+        if (currentUser && (currentUser.role === 'editor' || currentUser.role === 'operator')) {
+            const editBtn = document.getElementById("quick-edit-btn");
+            if (editBtn) editBtn.style.display = "inline-flex";
+        }
+
+        // Primero intentar cargar desde localStorage
+        if (docId) {
+            const localContent = localStorage.getItem("micelia_doc_content_" + docId);
+            if (localContent) {
+                renderMarkdown(localContent);
+                return;
+            }
         }
 
         try {
@@ -1051,10 +1124,69 @@
         `;
     }
 
+    // Quick Edit Functions
+    let currentMdContent = "";
+    window.openQuickEditModal = async function() {
+        if (docId) {
+            const localContent = localStorage.getItem("micelia_doc_content_" + docId);
+            if (localContent) {
+                currentMdContent = localContent;
+            } else {
+                try {
+                    const resp = await fetch(filePath);
+                    if (resp.ok) {
+                        currentMdContent = await resp.text();
+                    }
+                } catch (e) {
+                    console.error("Error cargando markdown original:", e);
+                }
+            }
+        }
+        document.getElementById("quick-edit-content").value = currentMdContent;
+        document.getElementById("quick-edit-modal").classList.add("open");
+    };
+
+    window.closeQuickEditModal = function() {
+        document.getElementById("quick-edit-modal").classList.remove("open");
+    };
+
+    window.saveQuickEdit = function(event) {
+        event.preventDefault();
+        const content = document.getElementById("quick-edit-content").value;
+        if (docId) {
+            localStorage.setItem("micelia_doc_content_" + docId, content);
+            renderMarkdown(content);
+            closeQuickEditModal();
+            alert("Artículo guardado exitosamente.");
+        }
+    };
+
     document.addEventListener('DOMContentLoaded', () => {
         loadDoc();
         initMyceliumBg();
     });
     </script>
+
+    <!-- Modal del Editor Rápido de Markdown -->
+    <div class="modal" id="quick-edit-modal">
+        <div class="modal-content" style="max-width: 700px; max-height: 90vh; overflow-y: auto; background: var(--bg-card); border: 1px solid var(--accent-gold); border-radius: 20px;">
+            <button class="close-modal-btn" onclick="closeQuickEditModal()">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <h2 style="font-family: var(--font-display); color: var(--accent-gold); margin-bottom: 1.5rem;">Editar Contenido de Artículo</h2>
+            
+            <form id="quick-edit-form" onsubmit="saveQuickEdit(event)">
+                <div class="form-group" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    <label for="quick-edit-content" style="color: var(--accent-gold); font-size: 0.85rem;">Contenido del Artículo (Markdown)</label>
+                    <textarea id="quick-edit-content" required placeholder="# Título del Artículo..." rows="18" style="width: 100%; padding: 0.75rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(195,181,159,0.2); border-radius: 8px; color: #fff; margin-bottom: 1.5rem; outline: none; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; resize: vertical;"></textarea>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 1rem;">
+                    <button type="button" class="btn btn-secondary" onclick="closeQuickEditModal()" style="border: 1px solid rgba(195,181,159,0.3); background: transparent; color: var(--accent-gold); cursor: pointer; padding: 0.6rem 1.2rem; border-radius: 20px;">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" style="background: var(--accent-gold); color: #000; font-weight: 600; border: none; cursor: pointer; padding: 0.6rem 1.2rem; border-radius: 20px;">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

@@ -1,4 +1,6 @@
-# robots.txt para Micelia - Habilitar indexación pública para motores de búsqueda e IAs
+# Este archivo queda disponible en /micelia/robots.txt como referencia.
+# Para rastreadores, el archivo efectivo debe publicarse en la raíz del host:
+# https://pinguinoseguro.cl/robots.txt (ver robots-host.txt).
 
 User-agent: *
 Allow: /
@@ -28,5 +30,4 @@ Allow: /
 User-agent: Applebot
 Allow: /
 
-# Sitemap (si existiera en un futuro)
-# Sitemap: https://micelia.cl/sitemap.xml
+Sitemap: https://pinguinoseguro.cl/micelia/sitemap.xml

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquitectura del Servidor de Producción y Configuración Multidominio · Micelia</title>
+    <meta name="description" content="Categoría: Infraestructura · Tiempo de lectura: 12 min Este documento detalla la arquitectura de red, DNS, proxy reverso Nginx y el esquema de seguridad SS…">
+    <link rel="canonical" href="https://pinguinoseguro.cl/micelia/articulos/arquitectura_servidor/">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="es_CL">
+    <meta property="og:site_name" content="Micelia">
+    <meta property="og:title" content="Arquitectura del Servidor de Producción y Configuración Multidominio">
+    <meta property="og:description" content="Categoría: Infraestructura · Tiempo de lectura: 12 min Este documento detalla la arquitectura de red, DNS, proxy reverso Nginx y el esquema de seguridad SS…">
+    <meta property="og:url" content="https://pinguinoseguro.cl/micelia/articulos/arquitectura_servidor/">
+    <link rel="stylesheet" href="/micelia/public.css?v=2">
+    <style>
+        .seo-article { max-width: 880px; margin: 0 auto; padding: 7rem 1.5rem 4rem; }
+        .seo-article__meta { color: var(--accent-green-light); font-size: .9rem; }
+        .seo-article .prose { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 2.5rem; line-height: 1.8; }
+        .seo-article figure { margin: 2rem 0; }
+        .seo-article figure img { width: 100%; border-radius: 14px; }
+        .seo-article pre { white-space: pre-wrap; overflow-wrap: anywhere; padding: 1rem; border-radius: 10px; background: rgba(0,0,0,.3); }
+        .seo-article a { color: var(--accent-gold); }
+    </style>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Arquitectura del Servidor de Producción y Configuración Multidominio","description":"Categoría: Infraestructura · Tiempo de lectura: 12 min Este documento detalla la arquitectura de red, DNS, proxy reverso Nginx y el esquema de seguridad SS…","inLanguage":"es-CL","publisher":{"@type":"Organization","name":"Micelia","url":"https://pinguinoseguro.cl/micelia"},"mainEntityOfPage":"https://pinguinoseguro.cl/micelia/articulos/arquitectura_servidor/"}</script>
+</head>
+<body>
+    <main class="seo-article">
+        <p><a href="/micelia/biblioteca.html">← Biblioteca Micelia</a></p>
+        <p class="seo-article__meta">Infraestructura</p>
+        <article class="prose"><h1>Arquitectura del Servidor de Producción y Configuración Multidominio</h1>
+<p><em>Categoría: Infraestructura · Tiempo de lectura: 12 min</em></p>
+<p>Este documento detalla la arquitectura de red, DNS, proxy reverso Nginx y el esquema de seguridad SSL de nuestro servidor de producción <strong><code>fan</code></strong> (<code>157.254.174.40</code>). Sigue estas directrices para realizar cambios sin alterar los sitios activos (<code>pinguinoseguro.cl</code>, <code>laespiguita.cl</code> y el futuro <code>micelia.cl</code>).</p>
+<h2>1. Topología del Servidor e IP</h2>
+<p>El servidor centraliza todas las funciones de red y aplicaciones:</p>
+<ul><li><strong>IP Pública</strong>: <code>157.254.174.40</code> (Hostname: <code>fan</code>).</li><li><strong>Usuario</strong>: <code>jnovoas</code> (con permisos de <code>sudo</code>).</li></ul>
+<pre><code>                              [ INTERNET (Puerto 80/443/53) ]
+                                            │
+                                            ▼
+                           ┌─────────────────────────────────┐
+                           │      Servidor Remoto: fan       │
+                           │        (157.254.174.40)         │
+                           └──────┬──────────────────┬───────┘
+                                  │                  │
+                         [Puerto 53 UDP/TCP]  [Puerto 80/443]
+                                  │                  │
+                                  ▼                  ▼
+                             DNS BIND9          Nginx Reverse Proxy
+                           (named daemon)            │
+                                                     ├─── / ➔ http://127.0.0.1:3000 (Next.js)
+                                                     ├─── /micelia ➔ /var/www/micelia.cl/dashboard/
+                                                     ├─── /portfolio ➔ /var/www/pinguinoseguro.cl/portfolio/
+                                                     └─── /ws ➔ http://127.0.0.1:8080/ws (Cortex API/WS)</code></pre>
+<h2>2. Configuración de DNS (BIND9)</h2>
+<p>El servidor <code>fan</code> actúa como servidor de nombres autoritativo (DNS) para los tres dominios. El servicio a cargo es <code>named</code> (BIND9).</p>
+<h3>Estructura de DNS en el Servidor</h3>
+<ul><li><strong>Configuración Principal</strong>: <code>/etc/named.conf</code></li><li><strong>Archivos de Zona</strong>: <code>/var/named/</code></li></ul>
+<p><em> <code>db.pinguinoseguro.cl</code> (Zona principal y Glue Records de NIC Chile).   </em> <code>db.laespiguita.cl</code> (Delegado a los nameservers de <code>pinguinoseguro.cl</code>).   * <code>db.micelia.cl</code> (Apuntando localmente a <code>fan</code>).</p>
+<h3>Regla de Oro para Modificar DNS</h3>
+<p>Si necesitas agregar subdominios (por ejemplo, <code>api.pinguinoseguro.cl</code>):</p>
+<ol><li>Edita el archivo de zona correspondiente en <code>/var/named/db.&lt;dominio&gt;</code>.</li><li><strong>Incrementa el número serial</strong> en el registro SOA (formato <code>AAAAMMDDXX</code>, ej: <code>2026071601</code>).</li><li>Valida la sintaxis del archivo de zona:</li></ol>
+<p>``<code>bash    sudo named-checkzone &lt;dominio&gt; /var/named/db.&lt;dominio&gt;    </code>``</p>
+<ol><li>Recarga la configuración del daemon de DNS:</li></ol>
+<p>``<code>bash    sudo systemctl reload named    </code>``</p>
+<h2>3. Enrutamiento Nginx (Reverse Proxy)</h2>
+<p>Nginx (<code>nginx.service</code>) recibe todas las solicitudes HTTP/HTTPS en los puertos 80 y 443. Redirige el tráfico según el dominio solicitado.</p>
+<h3>Directorios Clave</h3>
+<ul><li><strong>Configuraciones de sitios</strong>: <code>/etc/nginx/conf.d/</code></li></ul>
+<p><em> <code>pinguinoseguro.cl.conf</code>: Controla <code>pinguinoseguro.cl</code> (redirige <code>/</code> al puerto 3000 de Next.js, <code>/portfolio</code> a estáticos y <code>/micelia</code> a la landing de Micelia).   </em> <code>laespiguita.cl.conf</code>: Controla <code>laespiguita.cl</code> (sirve estáticos en <code>/var/www/laespiguita.cl/</code>).   * <code>micelia.cl.conf</code>: Controla <code>micelia.cl</code> (sirve el dashboard directamente).</p>
+<ul><li><strong>Archivos Estáticos (Roots)</strong>:</li></ul>
+<p><em> <code>/var/www/pinguinoseguro.cl/</code> (Next.js standalone y Vite portfolio).   </em> <code>/var/www/laespiguita.cl/</code> (React Vite static).   * <code>/var/www/micelia.cl/dashboard/</code> (HTML/CSS/JS de Micelia y assets 3D).</p>
+<p>&gt; [!IMPORTANT] &gt; Todos los directorios dentro de <code>/var/www/</code> deben pertenecer al usuario <code>nginx</code> y poseer permisos de lectura y ejecución para el servidor web: &gt; ``<code>bash &gt; sudo chown -R nginx:nginx /var/www/ &gt; sudo chmod -R 755 /var/www/ &gt; </code>`<code> &gt; Además, SELinux requiere el contexto </code>httpd_sys_content_t<code>: &gt; </code>`<code>bash &gt; sudo restorecon -Rv /var/www/ &gt; </code>``</p>
+<h2>4. Seguridad SSL/TLS (Certbot Let&#39;s Encrypt)</h2>
+<p>Para evitar la caída de los portales HTTPS, el proceso de seguridad utiliza certificados automáticos emitidos por Let&#39;s Encrypt.</p>
+<h3>El Helper de Certificación: <code>issue_ssl.sh</code></h3>
+<p>Ubicado en <code>/usr/local/bin/issue_ssl.sh</code>, es el script encargado de obtener los certificados de forma automatizada e inyectar el bloque de configuración SSL (<code>listen 443 ssl;</code> y rutas de llaves) en el archivo <code>.conf</code> correspondiente en <code>/etc/nginx/conf.d/</code>.</p>
+<h3>Procedimiento Correcto para Crear o Modificar un Sitio con SSL</h3>
+<p>Para no romper el resto de los sitios activos y evitar el error catastrófico de borrar el puerto 443, sigue este procedimiento paso a paso:</p>
+<h4>Paso A: Crear o Modificar la configuración en Puerto 80</h4>
+<p>Crea un archivo limpio en <code>/etc/nginx/conf.d/&lt;nuevo-sitio&gt;.conf</code> que solo escuche en el puerto 80 temporalmente:</p>
+<pre><code>server {
+    listen 80;
+    server_name nuevo-sitio.cl www.nuevo-sitio.cl;
+
+    location / {
+        root /var/www/nuevo-sitio.cl;
+        index index.html;
+    }
+}</code></pre>
+<h4>Paso B: Validar la sintaxis de Nginx</h4>
+<p><strong>NUNCA</strong> reinicies Nginx sin verificar la sintaxis antes. Un solo carácter o punto y coma faltante tirará abajo todos los sitios del servidor:</p>
+<pre><code>sudo nginx -t</code></pre>
+<p><em>Si el test es exitoso (<code>syntax is ok / test is successful</code>), procede a recargar:</em></p>
+<pre><code>sudo systemctl reload nginx</code></pre>
+<h4>Paso C: Emitir el Certificado SSL</h4>
+<p>Una vez que el sitio está en línea en puerto 80 y el DNS ha propagado la resolución a la IP <code>157.254.174.40</code>, ejecuta el script helper:</p>
+<pre><code>sudo /usr/local/bin/issue_ssl.sh nuevo-sitio.cl</code></pre>
+<p><em>Este comando hablará con Let&#39;s Encrypt, validará el dominio, modificará <code>/etc/nginx/conf.d/&lt;nuevo-sitio&gt;.conf</code> para habilitar el puerto 443 SSL, forzará la redirección de HTTP a HTTPS y recargará Nginx automáticamente de manera limpia.</em></p>
+<h2>5. Advertencias Críticas de Infraestructura</h2>
+<p>&gt; [!CAUTION] &gt; <strong>NO EJECUTAR EL CONFIGURADOR GLOBAL (<code>setup_multi_production.sh</code>) EN PRODUCCIÓN DIRECTA</strong> &gt; El script <code>setup_multi_production.sh</code> está diseñado para la provisión en frío del servidor. Si lo ejecutas sobre un servidor ya certificado, sobrescribirá todos los bloques de <code>/etc/nginx/conf.d/</code> con configuraciones por defecto en puerto 80, eliminando el soporte SSL de Let&#39;s Encrypt y dejando sin servicio HTTPS a la totalidad de las aplicaciones.</p>
+<h3>¿Qué hacer si se sobrescribió Nginx por error?</h3>
+<p>Si por accidente se pierden los bloques SSL, no te alarmes. Los certificados físicos de Let&#39;s Encrypt siguen estando a salvo en <code>/etc/letsencrypt/live/</code>. Restaura el servicio HTTPS ejecutando el emisor para cada dominio activo:</p>
+<pre><code>sudo /usr/local/bin/issue_ssl.sh pinguinoseguro.cl
+sudo /usr/local/bin/issue_ssl.sh laespiguita.cl</code></pre>
+<p>Nginx recargará e inyectará de nuevo los bloques HTTPS correspondientes.</p></article>
+    </main>
+</body>
+</html>

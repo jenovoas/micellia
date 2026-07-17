@@ -113,9 +113,9 @@ sudo mkdir -p /var/www/pinguinoseguro.cl
 sudo mkdir -p /var/www/laespiguita.cl
 
 # Copiar dashboard si ya existe en la carpeta desplegada
-if [ -d "/home/jnovoas/micellia/dashboard" ]; then
+if [ -d "/home/jnovoas/micellia/system/dashboard" ]; then
     echo "Desplegando dashboard real de Micelia..."
-    sudo cp -r /home/jnovoas/micellia/dashboard/* /var/www/micelia.cl/dashboard/
+    sudo cp -r /home/jnovoas/micellia/system/dashboard/* /var/www/micelia.cl/dashboard/
 else
     echo "Creando placeholder para el dashboard de Micelia..."
     echo "<h1>Micelia Dashboard - Placeholder</h1>" | sudo tee /var/www/micelia.cl/dashboard/index.html > /dev/null
@@ -177,9 +177,20 @@ server {
         index index.html;
     }
 
-    location /micelia {
-        alias /var/www/micelia.cl/dashboard;
+    location = /micelia {
+        return 301 /micelia/;
+    }
+
+    location ^~ /micelia/ {
+        alias /var/www/micelia.cl/dashboard/;
         index index.html;
+    }
+
+    # robots.txt se consulta siempre en la raíz del host; no en /micelia/.
+    # Si Pinguino Seguro ya tiene reglas propias, intégralas en este archivo.
+    location = /robots.txt {
+        alias /var/www/micelia.cl/dashboard/robots-host.txt;
+        default_type text/plain;
     }
 
     location /ws {

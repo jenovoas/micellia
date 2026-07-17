@@ -1,0 +1,21 @@
+# Archivo que debe servirse como https://pinguinoseguro.cl/robots.txt
+# El robots.txt se define por host, no por subdirectorio.
+User-agent: *
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://pinguinoseguro.cl/micelia/sitemap.xml

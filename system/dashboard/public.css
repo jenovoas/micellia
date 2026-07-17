@@ -1468,6 +1468,9 @@ body.font-scale-lg h1 {
 body.font-scale-lg h2 {
     font-size: 2.5rem !important;
 }
+body.font-scale-lg .card-title {
+    font-size: 1.25rem !important;
+}
 
 body.font-scale-xl {
     font-size: 1.3rem !important;
@@ -1477,6 +1480,9 @@ body.font-scale-xl h1 {
 }
 body.font-scale-xl h2 {
     font-size: 2.8rem !important;
+}
+body.font-scale-xl .card-title {
+    font-size: 1.45rem !important;
 }
 
 /* Accessibility Control Panel */
@@ -1561,4 +1567,282 @@ body.no-animations *::after {
     animation: none !important;
     transition: none !important;
     transform: none !important;
+}
+
+/* ==========================================================================
+   CAMINO MICELIA — REVISTA EDITORIAL (ESTILO PORTADAS PREMIUM)
+   ========================================================================== */
+.magazine-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+}
+
+.magazine-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2.5rem;
+    margin-top: 3rem;
+}
+
+.magazine-card {
+    background: rgba(18, 28, 22, 0.45);
+    border: 1px solid rgba(195, 181, 159, 0.15);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 440px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    cursor: pointer;
+}
+
+.magazine-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--accent-gold);
+    box-shadow: 0 15px 40px rgba(195, 181, 159, 0.15);
+}
+
+.magazine-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(10, 15, 12, 0.2) 0%, rgba(10, 15, 12, 0.85) 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.magazine-img-wrapper {
+    width: 100%;
+    height: 60%;
+    overflow: hidden;
+    position: relative;
+    background: #000;
+}
+
+.magazine-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.85;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.magazine-card:hover .magazine-img-wrapper img {
+    transform: scale(1.05);
+    opacity: 1;
+}
+
+.magazine-badge {
+    position: absolute;
+    top: 1.25rem;
+    left: 1.25rem;
+    background: rgba(10, 15, 12, 0.85);
+    border: 1px solid var(--accent-gold);
+    color: var(--accent-gold);
+    padding: 0.25rem 0.65rem;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: 1px;
+    z-index: 2;
+    backdrop-filter: blur(5px);
+}
+
+.magazine-info {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 40%;
+    position: relative;
+    z-index: 2;
+}
+
+.magazine-title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.4rem;
+    line-height: 1.4;
+}
+
+.magazine-desc {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+}
+
+.magazine-read {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--accent-gold);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: gap 0.3s;
+}
+
+.magazine-card:hover .magazine-read {
+    gap: 0.65rem;
+}
+
+/* Próximamente Card */
+.magazine-card.upcoming {
+    cursor: default;
+    border-style: dashed;
+}
+.magazine-card.upcoming::before {
+    content: '🔒';
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2.2rem;
+    z-index: 3;
+    opacity: 0.6;
+}
+.magazine-card.upcoming .magazine-img-wrapper img {
+    filter: grayscale(100%) blur(3px);
+    opacity: 0.35;
+}
+.magazine-card.upcoming:hover {
+    transform: none;
+    border-color: rgba(195, 181, 159, 0.15);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+/* ==========================================================================
+   CÁPSULAS "¿SABÍAS QUE...?"
+   ========================================================================== */
+.sabias-que-container {
+    max-width: 900px;
+    margin: 4rem auto;
+    padding: 0 2rem;
+}
+
+.sabias-que-card {
+    background: linear-gradient(135deg, rgba(18, 28, 22, 0.45) 0%, rgba(10, 15, 12, 0.45) 100%);
+    border: 1px solid rgba(195, 181, 159, 0.15);
+    border-radius: 20px;
+    padding: 2.2rem 2.8rem;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    transition: all 0.3s;
+}
+
+.sabias-que-card:hover {
+    border-color: rgba(195, 181, 159, 0.3);
+}
+
+.sabias-que-icon {
+    font-size: 2.8rem;
+    color: var(--accent-gold);
+    background: rgba(195, 181, 159, 0.05);
+    padding: 1rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sabias-que-content {
+    flex: 1;
+}
+
+.sabias-que-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--accent-gold);
+    margin-bottom: 0.4rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.sabias-que-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #c8d5c4;
+}
+
+@media (max-width: 768px) {
+    .sabias-que-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem;
+        gap: 1.25rem;
+    }
+    .sabias-que-icon {
+        padding: 0.75rem;
+    }
+}
+
+/* ==========================================================================
+   SECCIÓN NOSOTROS (RELATO HUMANO)
+   ========================================================================== */
+.nosotros-section {
+    background: radial-gradient(circle at center, #0f1c13 0%, var(--bg-dark) 100%);
+    border-top: 1px solid rgba(255,255,255,0.02);
+    padding: 7rem 2rem;
+    position: relative;
+}
+
+.nosotros-container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.nosotros-quote {
+    font-family: 'Lora', serif;
+    font-size: 1.35rem;
+    font-style: italic;
+    line-height: 1.85;
+    color: #c8d5c4;
+    position: relative;
+    padding: 0 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.nosotros-quote::before, .nosotros-quote::after {
+    color: var(--accent-gold);
+    font-size: 3rem;
+    font-family: 'Lora', serif;
+    position: absolute;
+    opacity: 0.15;
+}
+
+.nosotros-quote::before {
+    content: '“';
+    left: -0.5rem;
+    top: -1rem;
+}
+
+.nosotros-quote::after {
+    content: '”';
+    right: -0.5rem;
+    bottom: -2.5rem;
+}
+
+.nosotros-author {
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--accent-gold);
+    text-transform: uppercase;
 }

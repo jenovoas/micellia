@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telemetría IoT en Cultivo: El Sistema Yatra S60 de Micelia · Micelia</title>
+    <meta name="description" content="Categoría: Tecnología de Cultivo · Tiempo de lectura: 10 min El cultivo técnico de hongos ostra requiere un control ambiental de precisión quirúrgica. Mice…">
+    <link rel="canonical" href="https://pinguinoseguro.cl/micelia/articulos/telemetria_s60/">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="es_CL">
+    <meta property="og:site_name" content="Micelia">
+    <meta property="og:title" content="Telemetría IoT en Cultivo: El Sistema Yatra S60 de Micelia">
+    <meta property="og:description" content="Categoría: Tecnología de Cultivo · Tiempo de lectura: 10 min El cultivo técnico de hongos ostra requiere un control ambiental de precisión quirúrgica. Mice…">
+    <meta property="og:url" content="https://pinguinoseguro.cl/micelia/articulos/telemetria_s60/">
+    <link rel="stylesheet" href="/micelia/public.css?v=2">
+    <style>
+        .seo-article { max-width: 880px; margin: 0 auto; padding: 7rem 1.5rem 4rem; }
+        .seo-article__meta { color: var(--accent-green-light); font-size: .9rem; }
+        .seo-article .prose { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 2.5rem; line-height: 1.8; }
+        .seo-article figure { margin: 2rem 0; }
+        .seo-article figure img { width: 100%; border-radius: 14px; }
+        .seo-article pre { white-space: pre-wrap; overflow-wrap: anywhere; padding: 1rem; border-radius: 10px; background: rgba(0,0,0,.3); }
+        .seo-article a { color: var(--accent-gold); }
+    </style>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Telemetría IoT en Cultivo: El Sistema Yatra S60 de Micelia","description":"Categoría: Tecnología de Cultivo · Tiempo de lectura: 10 min El cultivo técnico de hongos ostra requiere un control ambiental de precisión quirúrgica. Mice…","inLanguage":"es-CL","publisher":{"@type":"Organization","name":"Micelia","url":"https://pinguinoseguro.cl/micelia"},"mainEntityOfPage":"https://pinguinoseguro.cl/micelia/articulos/telemetria_s60/"}</script>
+</head>
+<body>
+    <main class="seo-article">
+        <p><a href="/micelia/biblioteca.html">← Biblioteca Micelia</a></p>
+        <p class="seo-article__meta">Tecnología de Cultivo</p>
+        <article class="prose"><h1>Telemetría IoT en Cultivo: El Sistema Yatra S60 de Micelia</h1>
+<p><em>Categoría: Tecnología de Cultivo · Tiempo de lectura: 10 min</em></p>
+<figure><img src="/micelia/substrate_bags.png" alt="Telemetría IoT en Cámaras de Cultivo" loading="lazy"> </figure>
+<p>El cultivo técnico de hongos ostra requiere un control ambiental de precisión quirúrgica. Micelia desarrolló el <strong>sistema de telemetría Yatra S60</strong>: una arquitectura IoT de bajo costo que monitorea en tiempo real las variables críticas de cada cámara de producción.</p>
+<h2>Variables críticas y rangos óptimos</h2>
+<p>Los hongos son organismos extremadamente sensibles al microambiente. Las tres variables fundamentales son:</p>
+<h3>🌡️ Temperatura</h3>
+<p>| Fase | Rango Óptimo | Crítico | |------|-------------|---------| | Colonización | 24–28°C | &lt;18°C o &gt;32°C → detención | | Inducción | 14–18°C (choque) | Sin delta-T → falla de primordización | | Fructificación | 18–22°C | &gt;25°C → setas aguadas, sin textura | | Cosecha | 15–20°C | &gt;25°C → apertura prematura |</p>
+<h3>💧 Humedad Relativa</h3>
+<p>$$HR_{óptima} = 85\% - 95\%$$</p>
+<p>La humedad es <strong>la variable más crítica</strong> para la inducción de primordios. Una caída por debajo del 80% detiene el crecimiento y provoca que las setas se sequen y abran prematuramente.</p>
+<p><strong>Efectos de la HR sobre morfología:</strong></p>
+<ul><li><strong>HR &gt; 95%</strong>: Setas grandes pero de textura blanda, susceptibles a bacteriosis</li><li><strong>HR 85–92%</strong>: Setas de calibre óptimo, textura firme, láminas bien definidas</li><li><strong>HR &lt; 80%</strong>: Pileus (sombrero) se agrieta, esporulación prematura, rendimiento -40%</li></ul>
+<h3>🫧 CO₂ (Dióxido de Carbono)</h3>
+<p>$$[CO_2]_{ambiente} &lt; 900\text{ ppm}$$</p>
+<p>El CO₂ es el metabolito respiratorio del micelio. Su acumulación en cámaras sin ventilación produce un fenómeno llamado <strong>etiloamento</strong>:</p>
+<pre><code>CO₂ elevado → Respuesta hormonal del hongo
+  → Elongación del pie (tallo)
+  → Reducción del sombrero
+  → Pérdida de 30-50% del valor comercial
+  → Textura fibrosa y amarga</code></pre>
+<p><strong>Referencia:</strong> CO₂ ambiente = 400 ppm. En una cámara sellada con 10 bloques activos, el CO₂ puede alcanzar 3000–5000 ppm en 6 horas sin renovación de aire.</p>
+<h2>Arquitectura del Sistema Yatra S60</h2>
+<pre><code>┌─────────────────────────────────────────────────────────┐
+│                  CÁMARA DE CULTIVO                       │
+│                                                         │
+│  ┌──────────────┐    ┌──────────────┐                  │
+│  │  Sensor      │    │  Sensor      │                  │
+│  │  SHT31       │    │  MH-Z19B     │                  │
+│  │  (Temp+HR)   │    │  (CO₂ NDIR)  │                  │
+│  └──────┬───────┘    └──────┬───────┘                  │
+│         │                   │                           │
+│         └─────────┬─────────┘                          │
+│                   │                                     │
+│           ┌───────┴───────┐                            │
+│           │  ESP32-S3     │  ← Microcontrolador        │
+│           │  WiFi + BLE   │     principal               │
+│           └───────┬───────┘                            │
+└───────────────────│─────────────────────────────────────┘
+                    │ MQTT / TCP
+                    ▼
+         ┌──────────────────┐
+         │  Cortex Daemon   │  ← Servidor fan             
+         │  (Rust/Axum)     │     puerto 4000 (IoT)        
+         │  Puerto 8080 API │     puerto 8080 (WS)         
+         └──────────┬───────┘
+                    │
+                    ▼
+         ┌──────────────────┐
+         │  PostgreSQL      │
+         │  Base S60        │
+         │  TruthSync Logs  │
+         └──────────┬───────┘
+                    │
+                    ▼
+         ┌──────────────────┐
+         │  Dashboard Web   │  ← WebSocket en tiempo real
+         │  (Micelia Admin) │
+         └──────────────────┘</code></pre>
+<h2>El estándar S60: Telemetría en Base Sexagesimal</h2>
+<p>El nombre &quot;S60&quot; proviene del sistema de numeración <strong>base 60</strong> (sexagesimal) utilizado en la matemática babilónica. Micelia lo utiliza para una razón práctica concreta:</p>
+<p>Las <strong>lecturas de sensores ambientales</strong> tienen una naturaleza <strong>cíclica</strong> que se mapea naturalmente en base 60:</p>
+<ul><li>Ciclos de 60 minutos en el día</li><li>Ciclos de 60 segundos en el minuto</li><li>Franjas de cultivo de múltiplos de 6 (6, 12, 18, 24 días)</li></ul>
+<pre><code>// Sistema S60 en Rust (sistema/s60/src/lib.rs)
+pub struct S60Reading {
+    pub value: f64,
+    pub s60_timestamp: u64,  // Timestamp en base 60 comprimida
+    pub cycle: u8,            // Ciclo del cultivo (0-59)
+    pub frame: u8,            // Frame dentro del ciclo
+}
+
+impl S60Reading {
+    pub fn encode(unix_ts: u64, val: f64) -&gt; Self {
+        let cycle = ((unix_ts / 3600) % 60) as u8;
+        let frame = ((unix_ts / 60) % 60) as u8;
+        Self {
+            value: val,
+            s60_timestamp: unix_ts,
+            cycle,
+            frame,
+        }
+    }
+}</code></pre>
+<h2>TruthSync: Ledger Criptográfico de Lecturas</h2>
+<p>Cada lectura de sensor es <strong>firmada criptográficamente</strong> en el ledger inmutable TruthSync antes de persistirse:</p>
+<p>$$H_n = \text{SHA256}(H_{n-1} \| id \| ts \| T \| HR \| CO_2 \| \Delta)$$</p>
+<p>Esta cadena de hashes garantiza que ninguna lectura puede ser modificada retroactivamente sin invalidar toda la cadena posterior — un principio de <strong>blockchain simplificado</strong> aplicado a la trazabilidad de cultivo.</p>
+<p><strong>¿Para qué sirve esto en la práctica?</strong></p>
+<ol><li><strong>Certificación de calidad</strong>: Se puede demostrar criptográficamente que las condiciones de cultivo respetaron los estándares durante toda la producción</li><li><strong>Trazabilidad HACCP</strong>: Evidencia tamper-proof para auditorías sanitarias</li><li><strong>Investigación</strong>: Datos de largo plazo con integridad garantizada para estudios de optimización</li></ol>
+<h2>Alertas automáticas</h2>
+<p>El sistema genera alertas en tiempo real cuando cualquier parámetro sale del rango saludable:</p>
+<pre><code>{
+  &quot;alert_type&quot;: &quot;humidity_critical&quot;,
+  &quot;value&quot;: 78.2,
+  &quot;threshold&quot;: 85.0,
+  &quot;chamber&quot;: &quot;camara_01&quot;,
+  &quot;timestamp&quot;: &quot;2026-07-16T14:30:00Z&quot;,
+  &quot;hash&quot;: &quot;sha256:a3f9c2...&quot;,
+  &quot;action_required&quot;: &quot;Activar nebulizador zona norte&quot;
+}</code></pre>
+<p><em>¿Interesado en la arquitectura técnica completa? → Ver el <strong>Dossier Técnico Sercotec</strong></em></p></article>
+    </main>
+</body>
+</html>

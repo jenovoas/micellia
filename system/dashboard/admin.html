@@ -64,6 +64,10 @@
                     <span class="icon material-symbols-outlined">shield</span>
                     Cortex (eBPF / LSM)
                 </a>
+                <a href="#" class="nav-item" id="btn-users">
+                    <span class="icon material-symbols-outlined">group</span>
+                    Gestión de Usuarios
+                </a>
                 <a href="#" class="nav-item" id="btn-dossier">
                     <span class="icon material-symbols-outlined">description</span>
                     Dossier Técnico
@@ -270,6 +274,46 @@
                         <span style="display: flex; align-items: center; gap: 0.5rem;"><span style="width: 12px; height: 12px; background: var(--accent-gold); border-radius: 2px;"></span>Predicción ML</span>
                     </div>
                 </div>
+
+                <!-- Planificador de Siembra Basado en Demanda -->
+                <div class="siembra-planificador" style="margin-top: 3rem; background: rgba(195, 181, 159, 0.03); border: 1px solid rgba(195, 181, 159, 0.15); border-radius: 16px; padding: 2rem;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                        <span class="material-symbols-outlined" style="color: var(--accent-gold); font-size: 1.8rem;">agriculture</span>
+                        <h4 style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; margin: 0; color: #fff;">Planificador de Siembra Inteligente (Cortex ML)</h4>
+                    </div>
+                    <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; margin-bottom: 1.5rem;">
+                        Considerando el ciclo de incubación biológico de 18 días del hongo ostra, el motor Cortex ML calcula el stock óptimo que debe sembrarse esta semana para cubrir los despachos futuros estimados (desperdicio cero de economía circular):
+                    </p>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
+                        <!-- Métrica 1 -->
+                        <div style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.03); padding: 1.25rem; border-radius: 12px;">
+                            <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.25rem;">Demanda Estimada (3 Semanas)</div>
+                            <div style="font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--accent-gold);" id="demand-forecast-kg">245.8 kg</div>
+                            <span style="font-size: 0.72rem; color: #4e8261;">Setas frescas proyectadas</span>
+                        </div>
+                        
+                        <!-- Métrica 2 -->
+                        <div style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.03); padding: 1.25rem; border-radius: 12px;">
+                            <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.25rem;">Sustrato a Inocular Esta Semana</div>
+                            <div style="font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: #4e8261;" id="inoculation-bags-needed">123 Bloques</div>
+                            <span style="font-size: 0.72rem; color: var(--text-muted);">Equivale a 246 kg de sustrato</span>
+                        </div>
+
+                        <!-- Métrica 3 -->
+                        <div style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.03); padding: 1.25rem; border-radius: 12px;">
+                            <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.25rem;">Rendimiento Esperado (Eficiencia)</div>
+                            <div style="font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--text-primary);">100%</div>
+                            <span style="font-size: 0.72rem; color: #4e8261;">Eficiencia Biológica Ideal</span>
+                        </div>
+                    </div>
+
+                    <!-- Recomendación de Insumos -->
+                    <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.04); display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: #c8d5c4;">
+                        <span class="material-symbols-outlined" style="color: var(--accent-gold); font-size: 1.2rem;">info</span>
+                        <span>Insumos recomendados para mezcla: <strong>197 kg de Paja de Trigo/Avena</strong> y <strong>49 kg de Borra de Café</strong> (20%).</span>
+                    </div>
+                </div>
             </div>
 
             <!-- Vista Asignaciones Laborales y Tareas -->
@@ -386,6 +430,32 @@
             <!-- Vista Dossier Técnico (Protegido por login / admin) -->
             <div class="glass-card" id="view-dossier" style="display: none; padding: 2.5rem; margin-top: 2rem; border-radius: 20px; height: calc(100vh - 12rem); overflow: hidden;">
                 <iframe src="dossier.html" style="width: 100%; height: 100%; border: none; border-radius: 12px; background: transparent;"></iframe>
+            </div>
+
+            <!-- Vista Gestión de Usuarios -->
+            <div class="glass-card" id="view-users" style="display: none; padding: 2.5rem; margin-top: 2rem; border-radius: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <div>
+                        <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; font-weight: 600; color: var(--accent-gold); margin-bottom: 0.5rem;">Gestión de Usuarios</h2>
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">Asigna y administra los roles de los usuarios del sistema Micelia.</p>
+                    </div>
+                </div>
+                
+                <div class="table-container" style="overflow-x: auto; background: rgba(0,0,0,0.2); border-radius: 12px; border: 1px solid rgba(195,181,159,0.12);">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid rgba(195,181,159,0.2); color: var(--accent-gold);">
+                                <th style="padding: 1rem;">Nombre</th>
+                                <th style="padding: 1rem;">Correo Electrónico</th>
+                                <th style="padding: 1rem;">Rol Actual</th>
+                                <th style="padding: 1rem;">Acciones / Cambiar Rol</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body">
+                            <!-- Usuarios cargados dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </main>
     </div>

@@ -388,12 +388,14 @@ const btnDeliveries = document.getElementById("btn-deliveries");
 const btnTasks = document.getElementById("btn-tasks");
 const btnMlForecast = document.getElementById("btn-ml-forecast");
 const btnDossier = document.getElementById("btn-dossier");
+const btnUsers = document.getElementById("btn-users");
 
 const viewDashboard = document.getElementById("view-dashboard");
 const viewDeliveries = document.getElementById("view-deliveries");
 const viewTasks = document.getElementById("view-tasks");
 const viewMlForecast = document.getElementById("view-ml-forecast");
 const viewDossier = document.getElementById("view-dossier");
+const viewUsers = document.getElementById("view-users");
 
 function switchView(target) {
     viewDashboard.style.display = "none";
@@ -401,12 +403,14 @@ function switchView(target) {
     if (viewTasks) viewTasks.style.display = "none";
     viewMlForecast.style.display = "none";
     if (viewDossier) viewDossier.style.display = "none";
+    if (viewUsers) viewUsers.style.display = "none";
     
     btnDashboard.classList.remove("active");
     btnDeliveries.classList.remove("active");
     if (btnTasks) btnTasks.classList.remove("active");
     btnMlForecast.classList.remove("active");
     if (btnDossier) btnDossier.classList.remove("active");
+    if (btnUsers) btnUsers.classList.remove("active");
 
     if (target === "dashboard") {
         viewDashboard.style.display = "grid";
@@ -428,6 +432,12 @@ function switchView(target) {
             viewDossier.style.display = "block";
             btnDossier.classList.add("active");
         }
+    } else if (target === "users") {
+        if (viewUsers) {
+            viewUsers.style.display = "block";
+            btnUsers.classList.add("active");
+            loadAndRenderUsers();
+        }
     }
 }
 
@@ -436,6 +446,84 @@ btnDeliveries.addEventListener("click", (e) => { e.preventDefault(); switchView(
 if (btnTasks) btnTasks.addEventListener("click", (e) => { e.preventDefault(); switchView("tasks"); });
 btnMlForecast.addEventListener("click", (e) => { e.preventDefault(); switchView("ml-forecast"); });
 if (btnDossier) btnDossier.addEventListener("click", (e) => { e.preventDefault(); switchView("dossier"); });
+if (btnUsers) btnUsers.addEventListener("click", (e) => { e.preventDefault(); switchView("users"); });
+
+// Gestión de Usuarios en el Panel
+window.loadAndRenderUsers = function() {
+    const tableBody = document.getElementById("users-table-body");
+    if (!tableBody) return;
+    
+    let users = [];
+    const saved = localStorage.getItem("micelia_users");
+    if (saved) {
+        users = JSON.parse(saved);
+    }
+    
+    if (users.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="4" style="padding: 2rem; text-align: center; color: var(--text-muted);">No hay usuarios registrados.</td></tr>`;
+        return;
+    }
+    
+    let html = "";
+    users.forEach(u => {
+        const roleName = u.role === "operator" ? "Operador" : (u.role === "editor" ? "Editor de Contenidos" : "Cliente");
+        html += `
+            <tr style="border-bottom: 1px solid rgba(195,181,159,0.08); hover: background: rgba(255,255,255,0.02);">
+                <td style="padding: 1rem; color: var(--text-primary); font-weight: 500;">${u.name}</td>
+                <td style="padding: 1rem; color: var(--text-muted);">${u.email}</td>
+                <td style="padding: 1rem;">
+                    <span style="display: inline-block; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; 
+                        background: ${u.role === 'operator' ? 'rgba(74,140,66,0.15)' : (u.role === 'editor' ? 'rgba(195,181,159,0.15)' : 'rgba(255,255,255,0.05)')}; 
+                        color: ${u.role === 'operator' ? '#81c784' : (u.role === 'editor' ? '#c3b59f' : 'var(--text-muted)')};">
+                        ${roleName}
+                    </span>
+                </td>
+                <td style="padding: 1rem;">
+                    <select onchange="changeUserRole('${u.email}', this.value)" style="background: rgba(0,0,0,0.4); border: 1px solid rgba(195,181,159,0.2); border-radius: 6px; padding: 0.35rem 0.5rem; color: #fff; font-family: var(--font-sans); cursor: pointer; outline: none;">
+                        <option value="customer" ${u.role === "customer" ? "selected" : ""}>Cliente</option>
+                        <option value="editor" ${u.role === "editor" ? "selected" : ""}>Editor de Contenidos</option>
+                        <option value="operator" ${u.role === "operator" ? "selected" : ""}>Operador</option>
+                    </select>
+                </td>
+            </tr>
+        `;
+    });
+    tableBody.innerHTML = html;
+};
+
+window.changeUserRole = function(email, newRole) {
+    let users = [];
+    const saved = localStorage.getItem("micelia_users");
+    if (saved) {
+        users = JSON.parse(saved);
+    }
+    
+    users = users.map(u => {
+        if (u.email.toLowerCase() === email.toLowerCase()) {
+            u.role = newRole;
+        }
+        return u;
+    });
+    
+    localStorage.setItem("micelia_users", JSON.stringify(users));
+    
+    // Si modificó su propio rol, actualizar la sesión actual
+    const current = localStorage.getItem("micelia_current_user");
+    if (current) {
+        const parsed = JSON.parse(current);
+        if (parsed.email.toLowerCase() === email.toLowerCase()) {
+            parsed.role = newRole;
+            localStorage.setItem("micelia_current_user", JSON.stringify(parsed));
+            // Si el rol ya no es operator, sacarlo de admin.html
+            if (newRole !== "operator") {
+                alert("Tu rol ha cambiado. Serás redirigido a la página de inicio.");
+                window.location.href = "index.html";
+            }
+        }
+    }
+    
+    loadAndRenderUsers();
+};
 
 async function loadAdminOrders() {
     const tableBody = document.getElementById("admin-orders-table-body");
