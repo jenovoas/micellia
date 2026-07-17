@@ -21,7 +21,7 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     <!-- JS de la plataforma para sincronización de sesión y carrito -->
-    <script src="public.js?v=3" defer></script>
+    <script src="public.js?v=4" defer></script>
 
     <!-- MathJax for formulas -->
     <script>
@@ -58,6 +58,9 @@
             backdrop-filter: none !important;
             -webkit-backdrop-filter: none !important;
             box-shadow: none !important;
+        }
+        body.is-embedded #wa-bot-widget {
+            display: none !important;
         }
 
         /* Variables específicas del lector en armonía con public.css?v=2 */

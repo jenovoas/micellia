@@ -332,8 +332,8 @@
             btnNextText: "Continuar Inspección"
         },
         {
-            titulo: "🌾 Canales de Clientes y Gadgets de la Web",
-            mensaje: "Nuestra web incluye gadgets y herramientas para cada tipo de cliente: la **Suscripción B2B Restaurante HORECA ($25.000/mes)** que estabiliza ingresos, **Kits de Autocultivo Educativos ($12.000)** para colegios y familias, un visualizador de **Hábitos de Consumo e Inteligencia ML** para usuarios registrados, y herramientas de **Accesibilidad Universal (A11y)** para la tercera edad. Observa los precios en la tienda destacados en pantalla.",
+            titulo: "🌾 Soluciones a la Medida para Cada Cliente",
+            mensaje: "Nuestra web incluye **soluciones y herramientas adaptadas** a cada segmento de cliente: la **Suscripción B2B Restaurante HORECA ($25.000/mes)** para chefs, **Kits de Autocultivo Educativos ($12.000)** para colegios y familias, un panel inteligente de **Hábitos de Consumo ML** para optimización de cosechas, y opciones de **Accesibilidad (A11y)** para la tercera edad. Observa los formatos de venta destacados en pantalla.",
             accion: () => {
                 clearHighlights();
                 closeWhatsAppWidget();
