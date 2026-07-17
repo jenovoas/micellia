@@ -1,5 +1,5 @@
 /**
- * Micelia - Tour de Auditoría Técnica (IA) — Sercotec 2026
+ * Micelia - Tour Guiado Interactivo (IA) — Sercotec 2026
  * Script de automatización y guia interactiva en el frontend.
  */
 
@@ -259,7 +259,7 @@
     triggerBtn.innerHTML = `
         <div class="pulse-dot"></div>
         <span class="material-symbols-outlined">reviews</span>
-        Iniciar Auditoría Técnica (IA) — Sercotec 2026
+        Iniciar Tour Guiado (IA) — Sercotec 2026
     `;
     document.body.appendChild(triggerBtn);
 
@@ -271,7 +271,7 @@
     dialogBox.id = 'tour-dialog-box';
     dialogBox.innerHTML = `
         <div class="tour-header">
-            <h3><span class="material-symbols-outlined" style="font-size: 1.35rem;">neurology</span> Auditoría Sercotec IA</h3>
+            <h3><span class="material-symbols-outlined" style="font-size: 1.35rem;">neurology</span> Tour Sercotec IA</h3>
             <button class="tour-close-btn" id="tour-exit-btn">
                 <span class="material-symbols-outlined" style="font-size: 1.25rem;">close</span>
             </button>
@@ -307,14 +307,14 @@
     // Pasos del Recorrido Mejorado con mayor detalle técnico y automatizaciones
     const pasos = [
         {
-            titulo: "🤖 Auditoría Técnica Completa — Sercotec 2026",
-            mensaje: "¡Bienvenido! Soy el **Asistente Virtual de Auditoría** de Micelia. Hoy realizaremos una simulación automatizada en tiempo real de nuestra infraestructura digital. Descubrirás cómo conectamos sensores físicos, controlamos las cámaras de cultivo, procesamos transacciones criptográficas y asistimos a los clientes de forma 100% autónoma.",
+            titulo: "🤖 Tour Guiado Interactivo — Sercotec 2026",
+            mensaje: "¡Bienvenido! Soy el **Asistente Virtual de Guía** de Micelia. Hoy realizaremos una simulación automatizada en tiempo real de nuestra infraestructura digital. Descubrirás cómo conectamos sensores físicos, controlamos las cámaras de cultivo, procesamos transacciones criptográficas y asistimos a los clientes de forma 100% autónoma.",
             accion: () => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 clearHighlights();
                 closeWhatsAppWidget();
             },
-            btnNextText: "Comenzar Auditoría"
+            btnNextText: "Comenzar Tour"
         },
         {
             titulo: "⚙️ Core del Sistema: Cortex Daemon en Rust",
@@ -451,10 +451,10 @@
                 const event = new CustomEvent('triggerTruthSyncDemo');
                 window.dispatchEvent(event);
             },
-            btnNextText: "Finalizar Auditoría"
+            btnNextText: "Finalizar Tour"
         },
         {
-            titulo: "✅ Auditoría Completada Exitosamente",
+            titulo: "✅ Tour Completado Exitosamente",
             mensaje: "¡Felicidades! Hemos recorrido y validado el flujo tecnológico. Hemos demostrado la viabilidad de la regresión predictiva, el estándar de telemetría IoT S60, el enlazado del ledger TruthSync, y la estructura de costos. Este proyecto une a la perfección el impacto local con la alta tecnología digital. ¡Muchas gracias por tu evaluación!",
             accion: () => {
                 clearHighlights();
