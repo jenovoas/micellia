@@ -46,13 +46,13 @@
             100% { transform: scale(0.9); opacity: 0.5; }
         }
 
-        /* Panel Flotante de Diálogo (Botón Izquierdo, Rediseñado para Texto Mayor) */
+        /* Panel de evaluación */
         #tour-dialog-box {
             position: fixed;
             bottom: 24px;
             left: 24px;
             z-index: 10001;
-            width: 480px; /* Ampliado para descripciones enriquecidas */
+            width: 520px;
             max-width: calc(100vw - 48px);
             background: rgba(13, 34, 21, 0.98); /* Verde bosque con glassmorphism */
             border: 2px solid #c3b59f;
@@ -93,6 +93,24 @@
             align-items: center;
             gap: 10px;
         }
+        .tour-status {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-top: 6px;
+            color: #aeb9af;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        .tour-status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #72bd7e;
+            box-shadow: 0 0 10px #72bd7e;
+        }
         .tour-close-btn {
             background: transparent;
             border: none;
@@ -126,23 +144,71 @@
 
         /* Cuerpo del diálogo con textos legibles */
         .tour-body {
-            padding: 24px;
+            padding: 20px 24px 18px;
             flex-grow: 1;
+        }
+        .tour-kicker {
+            color: #aeb9af;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
         }
         .tour-step-title {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.35rem;
+            font-size: 1.45rem;
             color: #c3b59f;
             margin: 0 0 14px 0;
             line-height: 1.3;
         }
         .tour-message {
-            font-size: 1.15rem;
+            font-size: 1.02rem;
             color: #e2dfd5;
             line-height: 1.7;
             margin: 0;
-            min-height: 180px; /* Mayor espacio para explicaciones detalladas */
+            min-height: 122px;
         }
+        .tour-proof {
+            display: grid;
+            grid-template-columns: 30px 1fr;
+            gap: 10px;
+            margin-top: 17px;
+            padding: 13px;
+            border: 1px solid rgba(195, 181, 159, 0.2);
+            border-radius: 10px;
+            background: linear-gradient(120deg, rgba(195, 181, 159, 0.12), rgba(255, 255, 255, 0.025));
+        }
+        .tour-proof .material-symbols-outlined {
+            color: #c3b59f;
+            font-size: 1.3rem;
+        }
+        .tour-proof-label {
+            color: #c3b59f;
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        .tour-proof-text {
+            margin-top: 3px;
+            color: #f5f2eb;
+            font-size: 0.86rem;
+            line-height: 1.45;
+        }
+        .tour-stage-rail {
+            display: flex;
+            gap: 5px;
+            padding: 14px 24px 0;
+        }
+        .tour-stage-dot {
+            height: 4px;
+            flex: 1;
+            border-radius: 99px;
+            background: rgba(255, 255, 255, 0.12);
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+        .tour-stage-dot.complete { background: #c3b59f; }
+        .tour-stage-dot.current { background: #72bd7e; transform: scaleY(1.5); }
         .tour-message strong {
             color: #c3b59f;
             font-weight: 600;
@@ -161,6 +227,11 @@
             font-size: 0.9rem;
             color: #a09f98;
             font-family: monospace;
+        }
+        .tour-shortcuts {
+            padding: 0 24px 15px;
+            color: #777e78;
+            font-size: 0.7rem;
         }
         .tour-buttons {
             display: flex;
@@ -250,6 +321,27 @@
             pointer-events: auto;
             opacity: 1;
         }
+        @media (max-width: 640px) {
+            #tour-trigger-btn {
+                right: 1rem;
+                bottom: 5.6rem;
+                padding: 13px 18px;
+                font-size: 0.9rem;
+            }
+            #tour-dialog-box {
+                left: 12px;
+                bottom: 12px;
+                max-width: calc(100vw - 24px);
+                max-height: calc(100dvh - 24px);
+                overflow-y: auto;
+            }
+            .tour-header, .tour-body { padding-left: 18px; padding-right: 18px; }
+            .tour-stage-rail, .tour-shortcuts { padding-left: 18px; padding-right: 18px; }
+            .tour-footer { padding: 14px 18px; }
+            .tour-message { min-height: 0; font-size: 0.95rem; line-height: 1.55; }
+            .tour-shortcuts { display: none; }
+            .tour-btn { padding: 9px 12px; font-size: 0.82rem; }
+        }
     `;
     document.head.appendChild(style);
 
@@ -271,7 +363,10 @@
     dialogBox.id = 'tour-dialog-box';
     dialogBox.innerHTML = `
         <div class="tour-header">
-            <h3><span class="material-symbols-outlined" style="font-size: 1.35rem;">neurology</span> Tour Sercotec IA</h3>
+            <div>
+                <h3><span class="material-symbols-outlined" style="font-size: 1.35rem;">neurology</span> Tour Sercotec</h3>
+                <div class="tour-status"><span class="tour-status-dot"></span> Demostración guiada</div>
+            </div>
             <button class="tour-close-btn" id="tour-exit-btn">
                 <span class="material-symbols-outlined" style="font-size: 1.25rem;">close</span>
             </button>
@@ -279,10 +374,20 @@
         <div class="tour-progress-bar-container">
             <div class="tour-progress-bar" id="tour-progress-fill"></div>
         </div>
+        <div class="tour-stage-rail" id="tour-stage-rail" aria-label="Progreso del tour"></div>
         <div class="tour-body">
+            <div class="tour-kicker" id="tour-step-category-text">Visión general</div>
             <h4 class="tour-step-title" id="tour-step-title-text">Paso</h4>
-            <p class="tour-message" id="tour-message-text">Mensaje</p>
+            <p class="tour-message" id="tour-message-text" aria-live="polite">Mensaje</p>
+            <div class="tour-proof">
+                <span class="material-symbols-outlined">verified</span>
+                <div>
+                    <div class="tour-proof-label">Evidencia en pantalla</div>
+                    <div class="tour-proof-text" id="tour-proof-text">Indicador</div>
+                </div>
+            </div>
         </div>
+        <div class="tour-shortcuts">Usa <strong>flechas</strong> para avanzar o retroceder. <strong>Esc</strong> para salir.</div>
         <div class="tour-footer">
             <span class="tour-step-count" id="tour-step-count-text">0 de 0</span>
             <div class="tour-buttons">
@@ -377,15 +482,22 @@
             btnNextText: "Continuar Inspección"
         },
         {
-            titulo: "🔬 Sensores Físicos e Ingeniería Microclimática",
-            mensaje: "La automatización de nuestras cámaras de cultivo se basa en hardware de grado industrial: el **Sensirion SHT31** (temperatura y humedad, inmune a condensación por rocío al 99% HR) y el **MH-Z19B** (sensor infrarrojo NDIR para CO₂). Estos sensores envían ráfagas TCP constantes al Cortex Daemon para encender ventiladores y nebulizadores automáticamente y proteger la morfología fúngica.",
+            titulo: "🔬 Sensores Físicos y Control Microclimático",
+            mensaje: "Esta publicación explica los sensores instalados en la cámara: el **SHT31** registra temperatura y humedad, y el sensor de **CO₂** detecta la acumulación producida por el cultivo. El ESP32 envía estas lecturas al Cortex Daemon para que el productor pueda revisar el ambiente y actuar antes de que la calidad de las setas se vea afectada.",
             accion: () => {
                 clearHighlights();
                 closeWhatsAppWidget();
-                
-                const pathSection = document.getElementById('camino-micelia');
-                if (pathSection) {
-                    pathSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                const artModal = document.getElementById("article-modal");
+                const artContent = document.getElementById("article-content");
+                if (artModal && artContent) {
+                    artModal.classList.add("tour-active-modal");
+                    artContent.innerHTML = `
+                        <div class="article-content-body" style="height: 100%; margin: 0; padding: 0; display: flex; flex-direction: column;">
+                            <iframe src="view_doc.html?v=${Date.now()}&file=docs/tecnologia_sensores_cultivo.md&title=Sensores%20de%20la%20Camara" style="width: 100%; flex-grow: 1; height: 100%; border: none; border-radius: 12px; background: transparent;"></iframe>
+                        </div>
+                    `;
+                    artModal.classList.add("open");
                 }
             },
             btnNextText: "Continuar Inspección"
@@ -449,6 +561,13 @@
             accion: () => {
                 clearHighlights();
                 closeWhatsAppWidget();
+
+                // Cerrar el modal anterior (admin/despachos) antes de abrir el nuevo
+                const artModalPrev = document.getElementById("article-modal");
+                if (artModalPrev) {
+                    artModalPrev.classList.remove("open");
+                    artModalPrev.classList.remove("tour-active-modal");
+                }
                 
                 const pathSection = document.getElementById('camino-micelia');
                 if (pathSection) {
@@ -566,6 +685,21 @@
         }
     ];
 
+    const evidenciaPorPaso = [
+        { categoria: "Visión de negocio", texto: "Ruta de evaluación: producción local, venta digital y trazabilidad." },
+        { categoria: "Capacidad tecnológica", texto: "Cortex centraliza telemetría, operación y proyección de demanda." },
+        { categoria: "Mercado y clientes", texto: "Formatos comerciales visibles: HORECA, autocultivo y venta directa." },
+        { categoria: "Inclusión comercial", texto: "Flujo WhatsApp simplificado para pedidos del Pack Adulto Mayor." },
+        { categoria: "Producción inteligente", texto: "Artículo publicado: sensores, ESP32 y lectura de condiciones de la cámara." },
+        { categoria: "Gestión operativa", texto: "Panel del productor: telemetría, tareas y planificación en una sola vista." },
+        { categoria: "Logística", texto: "Despachos con estados operativos y registro de cada actualización en el ledger." },
+        { categoria: "Calidad verificable", texto: "Rangos saludables: 85%-95% HR, CO2 menor a 900 ppm y 18-22 C." },
+        { categoria: "Viabilidad", texto: "Estructura de costos y punto de equilibrio como base para escalar con control." },
+        { categoria: "Confianza", texto: "Cada cambio de pedido se vincula a un hash SHA256 en TruthSync." },
+        { categoria: "Trazabilidad completa", texto: "El cliente accede a su pasaporte de cosecha con historial microclimático inmutable." },
+        { categoria: "Cierre", texto: "Modelo integrado: alimento local, operación medible y experiencia de cliente digital." }
+    ];
+
     // Funciones del Tour
     function clearHighlights() {
         const highlighted = document.querySelectorAll('.tour-highlight');
@@ -641,6 +775,9 @@
         backdrop.classList.add('active');
         dialogBox.classList.add('active');
         triggerBtn.style.display = 'none';
+        document.getElementById('tour-stage-rail').innerHTML = pasos.map((_, index) =>
+            `<span class="tour-stage-dot" data-step="${index}"></span>`
+        ).join('');
         renderStep();
     }
 
@@ -672,12 +809,15 @@
         }
 
         const step = pasos[currentStep];
+        const evidencia = evidenciaPorPaso[currentStep];
         
         // Ejecutar acción del paso (scrolls, highlights, aperturas)
         step.accion();
 
         // Actualizar interfaz del diálogo
         document.getElementById('tour-step-title-text').textContent = step.titulo;
+        document.getElementById('tour-step-category-text').textContent = evidencia.categoria;
+        document.getElementById('tour-proof-text').textContent = evidencia.texto;
         
         // Barra de progreso y contador
         const progressFill = document.getElementById('tour-progress-fill');
@@ -685,6 +825,11 @@
             const percent = (currentStep / (pasos.length - 1)) * 100;
             progressFill.style.width = `${percent}%`;
         }
+
+        document.querySelectorAll('.tour-stage-dot').forEach((dot, index) => {
+            dot.classList.toggle('complete', index < currentStep);
+            dot.classList.toggle('current', index === currentStep);
+        });
 
         const countText = document.getElementById('tour-step-count-text');
         if (countText) {
@@ -740,6 +885,20 @@
             }
         });
     }
+
+    document.addEventListener('keydown', (event) => {
+        if (!isTourActive || event.altKey || event.ctrlKey || event.metaKey) return;
+        if (event.key === 'Escape') {
+            exitTour();
+        } else if (event.key === 'ArrowRight' || event.key === ' ') {
+            event.preventDefault();
+            handleNext();
+        } else if (event.key === 'ArrowLeft' && currentStep > 0) {
+            event.preventDefault();
+            currentStep--;
+            renderStep();
+        }
+    });
 
     // Registrar Evento Criptográfico del Paso 5 (TruthSync Demo Event)
     window.addEventListener('triggerTruthSyncDemo', () => {

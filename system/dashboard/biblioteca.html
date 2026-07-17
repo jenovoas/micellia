@@ -586,6 +586,15 @@
                 file: 'docs/telemetria_s60.md'
             },
             {
+                id: 'tecnologia_sensores_cultivo',
+                title: 'Los Sensores de la Cámara: Cómo Micelia Cuida Cada Cosecha',
+                excerpt: 'Conoce los sensores que miden temperatura, humedad y CO2 en la cámara de cultivo, y cómo sus datos ayudan a proteger la calidad de cada lote.',
+                tag: 'Tecnología',
+                image: 'sensor_humedad_cultivo.png',
+                readTime: '5 min',
+                file: 'docs/tecnologia_sensores_cultivo.md'
+            },
+            {
                 id: 'cortex_daemon',
                 title: 'Cortex Daemon: El Backend de Telemetría Multihilo en Rust',
                 excerpt: 'Conexión de sensores por Sockets TCP asíncronos, WebSockets bidireccionales en el puerto 8080 y la integración nativa de Machine Learning con Rust y PyO3.',
@@ -798,7 +807,7 @@
                 title: 'Soberanía y Seguridad Alimentaria en Tiempos de Cambio Climático',
                 excerpt: 'El potencial de la fungicultura como fuente resiliente de nutrientes de rápido crecimiento, con bajísima huella hídrica y eficiencia de espacio vertical.',
                 tag: 'Sostenibilidad',
-                image: 'oyster_mushrooms.png',
+                image: 'substrate_bags.png',
                 readTime: '6 min',
                 file: 'docs/sost_seguridad_alimentaria.md'
             },
@@ -807,7 +816,7 @@
                 title: 'Provincia de Arauco: Desafíos, Geografía y el Potencial de la Fungicultura',
                 excerpt: 'Análisis geográfico y socioeconómico sobre cómo la producción sostenible de hongos ostra impulsa la soberanía alimentaria en la Provincia de Arauco.',
                 tag: 'Sostenibilidad',
-                image: 'oyster_mushrooms.png',
+                image: 'hongos_bosque_ecologia.png',
                 readTime: '8 min',
                 file: 'docs/sost_provincia_arauco.md'
             }
@@ -815,8 +824,51 @@
 
         let ARTICLES = [];
         const savedArticles = localStorage.getItem("micelia_library_articles");
+        const imageMigrations = {
+            sost_seguridad_alimentaria: {
+                from: 'oyster_mushrooms.png',
+                to: 'substrate_bags.png'
+            },
+            sost_provincia_arauco: {
+                from: 'oyster_mushrooms.png',
+                to: 'hongos_bosque_ecologia.png'
+            },
+            tecnologia_sensores_cultivo: {
+                from: 'sensores_camara_micelia.svg',
+                to: 'sensor_humedad_cultivo.png'
+            }
+        };
+
         if (savedArticles) {
-            ARTICLES = JSON.parse(savedArticles);
+            try {
+                ARTICLES = JSON.parse(savedArticles);
+                let wasMigrated = false;
+
+                ARTICLES = ARTICLES.map(article => {
+                    const migration = imageMigrations[article.id];
+                    if (migration && article.image === migration.from) {
+                        wasMigrated = true;
+                        return { ...article, image: migration.to };
+                    }
+                    return article;
+                });
+
+                // Keep locally created articles while adding publications released after the first visit.
+                const knownIds = new Set(ARTICLES.map(article => article.id));
+                const missingDefaults = DEFAULT_ARTICLES.filter(article => !knownIds.has(article.id));
+                if (missingDefaults.length > 0) {
+                    ARTICLES.push(...missingDefaults);
+                    wasMigrated = true;
+                }
+
+                if (wasMigrated) {
+                    localStorage.setItem("micelia_library_articles", JSON.stringify(ARTICLES));
+                }
+            } catch (error) {
+                console.warn("No se pudo leer la Biblioteca guardada; se restauró el catálogo publicado.", error);
+                ARTICLES = [...DEFAULT_ARTICLES];
+                localStorage.setItem("micelia_library_articles", JSON.stringify(ARTICLES));
+            }
         } else {
             ARTICLES = [...DEFAULT_ARTICLES];
             localStorage.setItem("micelia_library_articles", JSON.stringify(ARTICLES));

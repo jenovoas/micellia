@@ -4,7 +4,7 @@
 
 ---
 
-![Setas de hongo ostra frescas creciendo en Arauco](oyster_mushrooms.png)
+![Setas creciendo en el bosque nativo de Arauco](hongos_bosque_ecologia.png)
 
 La Provincia de Arauco, ubicada en la Región del Biobío, posee una geografía única caracterizada por una extensa franja costera, valles fértiles y la cordillera de Nahuelbuta. Históricamente dependiente de la actividad forestal, pesquera y agrícola, la zona enfrenta importantes desafíos ecológicos y socioeconómicos que abren paso a la innovación biotecnológica.
 

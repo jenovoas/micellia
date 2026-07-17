@@ -18,4 +18,5 @@ build-seo:
 deploy:
 	ssh fan "mkdir -p ~/micellia"
 	rsync -avz --exclude 'target' --exclude '.git' --exclude '.cargo' --exclude '.github' ./ fan:~/micellia/
+	rsync -avz dashboard/ fan:/var/www/micelia.cl/dashboard/
 	ssh fan "cd ~/micellia && PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1 ~/.cargo/bin/cargo build --release"

@@ -144,10 +144,12 @@
                 });
             }
 
-            // Iniciar video manualmente si falló el autoplay
+            // A browser gesture is required before autoplayed media can use audio.
             startBtn.addEventListener('click', () => {
                 startBtn.style.display = 'none';
                 video.style.display = 'block';
+                video.muted = false;
+                video.currentTime = 0;
                 video.play().catch(e => console.error("Error reproduciendo intro:", e));
             });
 
@@ -915,7 +917,7 @@
 
     <!-- Scripts de la Landing Page -->
     <script src="public.js?v=4"></script>
-    <script src="tour.js?v=2"></script>
+    <script src="tour.js?v=3"></script>
 </body>
 
 </html>

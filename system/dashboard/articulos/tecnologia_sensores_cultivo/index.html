@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Los Sensores de la Cámara: Cómo Micelia Cuida Cada Cosecha · Micelia</title>
+    <meta name="description" content="Categoría: Tecnología de Cultivo · Tiempo de lectura: 5 min Una cámara de cultivo no se controla por intuición. En Micelia, los sensores registran las cond…">
+    <link rel="canonical" href="https://pinguinoseguro.cl/micelia/articulos/tecnologia_sensores_cultivo/">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="es_CL">
+    <meta property="og:site_name" content="Micelia">
+    <meta property="og:title" content="Los Sensores de la Cámara: Cómo Micelia Cuida Cada Cosecha">
+    <meta property="og:description" content="Categoría: Tecnología de Cultivo · Tiempo de lectura: 5 min Una cámara de cultivo no se controla por intuición. En Micelia, los sensores registran las cond…">
+    <meta property="og:url" content="https://pinguinoseguro.cl/micelia/articulos/tecnologia_sensores_cultivo/">
+    <link rel="stylesheet" href="/micelia/public.css?v=2">
+    <style>
+        .seo-article { max-width: 880px; margin: 0 auto; padding: 7rem 1.5rem 4rem; }
+        .seo-article__meta { color: var(--accent-green-light); font-size: .9rem; }
+        .seo-article .prose { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 2.5rem; line-height: 1.8; }
+        .seo-article figure { margin: 2rem 0; }
+        .seo-article figure img { width: 100%; border-radius: 14px; }
+        .seo-article pre { white-space: pre-wrap; overflow-wrap: anywhere; padding: 1rem; border-radius: 10px; background: rgba(0,0,0,.3); }
+        .seo-article a { color: var(--accent-gold); }
+    </style>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Los Sensores de la Cámara: Cómo Micelia Cuida Cada Cosecha","description":"Categoría: Tecnología de Cultivo · Tiempo de lectura: 5 min Una cámara de cultivo no se controla por intuición. En Micelia, los sensores registran las cond…","inLanguage":"es-CL","publisher":{"@type":"Organization","name":"Micelia","url":"https://pinguinoseguro.cl/micelia"},"mainEntityOfPage":"https://pinguinoseguro.cl/micelia/articulos/tecnologia_sensores_cultivo/"}</script>
+</head>
+<body>
+    <main class="seo-article">
+        <p><a href="/micelia/biblioteca.html">← Biblioteca Micelia</a></p>
+        <p class="seo-article__meta">Tecnología de Cultivo</p>
+        <article class="prose"><h1>Los Sensores de la Cámara: Cómo Micelia Cuida Cada Cosecha</h1>
+<p><em>Categoría: Tecnología de Cultivo · Tiempo de lectura: 5 min</em></p>
+<figure><img src="/micelia/sensor_humedad_cultivo.png" alt="Sensores de temperatura, humedad y CO2 en una cámara de cultivo Micelia" loading="lazy"> </figure>
+<p>Una cámara de cultivo no se controla por intuición. En Micelia, los sensores registran las condiciones del ambiente para que cada lote de hongo ostra crezca en el rango que necesita: <strong>humedad de 85% a 95%</strong>, <strong>CO2 bajo 900 ppm</strong> y <strong>temperatura entre 18 C y 22 C</strong> durante la fructificación.</p>
+<h2>Dos sensores, tres datos esenciales</h2>
+<p>El sistema reúne dos fuentes de información dentro de la cámara:</p>
+<ul><li><strong>Sensirion SHT31</strong>: mide la temperatura y la humedad relativa del aire.</li><li><strong>Sensor de CO2</strong>: registra la concentración de dióxido de carbono que se acumula por la respiración natural del cultivo.</li></ul>
+<p>Estas variables permiten detectar a tiempo un ambiente demasiado seco, caluroso o con poca renovación de aire. No se trata solo de comodidad: una desviación sostenida puede afectar el tamaño, la textura y la apariencia comercial de las setas.</p>
+<h2>Del sensor a una decisión de cultivo</h2>
+<p>Cada lectura llega primero al <strong>ESP32</strong>, el equipo electrónico instalado en la cámara. Desde allí, se envía por la red local al Cortex Daemon de Micelia, que procesa la información y la presenta en el panel del productor.</p>
+<pre><code>Sensores de temperatura, humedad y CO2
+                ↓
+             ESP32
+                ↓
+       Cortex Daemon de Micelia
+                ↓
+  Alertas y panel de control del productor</code></pre>
+<p>Cuando un valor se sale del rango saludable, el equipo puede revisar la situación y actuar sobre la ventilación, humidificación o climatización de la sala. El objetivo es reaccionar antes de que el cultivo pierda calidad.</p>
+<h2>Por qué el CO2 importa tanto</h2>
+<p>El micelio libera CO2 mientras crece. En la etapa de fructificación, una concentración elevada puede producir setas con pie largo, fibroso y sombrero pequeño. Por eso el sistema destaca las lecturas bajo <strong>900 ppm</strong>: es una señal práctica para mantener una buena renovación de aire y proteger la forma característica del hongo ostra.</p>
+<h2>Datos para aprender y mejorar</h2>
+<p>Las lecturas no se descartan después de activar una alerta. Micelia las procesa con el estándar interno <strong>Yatra S60</strong>, que organiza el historial de telemetría para revisar ciclos de cultivo y tomar decisiones con evidencia. Así, cada cosecha ayuda a mejorar la siguiente.</p>
+<p><em>Este monitoreo forma parte de la arquitectura de cultivo técnico de Micelia en Curanilahue, Región del Biobío.</em></p></article>
+    </main>
+</body>
+</html>
