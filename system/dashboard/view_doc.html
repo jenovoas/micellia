@@ -347,11 +347,244 @@
                 box-sizing: border-box;
             }
         }
+
+        /* BARRA DE PROGRESO DE LECTURA */
+        .progress-container {
+            position: fixed;
+            top: 70px; /* justo debajo del navbar que mide 70px */
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.05);
+            z-index: 999;
+        }
+        .progress-bar {
+            height: 100%;
+            background: var(--accent-gold);
+            width: 0%;
+            transition: width 0.1s ease-out;
+        }
+
+        /* REPRODUCTOR DE VOZ EN OFF (ACCESIBILIDAD) */
+        .audio-control-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(12, 25, 15, 0.55);
+            border: 1px solid var(--border-reader);
+            padding: 0.65rem 1.25rem;
+            border-radius: 12px;
+            margin-bottom: 1.75rem;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+        .audio-control-bar:hover {
+            border-color: rgba(195, 181, 159, 0.25);
+        }
+        .audio-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: #c8d5c4;
+            font-family: var(--font-sans);
+        }
+        .audio-buttons {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .audio-btn {
+            background: transparent;
+            border: 1px solid rgba(195, 181, 159, 0.2);
+            color: var(--accent-gold);
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .audio-btn:hover {
+            background: var(--accent-gold);
+            color: #0c190f;
+            border-color: var(--accent-gold);
+            transform: translateY(-1px);
+        }
+        .audio-btn.speaking {
+            background: #4a8c42;
+            border-color: #4a8c42;
+            color: #fff;
+        }
+
+        /* ACORDEONES INTERACTIVOS (FAQ) */
+        .faq-accordion-group {
+            margin: 2.5rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .faq-item {
+            border: 1px solid rgba(195, 181, 159, 0.1);
+            background: rgba(255, 255, 255, 0.01);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .faq-item:hover {
+            border-color: rgba(195, 181, 159, 0.3);
+            background: rgba(255, 255, 255, 0.03);
+            transform: translateY(-1px);
+        }
+        .faq-trigger {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 1.5rem;
+            color: var(--accent-gold);
+            font-weight: 600;
+            font-size: 1.05rem;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.3s;
+        }
+        .faq-trigger:hover {
+            background: rgba(195, 181, 159, 0.02);
+        }
+        .faq-trigger h4 {
+            margin: 0 !important;
+            border: none !important;
+            padding: 0 !important;
+            font-size: 1.05rem !important;
+            color: var(--accent-gold) !important;
+        }
+        .faq-trigger .material-symbols-outlined {
+            transition: transform 0.3s ease;
+            color: var(--accent-gold);
+            font-size: 1.3rem;
+        }
+        .faq-item.active {
+            border-color: rgba(195, 181, 159, 0.4);
+            background: rgba(12, 25, 15, 0.4);
+        }
+        .faq-item.active .faq-trigger .material-symbols-outlined {
+            transform: rotate(180deg);
+        }
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), padding 0.35s ease;
+            padding: 0 1.5rem;
+        }
+        .faq-item.active .faq-content {
+            padding: 1.25rem 1.5rem;
+            border-top: 1px solid rgba(195, 181, 159, 0.08);
+        }
+        .faq-content p {
+            margin: 0 !important;
+            color: #c8d5c4 !important;
+            font-size: 0.98rem !important;
+            line-height: 1.75 !important;
+        }
+
+        /* TARJETA INTERACTIVA DE APRENDIZAJE */
+        .learning-card {
+            background: linear-gradient(135deg, rgba(12, 25, 15, 0.98) 0%, rgba(20, 38, 24, 0.98) 100%);
+            border: 1px solid rgba(195, 181, 159, 0.25);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+            border-radius: 16px;
+            padding: 1.75rem 2rem;
+            margin: 3rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .learning-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent-gold);
+        }
+        .learning-card h3 {
+            margin-top: 0 !important;
+            color: var(--accent-gold) !important;
+            font-size: 1.15rem !important;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            border: none !important;
+            padding-bottom: 0.5rem !important;
+        }
+        .learning-card h3 .material-symbols-outlined {
+            color: var(--accent-gold);
+        }
+        .learning-card ul {
+            list-style: none !important;
+            margin: 1rem 0 0 0 !important;
+            padding: 0 !important;
+        }
+        .learning-card li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.85rem;
+            padding: 0.85rem 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            user-select: none;
+            border-radius: 6px;
+            transition: all 0.25s;
+        }
+        .learning-card li:last-child {
+            border-bottom: none;
+        }
+        .learning-card li:hover {
+            background: rgba(195, 181, 159, 0.03);
+        }
+        .learning-card li.completed {
+            opacity: 0.55;
+        }
+        .learning-card li.completed p {
+            text-decoration: line-through;
+            color: var(--text-muted) !important;
+        }
+        .learning-card .checkbox-icon {
+            color: var(--accent-gold);
+            font-size: 1.3rem;
+            transition: transform 0.2s, color 0.2s;
+        }
+        .learning-card li.completed .checkbox-icon {
+            color: var(--accent-green-light);
+        }
+        .learning-card p {
+            margin: 0 !important;
+            font-size: 0.95rem !important;
+            line-height: 1.5 !important;
+            color: #c8d5c4 !important;
+        }
+
+        /* ANIMACIÓN DE ENTRADA SCROLL */
+        .reveal-item {
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+        .reveal-item.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body>
 
     <div id="canvas-container"></div>
+    <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
 
     <!-- Navbar Superior Unificada -->
     <nav class="navbar">
@@ -383,10 +616,28 @@
 
     <!-- Article -->
     <div class="article-wrapper">
-        <!-- Indicador de Categoría -->
-        <div style="margin-bottom: 1.5rem;">
-            <span class="doc-category" id="doc-category" style="display: inline-block; font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-green-light); background: rgba(74, 140, 66, 0.1); border: 1px solid rgba(74, 140, 66, 0.2); padding: 0.3rem 0.8rem; border-radius: 20px;">Cargando...</span>
+        <!-- Barra de Utilidades de Lector -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; gap: 1rem; flex-wrap: wrap;">
+            <span class="doc-category" id="doc-category">Cargando...</span>
+            
+            <!-- Botón de voz en off (Accesibilidad) -->
+            <div class="audio-control-bar" id="audio-control-bar" style="margin-bottom: 0; padding: 0.35rem 0.75rem;">
+                <div class="audio-info">
+                    <span class="material-symbols-outlined" style="font-size:1.1rem; color: var(--accent-gold);">hearing</span>
+                    <span id="audio-status-text" style="font-size:0.75rem;">Modo lectura disponible</span>
+                </div>
+                <div class="audio-buttons" style="margin-left: 0.75rem;">
+                    <button class="audio-btn" id="audio-play-btn" title="Escuchar artículo">
+                        <span class="material-symbols-outlined" id="play-icon" style="font-size:1rem;">play_arrow</span>
+                        <span id="play-text">Escuchar</span>
+                    </button>
+                    <button class="audio-btn" id="audio-stop-btn" title="Detener lectura" style="display:none; padding: 0.35rem;">
+                        <span class="material-symbols-outlined" style="font-size:1rem;">stop</span>
+                    </button>
+                </div>
+            </div>
         </div>
+
         <div id="loading" class="loading">
             <div class="loading-spinner"></div>
             <p>Cargando artículo...</p>
@@ -433,6 +684,123 @@
             showError(`No se pudo cargar el documento: ${err.message}`);
         }
     }
+
+    // SPEECH SYNTHESIS LOGIC (TEXT-TO-SPEECH FOR ELDER ACCESSIBILITY)
+    let currentUtterance = null;
+    let isSpeaking = false;
+    let isPaused = false;
+    let speechText = "";
+
+    function initSpeechSynthesis() {
+        const playBtn = document.getElementById('audio-play-btn');
+        const stopBtn = document.getElementById('audio-stop-btn');
+        const statusText = document.getElementById('audio-status-text');
+        const playIcon = document.getElementById('play-icon');
+        const playText = document.getElementById('play-text');
+
+        if (!('speechSynthesis' in window)) {
+            document.getElementById('audio-control-bar').style.display = 'none';
+            return;
+        }
+
+        playBtn.addEventListener('click', () => {
+            if (!isSpeaking) {
+                // Start speaking
+                startSpeaking();
+            } else if (isSpeaking && !isPaused) {
+                // Pause
+                window.speechSynthesis.pause();
+                isPaused = true;
+                playIcon.textContent = 'play_arrow';
+                playText.textContent = 'Reanudar';
+                statusText.textContent = 'Lectura pausada';
+                playBtn.classList.remove('speaking');
+            } else if (isSpeaking && isPaused) {
+                // Resume
+                window.speechSynthesis.resume();
+                isPaused = false;
+                playIcon.textContent = 'pause';
+                playText.textContent = 'Pausar';
+                statusText.textContent = 'Leyendo artículo...';
+                playBtn.classList.add('speaking');
+            }
+        });
+
+        stopBtn.addEventListener('click', () => {
+            stopSpeaking();
+        });
+    }
+
+    function startSpeaking() {
+        const playBtn = document.getElementById('audio-play-btn');
+        const stopBtn = document.getElementById('audio-stop-btn');
+        const statusText = document.getElementById('audio-status-text');
+        const playIcon = document.getElementById('play-icon');
+        const playText = document.getElementById('play-text');
+
+        // Cancel previous speakings
+        window.speechSynthesis.cancel();
+
+        // Extract clean text to speak
+        const article = document.getElementById('article-content');
+        // Get text ignoring headers that are metadata, links or visual badges
+        const paragraphs = Array.from(article.querySelectorAll('p, li, h2, h3'))
+            .map(el => el.textContent)
+            .join('. ');
+
+        speechText = paragraphs;
+
+        if (!speechText.trim()) return;
+
+        currentUtterance = new SpeechSynthesisUtterance(speechText);
+        currentUtterance.lang = 'es-CL'; // Chilean spanish accent if available
+        currentUtterance.rate = 0.95; // slightly slower for accessibility
+
+        currentUtterance.onstart = () => {
+            isSpeaking = true;
+            isPaused = false;
+            playIcon.textContent = 'pause';
+            playText.textContent = 'Pausar';
+            statusText.textContent = 'Leyendo artículo...';
+            playBtn.classList.add('speaking');
+            stopBtn.style.display = 'flex';
+        };
+
+        currentUtterance.onend = () => {
+            stopSpeaking();
+        };
+
+        currentUtterance.onerror = () => {
+            stopSpeaking();
+        };
+
+        window.speechSynthesis.speak(currentUtterance);
+    }
+
+    function stopSpeaking() {
+        window.speechSynthesis.cancel();
+        isSpeaking = false;
+        isPaused = false;
+        
+        const playBtn = document.getElementById('audio-play-btn');
+        const stopBtn = document.getElementById('audio-stop-btn');
+        const statusText = document.getElementById('audio-status-text');
+        const playIcon = document.getElementById('play-icon');
+        const playText = document.getElementById('play-text');
+
+        playIcon.textContent = 'play_arrow';
+        playText.textContent = 'Escuchar';
+        statusText.textContent = 'Modo lectura disponible';
+        playBtn.classList.remove('speaking');
+        stopBtn.style.display = 'none';
+    }
+
+    // Stop speaking when leaving page
+    window.addEventListener('beforeunload', () => {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+        }
+    });
 
     function renderMarkdown(md) {
         // Extract first line (title) and second line (meta)
@@ -494,6 +862,141 @@
             }
         });
 
+        // =====================================================================
+        // POST-PROCESADO: ACORDEONES INTERACTIVOS PARA FAQ
+        // =====================================================================
+        // Buscamos si hay un título de Preguntas Frecuentes
+        const faqHeaders = Array.from(article.querySelectorAll('h2, h3')).filter(el => 
+            el.textContent.toLowerCase().includes('preguntas frecuentes')
+        );
+
+        faqHeaders.forEach(faqHeader => {
+            const faqGroup = document.createElement('div');
+            faqGroup.className = 'faq-accordion-group';
+            
+            // Recoger todas las preguntas (h4) y sus respuestas (p) consecutivas
+            let current = faqHeader.nextElementSibling;
+            const toRemove = [];
+            
+            while (current && current.tagName !== 'H2' && current.tagName !== 'H3' && current.tagName !== 'HR') {
+                if (current.tagName === 'H4') {
+                    const questionText = current.innerHTML;
+                    const nextEl = current.nextElementSibling;
+                    
+                    if (nextEl && nextEl.tagName === 'P') {
+                        const answerHtml = nextEl.innerHTML;
+                        
+                        // Crear item acordeón
+                        const faqItem = document.createElement('div');
+                        faqItem.className = 'faq-item';
+                        faqItem.innerHTML = `
+                            <div class="faq-trigger">
+                                <h4>${questionText}</h4>
+                                <span class="material-symbols-outlined">expand_more</span>
+                            </div>
+                            <div class="faq-content">
+                                <p>${answerHtml}</p>
+                            </div>
+                        `;
+                        
+                        // Toggle click logic
+                        faqItem.querySelector('.faq-trigger').addEventListener('click', () => {
+                            const isActive = faqItem.classList.contains('active');
+                            
+                            // Close all other FAQ items in this group
+                            faqGroup.querySelectorAll('.faq-item').forEach(item => {
+                                item.classList.remove('active');
+                                item.querySelector('.faq-content').style.maxHeight = null;
+                            });
+                            
+                            if (!isActive) {
+                                faqItem.classList.add('active');
+                                const content = faqItem.querySelector('.faq-content');
+                                content.style.maxHeight = content.scrollHeight + 32 + "px"; // scrollHeight + padding
+                            }
+                        });
+                        
+                        faqGroup.appendChild(faqItem);
+                        toRemove.push(current, nextEl);
+                    }
+                }
+                current = current.nextElementSibling;
+            }
+            
+            // Insertar grupo antes del primer elemento a remover
+            if (toRemove.length > 0) {
+                toRemove[0].parentNode.insertBefore(faqGroup, toRemove[0]);
+                toRemove.forEach(el => el.remove());
+            }
+        });
+
+        // =====================================================================
+        // POST-PROCESADO: TARJETA INTERACTIVA DE APRENDIZAJE
+        // =====================================================================
+        // Buscamos títulos como "Lo que aprendimos hoy" o "Lo más valioso"
+        const learningHeaders = Array.from(article.querySelectorAll('h2, h3')).filter(el => 
+            el.textContent.toLowerCase().includes('lo que aprendimos hoy') ||
+            el.textContent.toLowerCase().includes('lo más valioso')
+        );
+
+        learningHeaders.forEach(learningHeader => {
+            let nextUl = learningHeader.nextElementSibling;
+            
+            // A veces hay un párrafo vacío o un separador en el medio
+            if (nextUl && nextUl.tagName !== 'UL') {
+                nextUl = nextUl.nextElementSibling;
+            }
+            
+            if (nextUl && nextUl.tagName === 'UL') {
+                const learningCard = document.createElement('div');
+                learningCard.className = 'learning-card';
+                
+                // Creamos cabecera premium de la tarjeta
+                learningCard.innerHTML = `
+                    <h3>
+                        <span class="material-symbols-outlined">verified</span>
+                        ${learningHeader.textContent}
+                    </h3>
+                `;
+                
+                const cardUl = document.createElement('ul');
+                
+                // Transformar li originales en items interactivos con checkbox
+                Array.from(nextUl.querySelectorAll('li')).forEach(li => {
+                    const cardLi = document.createElement('li');
+                    const cleanText = li.innerHTML.replace(/^✔\s*/, ''); // Remover viñeta si ya la tiene
+                    cardLi.innerHTML = `
+                        <span class="checkbox-icon material-symbols-outlined">check_box_outline_blank</span>
+                        <p>${cleanText}</p>
+                    `;
+                    
+                    // Click para marcar como completado
+                    cardLi.addEventListener('click', () => {
+                        const isDone = cardLi.classList.toggle('completed');
+                        const icon = cardLi.querySelector('.checkbox-icon');
+                        icon.textContent = isDone ? 'check_box' : 'check_box_outline_blank';
+                    });
+                    
+                    cardUl.appendChild(cardLi);
+                });
+                
+                learningCard.appendChild(cardUl);
+                
+                // Insertar tarjeta interactiva antes del header y borrar el header y ul originales
+                learningHeader.parentNode.insertBefore(learningCard, learningHeader);
+                learningHeader.remove();
+                nextUl.remove();
+            }
+        });
+
+        // =====================================================================
+        // POST-PROCESADO: EFECTOS DE APARICIÓN AL HACER SCROLL (AOS)
+        // =====================================================================
+        // Añadir clase de reveal a todos los elementos del cuerpo del artículo
+        article.querySelectorAll('p, li, h2, h3, blockquote, .recipe-image-wrapper, .learning-card, .faq-item').forEach(el => {
+            el.classList.add('reveal-item');
+        });
+
         // Show article, hide loading
         document.getElementById('loading').style.display = 'none';
         article.style.display = 'block';
@@ -505,6 +1008,39 @@
 
         // Scroll to top
         window.scrollTo(0, 0);
+
+        // Setup speech synthesis controls
+        initSpeechSynthesis();
+
+        // Setup scroll triggers
+        initScrollTriggers();
+    }
+
+    // SCROLL ANIMATIONS AND PROGRESS BAR TRIGGER
+    function initScrollTriggers() {
+        const progressBar = document.getElementById('reading-progress');
+        const revealItems = document.querySelectorAll('.reveal-item');
+
+        function onScroll() {
+            // 1. Reading Progress Bar
+            const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+            progressBar.style.width = scrolled + "%";
+
+            // 2. Animate items on scroll (Reveal)
+            const triggerBottom = window.innerHeight * 0.92;
+            revealItems.forEach(item => {
+                const itemTop = item.getBoundingClientRect().top;
+                if (itemTop < triggerBottom) {
+                    item.classList.add('revealed');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', onScroll);
+        // Trigger initial check for visible elements
+        setTimeout(onScroll, 100);
     }
 
     function showError(msg) {
@@ -515,65 +1051,10 @@
         `;
     }
 
-    loadDoc();
-
-    // =====================================================================
-    // THREE.JS — Fondo Micelial (mismo que biblioteca.html)
-    // =====================================================================
-    function initMyceliumBg() {
-        const container = document.getElementById('canvas-container');
-        const W = window.innerWidth, H = window.innerHeight;
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        renderer.setSize(W, H);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        container.appendChild(renderer.domElement);
-
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(60, W / H, 0.1, 1000);
-        camera.position.set(0, 0, 30);
-
-        const nodeCount = 60;
-        const nodePositions = Array.from({ length: nodeCount }, () => new THREE.Vector3(
-            (Math.random() - 0.5) * 80,
-            (Math.random() - 0.5) * 50,
-            (Math.random() - 0.5) * 30
-        ));
-
-        const linePositions = [];
-        for (let i = 0; i < nodeCount; i++) {
-            for (let j = i + 1; j < nodeCount; j++) {
-                if (nodePositions[i].distanceTo(nodePositions[j]) < 14) {
-                    linePositions.push(nodePositions[i].x, nodePositions[i].y, nodePositions[i].z);
-                    linePositions.push(nodePositions[j].x, nodePositions[j].y, nodePositions[j].z);
-                }
-            }
-        }
-
-        const lineGeo = new THREE.BufferGeometry();
-        lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
-        scene.add(new THREE.LineSegments(lineGeo, new THREE.LineBasicMaterial({ color: 0x2d5a27, transparent: true, opacity: 0.2 })));
-
-        const pointGeo = new THREE.BufferGeometry();
-        pointGeo.setAttribute('position', new THREE.Float32BufferAttribute(nodePositions.flatMap(p => [p.x, p.y, p.z]), 3));
-        scene.add(new THREE.Points(pointGeo, new THREE.PointsMaterial({ color: 0xc3b59f, size: 0.3, transparent: true, opacity: 0.5 })));
-
-        let t = 0;
-        (function animate() {
-            requestAnimationFrame(animate);
-            t += 0.0003;
-            scene.rotation.y = t * 0.2;
-            renderer.render(scene, camera);
-        })();
-
-        window.addEventListener('resize', () => {
-            const nW = window.innerWidth, nH = window.innerHeight;
-            camera.aspect = nW / nH;
-            camera.updateProjectionMatrix();
-            renderer.setSize(nW, nH);
-        });
-    }
-
-    initMyceliumBg();
+    document.addEventListener('DOMContentLoaded', () => {
+        loadDoc();
+        initMyceliumBg();
+    });
     </script>
 </body>
 </html>
