@@ -807,7 +807,7 @@
                 title: 'Soberanía y Seguridad Alimentaria en Tiempos de Cambio Climático',
                 excerpt: 'El potencial de la fungicultura como fuente resiliente de nutrientes de rápido crecimiento, con bajísima huella hídrica y eficiencia de espacio vertical.',
                 tag: 'Sostenibilidad',
-                image: 'substrate_bags.png',
+                image: 'soberania_alimentaria_clima.png',
                 readTime: '6 min',
                 file: 'docs/sost_seguridad_alimentaria.md'
             },
@@ -826,15 +826,15 @@
         const savedArticles = localStorage.getItem("micelia_library_articles");
         const imageMigrations = {
             sost_seguridad_alimentaria: {
-                from: 'oyster_mushrooms.png',
-                to: 'substrate_bags.png'
+                from: ['oyster_mushrooms.png', 'substrate_bags.png'],
+                to: 'soberania_alimentaria_clima.png'
             },
             sost_provincia_arauco: {
-                from: 'oyster_mushrooms.png',
+                from: ['oyster_mushrooms.png'],
                 to: 'hongos_bosque_ecologia.png'
             },
             tecnologia_sensores_cultivo: {
-                from: 'sensores_camara_micelia.svg',
+                from: ['sensores_camara_micelia.svg'],
                 to: 'sensor_humedad_cultivo.png'
             }
         };
@@ -846,9 +846,12 @@
 
                 ARTICLES = ARTICLES.map(article => {
                     const migration = imageMigrations[article.id];
-                    if (migration && article.image === migration.from) {
-                        wasMigrated = true;
-                        return { ...article, image: migration.to };
+                    if (migration) {
+                        const fromList = Array.isArray(migration.from) ? migration.from : [migration.from];
+                        if (fromList.includes(article.image)) {
+                            wasMigrated = true;
+                            return { ...article, image: migration.to };
+                        }
                     }
                     return article;
                 });

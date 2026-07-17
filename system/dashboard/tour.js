@@ -454,6 +454,27 @@
             btnNextText: "Continuar Inspección"
         },
         {
+            titulo: "📚 Base de Conocimiento y Educación al Cliente",
+            mensaje: "Micelia no solo vende — **educa**. Mantenemos una **Biblioteca de Publicaciones Técnicas** con artículos sobre micología aplicada, gastronomía, sostenibilidad y tecnología de cultivo. Esto genera confianza en el consumidor y posiciona la marca como referente local. He desplazado la pantalla a la sección de artículos destacados.",
+            accion: () => {
+                clearHighlights();
+                closeWhatsAppWidget();
+                // Scroll a la sección de artículos en la landing
+                const bibliotecaSection = document.getElementById('camino-micelia') || document.querySelector('.articles-section') || document.querySelector('[id*="article"]');
+                if (bibliotecaSection) {
+                    bibliotecaSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                // Resaltar las tarjetas de artículos
+                setTimeout(() => {
+                    const cards = document.querySelectorAll('.article-card, .path-card, .knowledge-card');
+                    if (cards.length > 0) {
+                        cards.forEach(c => c.classList.add('tour-highlight'));
+                    }
+                }, 700);
+            },
+            btnNextText: "Ver Chatbot"
+        },
+        {
             titulo: "💬 Automatización de Asistentes: Chatbot WhatsApp",
             mensaje: "Para eliminar la **fricción digital en la tercera edad**, integramos un chatbot de ventas de WhatsApp. **Observa el costado derecho**: la IA del tour abrirá el chat e iniciará una **simulación de nota de voz de 6 segundos**. El Cortex Daemon procesa el audio del adulto mayor solicitando setas de 500g, calcula la intención del pedido y lo asiste de forma totalmente autónoma.",
             accion: () => {
@@ -689,6 +710,7 @@
         { categoria: "Visión de negocio", texto: "Ruta de evaluación: producción local, venta digital y trazabilidad." },
         { categoria: "Capacidad tecnológica", texto: "Cortex centraliza telemetría, operación y proyección de demanda." },
         { categoria: "Mercado y clientes", texto: "Formatos comerciales visibles: HORECA, autocultivo y venta directa." },
+        { categoria: "Ecosistema de conocimiento", texto: "Biblioteca de artículos técnicos visibles en la landing page." },
         { categoria: "Inclusión comercial", texto: "Flujo WhatsApp simplificado para pedidos del Pack Adulto Mayor." },
         { categoria: "Producción inteligente", texto: "Artículo publicado: sensores, ESP32 y lectura de condiciones de la cámara." },
         { categoria: "Gestión operativa", texto: "Panel del productor: telemetría, tareas y planificación en una sola vista." },
@@ -774,7 +796,14 @@
         currentStep = 0;
         backdrop.classList.add('active');
         dialogBox.classList.add('active');
-        triggerBtn.style.display = 'none';
+        // Transformar el trigger btn en botón de reinicio
+        triggerBtn.innerHTML = `
+            <span class="material-symbols-outlined" style="font-size: 1.1rem;">restart_alt</span>
+            Reiniciar Tour
+        `;
+        triggerBtn.style.opacity = '0.6';
+        triggerBtn.style.display = 'flex';
+        triggerBtn.title = 'Haz clic para reiniciar el tour desde el inicio';
         document.getElementById('tour-stage-rail').innerHTML = pasos.map((_, index) =>
             `<span class="tour-stage-dot" data-step="${index}"></span>`
         ).join('');
@@ -788,7 +817,15 @@
         closeWhatsAppWidget();
         backdrop.classList.remove('active');
         dialogBox.classList.remove('active');
+        // Restaurar el botón trigger a su estado original
+        triggerBtn.innerHTML = `
+            <div class="pulse-dot"></div>
+            <span class="material-symbols-outlined">reviews</span>
+            Iniciar Tour Guiado (IA) — Sercotec 2026
+        `;
+        triggerBtn.style.opacity = '';
         triggerBtn.style.display = 'flex';
+        triggerBtn.title = '';
         
         // Cerrar modales que el tour haya abierto
         const artModal = document.getElementById("article-modal");
