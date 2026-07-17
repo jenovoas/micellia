@@ -454,8 +454,8 @@
             btnNextText: "Continuar Inspección"
         },
         {
-            titulo: "📚 Base de Conocimiento y Educación al Cliente",
-            mensaje: "Micelia no solo vende — **educa**. Mantenemos una **Biblioteca de Publicaciones Técnicas** con artículos sobre micología aplicada, gastronomía, sostenibilidad y tecnología de cultivo. Esto genera confianza en el consumidor y posiciona la marca como referente local. He desplazado la pantalla a la sección de artículos destacados.",
+            titulo: "📚 Biblioteca de Conocimiento Técnico",
+            mensaje: "Complementando la tienda, la plataforma incluye una **Biblioteca de Publicaciones Técnicas** de acceso libre. Los artículos cubren micología aplicada, gastronomía, sostenibilidad y tecnología de cultivo \u2014 escritos en lenguaje accesible para distintos públicos: familias, chefs, productores y colegios. Puedes navegar los artículos disponibles en la sección que se muestra en pantalla.",
             accion: () => {
                 clearHighlights();
                 closeWhatsAppWidget();
