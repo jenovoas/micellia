@@ -17,7 +17,7 @@
             color: #0d2215; /* Verde bosque */
             border: 1px solid #c3b59f;
             padding: 16px 28px;
-            font-family: 'DM Sans', sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
             font-size: 1.05rem;
             font-weight: 700;
             border-radius: 50px;
@@ -58,7 +58,7 @@
             border: 2px solid #c3b59f;
             border-radius: 18px;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'Outfit', sans-serif;
             color: #f5f2eb;
             display: none;
             flex-direction: column;
@@ -86,9 +86,8 @@
         }
         .tour-header h3 {
             margin: 0;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.4rem;
-            font-weight: 600;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
             color: #c3b59f;
             display: flex;
             align-items: center;
@@ -156,13 +155,11 @@
             text-transform: uppercase;
         }
         .tour-step-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.7rem;
-            font-weight: 700;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.45rem;
             color: #c3b59f;
             margin: 0 0 14px 0;
-            line-height: 1.2;
-            letter-spacing: 0.01em;
+            line-height: 1.3;
         }
         .tour-message {
             font-size: 1.02rem;
@@ -241,7 +238,7 @@
             gap: 12px;
         }
         .tour-btn {
-            font-family: 'DM Sans', sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
             font-size: 0.95rem;
             font-weight: 600;
             padding: 10px 20px;
