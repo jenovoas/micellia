@@ -4,7 +4,7 @@
 
 ---
 
-![Setas listas para despacho en su empaque ecológico, sin defectos](eco_packaging.png)
+![Setas listas para despacho en su empaque ecológico, sin defectos](errores_deformacion_setas.png)
 
 Incluso con equipamiento moderno, los cultivadores novatos de setas suelen enfrentarse a problemas de deformación o pérdida de cosechas. Analizaremos los errores técnicos más habituales y cómo corregirlos rápidamente.
 

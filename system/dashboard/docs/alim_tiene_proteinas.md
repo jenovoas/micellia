@@ -4,27 +4,39 @@
 
 ---
 
-![Setas de hongo ostra secas para deportistas y batidos proteicos](athlete_mushrooms.png)
+![Setas de hongo ostra secas para deportistas y batidos proteicos](proteinas_fungicas.png)
 
-Una de las preguntas más recurrentes en la transición hacia dietas basadas en plantas es la disponibilidad y calidad de las proteínas. El hongo ostra (*Pleurotus ostreatus*) representa una excelente alternativa, ya que posee un perfil proteico muy superior al de la mayoría de los vegetales comunes.
+Cuando muchas personas descubren el hongo ostra, una de las primeras preguntas que hacen es: *"¿Tiene proteínas?"*. La respuesta es sí. El hongo ostra aporta proteínas de origen vegetal y puede contribuir de forma importante a una alimentación variada y equilibrada.
 
-## Contenido de Proteína en Comparativa
+Sin embargo, su verdadero valor no está únicamente en la cantidad de proteínas que contiene, sino en el conjunto de sus características nutricionales y su versatilidad.
 
-En base seca (una vez removida el agua), el hongo ostra contiene entre un **15% y un 30% de proteína total**, superando con creces a vegetales tradicionales como la zanahoria, papa o lechuga, y situándose a la par de las legumbres. 
+## Una pieza más dentro de una buena alimentación
 
-## Calidad Proteica y Aminoácidos Esenciales
+A veces buscamos un "superalimento" que lo tenga todo, pero en la práctica, una alimentación saludable funciona de otra manera: cada ingrediente aporta algo distinto.
+- Las legumbres destacan por su contenido de proteínas y fibra.
+- Las frutas y verduras aportan agua y vitaminas.
+- Los cereales entregan carbohidratos y energía.
+- El **hongo ostra** suma proteínas de calidad, fibra soluble, vitaminas del complejo B y minerales, complementando la dieta sin sumar grasas saturadas ni colesterol.
 
-El valor biológico de una proteína no reside solo en su cantidad, sino en su composición. La proteína de *Pleurotus ostreatus* es de alta calidad porque contiene **todos los aminoácidos esenciales** que el cuerpo humano es incapaz de sintetizar por sí mismo y debe obtener a través de la dieta.
+Por eso resulta un excelente complemento para una dieta diversa y nutritiva.
 
-### Perfil de Aminoácidos Destacados:
-- **Lisina**: Abundante en hongos ostra, compensando la deficiencia común de lisina en cereales como el arroz y el trigo.
-- **Ácido Glutámico y Aspártico**: Aminoácidos responsables del característico sabor "umami" (delicioso o sabroso) del hongo.
-- **Leucina, Isoleucina y Valina**: Aminoácidos de cadena ramificada (BCAA) muy valorados para la recuperación de tejidos musculares.
+## ¿Puede reemplazar la carne?
 
-## Digestibilidad
+Desde el punto de vista culinario, muchas personas utilizan el hongo ostra para reemplazar parcialmente la carne en algunas preparaciones tradicionales gracias a su textura firme y a su alta capacidad para absorber sabores de condimentos.
 
-La digestibilidad de las setas se sitúa en un índice intermedio-alto (PDCAAS en torno a 0.75-0.85), superando a la proteína del trigo y siendo comparable a la de legumbres cocidas. Esto significa que el cuerpo asimila eficientemente el nitrógeno de las proteínas del hongo ostra.
+Desde el punto de vista nutricional, no conviene pensar en él como un reemplazo directo o equivalente absoluto. La carne y los hongos tienen composiciones y perfiles de aminoácidos diferentes. Lo más interesante y saludable es incorporarlo como un ingrediente regular dentro de la planificación del menú semanal, enriqueciendo y variando la dieta diaria.
+
+## Una oportunidad para comer más vegetales
+
+Cada vez más personas buscan aumentar el consumo de alimentos de origen vegetal, no necesariamente porque quieran dejar de comer carne por completo, sino porque desean una alimentación más rica y variada.
+
+El hongo ostra facilita enormemente ese cambio:
+- Aporta una textura carnosa muy agradable al masticar.
+- Es ideal para salteados, pastas, tortillas, guisos, empanadas o hamburguesas vegetales.
+- Su sabor suave lo hace muy atractivo y aceptable incluso para niños o adultos mayores que no están acostumbrados a consumir hongos.
+
+En resumen, el hongo ostra sí aporta proteínas, pero su mayor fortaleza consiste en enriquecer nuestra alimentación de forma sabrosa, natural y fácil de incorporar en la cocina diaria.
 
 ---
 
-*¿Podemos sustituir la carne por setas en platos diarios? → Ver: [¿Puede el Hongo Ostra Reemplazar la Carne en tu Dieta?](file:///home/jnovoas/Dev/micellia/system/dashboard/docs/alim_reemplazo_carne.md)*
+*¿Cuáles son las diferencias detalladas con la carne de vacuno? → Ver: [¿Puede el Hongo Ostra Reemplazar la Carne en tu Dieta?](file:///home/jnovoas/Dev/micellia/system/dashboard/docs/alim_reemplazo_carne.md)*

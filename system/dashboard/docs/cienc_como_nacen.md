@@ -4,7 +4,7 @@
 
 ---
 
-![Cosecha familiar que muestra las setas ostra en diferentes etapas de desarrollo](family_harvest.png)
+![Cosecha familiar que muestra las setas ostra en diferentes etapas de desarrollo](nacimiento_primordios_setas.png)
 
 El surgimiento de una seta o cuerpo fructífero a partir del micelio parece ocurrir de la noche a la mañana. No obstante, este fenómeno responde a un proceso fisiológico muy coordinado desencadenado por factores ambientales específicos.
 

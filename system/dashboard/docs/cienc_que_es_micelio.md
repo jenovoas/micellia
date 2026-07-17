@@ -4,7 +4,7 @@
 
 ---
 
-![Bolsas de sustrato colonizadas por la red blanca del micelio](substrate_bags.png)
+![Bolsas de sustrato colonizadas por la red blanca del micelio](micelio_red_blanca.png)
 
 A menudo asociamos a los hongos únicamente con las setas que vemos sobre la tierra. Sin embargo, la seta es solo el fruto temporal del hongo. El verdadero organismo vivo e inteligente reside bajo el suelo o dentro de la madera, y se le conoce como **micelio**.
 

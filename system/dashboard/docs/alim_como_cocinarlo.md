@@ -4,28 +4,39 @@
 
 ---
 
-![Setas ostra salteadas al wok con vegetales frescos](cooking_mushrooms.png)
+![Setas ostra salteadas al wok con vegetales frescos](cocinar_setas_sarten.png)
 
-Cocinar hongos ostra (*Pleurotus ostreatus*) es sencillo, pero existen ciertas reglas físicas y culinarias que separan un plato mediocre de una experiencia gastronómica espectacular. Al ser compuestos ricos en agua, la clave está en el control de la temperatura.
+Si nunca has cocinado hongo ostra, probablemente imaginas que requiere técnicas especiales de alta cocina o ingredientes difíciles de conseguir. La buena noticia es que ocurre justamente lo contrario: el hongo ostra es uno de los alimentos más fáciles de preparar, se adapta muy bien a la cocina diaria y no requiere recetas complicadas para destacar.
 
-## Reglas de Oro en la Cocina Fúngica
+## El primer consejo: no lo cocines de más
 
-### 1. No los laves con abundante agua
-Los hongos ostra son higroscópicos (absorben humedad muy rápido). Si los sumerges en agua, se saturarán y se volverán gomosos al cocinarse. En su lugar, límpialos con un paño húmedo o un cepillo suave para retirar restos de sustrato.
+Uno de los errores más frecuentes al preparar setas es dejarlas demasiado tiempo al fuego. Cuando eso ocurre, el hongo ostra pierde su humedad interna, reduciendo su tamaño y volviéndose gomoso o excesivamente blando.
 
-### 2. Deshiláchalos a mano
-En vez de cortarlos con cuchillo, desgarra los sombreros con las manos siguiendo la dirección de las láminas. Esto expone las fibras naturales y permite que absorban mejor las salsas y aderezos.
+Lo ideal es una cocción breve a **fuego medio-alto** durante unos pocos minutos, hasta que las puntas de los sombreros tomen un color ligeramente dorado. Este dorado concentra el sabor umami y le da una textura crujiente y agradable.
 
-### 3. Temperatura alta y espacio
-Utiliza un sartén amplio o wok. Si amontonas los hongos en el sartén, se cocinarán en su propio vapor en lugar de dorarse. Cocínalos a fuego medio-alto con un chorrito de aceite de oliva o mantequilla para evaporar el agua rápidamente y lograr bordes crujientes.
+## Menos es más en los condimentos
 
-## Técnica Básica de Salteado Gourmet
+El hongo ostra tiene un sabor suave y sutil. Para disfrutarlo plenamente por primera vez, no necesitas enmascararlo con salsas densas o exceso de condimentos. Te recomendamos esta base clásica:
+- Un chorrito de aceite de oliva o una cucharada de mantequilla.
+- Dientes de ajo fileteados o picados finos.
+- Cebolla caramelizada.
+- Hierbas frescas (como tomillo, romero o perejil).
 
-1. Calienta el sartén hasta que esté muy caliente.
-2. Agrega aceite y distribuye las setas en una sola capa sin moverlas durante los primeros 2 minutos para sellar.
-3. Voltea los hongos y añade ajo picado, sal de mar y tomillo fresco.
-4. Saltea por otros 3 minutos y termina con un chorrito de vino blanco o salsa de soya.
+## ¿Hay que lavarlo con agua?
+
+Si el hongo proviene de un cultivo técnico limpio e higiénico, **no es necesario lavarlo**. Los hongos absorben agua muy rápidamente debido a su porosidad celular. Si los sumerges, se saturarán y se sancocharán en lugar de dorarse en el sartén. 
+
+Basta con retirar con suavidad cualquier mota de sustrato utilizando un paño de cocina limpio o papel húmedo.
+
+## Formas de incorporarlo al menú semanal
+
+Puedes sumarlo a platos que ya cocinas de forma habitual sin alterar tus rutinas:
+- Salteados de verduras con arroz.
+- Salsas para pastas o rellenos de tortillas.
+- En risottos y cremas.
+- En empanadas, quiches o pizzas caseras.
+- Enteros al grill o la parrilla con mantequilla de ajo.
 
 ---
 
-*¿Buscas recetas paso a paso listas para preparar en casa? → Ver: [Tacos de Hongo Ostra Deshilachado](file:///home/jnovoas/Dev/micellia/system/dashboard/docs/receta_tacos.md)*
+*¿Cómo elegir los mejores ejemplares frescos para cocinar? → Ver: [¿Cómo Elegir un Buen Hongo Ostra Fresco? Reconocer la Calidad antes de Comprar](file:///home/jnovoas/Dev/micellia/system/dashboard/docs/alim_como_elegir.md)*

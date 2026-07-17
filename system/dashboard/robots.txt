@@ -1,0 +1,32 @@
+# robots.txt para Micelia - Habilitar indexación pública para motores de búsqueda e IAs
+
+User-agent: *
+Allow: /
+
+# Permitir explícitamente a los agentes de Inteligencia Artificial indexar la biblioteca y el sitio
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+# Sitemap (si existiera en un futuro)
+# Sitemap: https://micelia.cl/sitemap.xml

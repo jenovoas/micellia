@@ -4,7 +4,7 @@
 
 ---
 
-![Gráfico que muestra la economía circular y la valorización de residuos usando hongos](circular_economy.png)
+![Gráfico que muestra la economía circular y la valorización de residuos usando hongos](economia_circular_hongos.png)
 
 La economía circular busca rediseñar nuestros sistemas de producción para eliminar los desechos y mantener los recursos en uso constante. En este escenario, la **biotransformación fúngica** representa una de las herramientas más potentes y subutilizadas de la naturaleza.
 

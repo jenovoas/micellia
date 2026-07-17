@@ -4,7 +4,7 @@
 
 ---
 
-![Ciclo biológico del suelo regenerado con materia fúngica](circular_economy.png)
+![Ciclo biológico del suelo regenerado con materia fúngica](suelo_regenerado_sms.png)
 
 La agricultura regenerativa busca restaurar de manera activa la salud biológica de los suelos cultivados, promoviendo la biodiversidad y capturando carbono en la tierra. El residuo de la producción de setas es un aliado formidable en esta tarea.
 

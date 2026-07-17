@@ -4,7 +4,7 @@
 
 ---
 
-![Bolsas de incubación monitoreadas mediante telemetría IoT de precisión](substrate_bags.png)
+![Bolsas de incubación monitoreadas mediante telemetría IoT de precisión](sensor_humedad_cultivo.png)
 
 A diferencia de las plantas que toleran variaciones climáticas en el exterior, el hongo ostra (*Pleurotus ostreatus*) cultivado bajo techo requiere un ambiente controlado de extrema precisión para maximizar su eficiencia biológica y evitar deformaciones en la seta.
 

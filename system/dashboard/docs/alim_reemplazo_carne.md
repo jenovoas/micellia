@@ -4,29 +4,36 @@
 
 ---
 
-![Setas de hongo ostra asadas al grill simulando un bife de carne](steak.png)
+![Setas de hongo ostra asadas al grill simulando un bife de carne](reemplazo_carne_grill.png)
 
-La textura masticable, carnosa y fibrosa del hongo ostra (*Pleurotus ostreatus*) lo ha consagrado en la gastronomía como uno de los mejores sustitutos de la carne en recetas tradicionales. Evaluaremos desde una perspectiva científica y nutricional los alcances y límites de este reemplazo alimentario.
+Cada vez que una persona descubre el hongo ostra suele aparecer la misma pregunta: *"¿Entonces puede reemplazar la carne?"*. La respuesta más honesta es que **depende de lo que entendamos por reemplazar**. Desde el punto de vista culinario, muchas veces sí. Desde el punto de vista nutricional, no de forma completa. Entender esta diferencia nos ayuda a alimentarnos mucho mejor.
 
-## Similitudes Gastronómicas y Textura
+## En la cocina, el hongo ostra sorprende
 
-La principal ventaja del hongo ostra sobre otras alternativas vegetales (como el tofu o tempeh) es su **textura celular**. Las hifas fúngicas se agrupan en manojos compactos que, al cocinarse, adquieren una firmeza y consistencia similar a la carne deshilachada de ave o de res. Además:
-- **Sabor Umami**: Su riqueza en glutamato natural potencia el sabor del plato sin necesidad de añadir grasas saturadas de origen animal.
-- **Capacidad de Absorción**: Actúa como una esponja biológica, absorbiendo marinados, especias y caldos con facilidad.
+El aspecto que más llama la atención del hongo ostra (*Pleurotus ostreatus*) es su textura. Cuando se cocina correctamente, resulta firme, jugosa y agradable al masticar. 
 
-## Comparativa Nutricional: Setas vs. Carne de Res (por 100g)
+Por esta razón, se utiliza con éxito para reemplazar la carne en preparaciones tradicionales como:
+- Salteados y woks.
+- Tacos y fajitas.
+- Rellenos de empanadas.
+- Guisos, estofados y salsas para pastas.
+- Hamburguesas y albóndigas vegetales.
 
-| Componente | Hongo Ostra Fresco | Carne de Vacuno (magra) |
-|---|---|---|
-| **Energía** | 33 kcal | ~180 kcal |
-| **Grasas Saturadas** | 0 g | 3.5 g |
-| **Proteínas** | 3.3 g | 20 g |
-| **Fibra** | 2.3 g | 0 g |
-| **Colesterol** | 0 mg | 70 mg |
+Al carecer de sabores invasivos y poseer una alta porosidad celular, absorbe con mucha facilidad los aromas de hierbas, especias y caldos, adaptándose a cualquier receta donde tradicionalmente iría carne de res, cerdo o ave.
 
-## Conclusión sobre el Reemplazo
+## Desde el punto de vista nutricional
 
-El hongo ostra es una adición sensacional para reducir la ingesta de grasas saturadas, colesterol y bajar las calorías totales de la dieta, aportando fibra indispensable. No obstante, al poseer menor concentración de proteína absoluta por porción que la carne de res, se aconseja **combinar el hongo ostra con legumbres o cereales** en el mismo plato para asegurar un aporte completo de macronutrientes.
+Conviene hacer una distinción científica y nutricional clara:
+- **La carne** aporta una alta cantidad de proteínas concentradas, hierro hemo y vitamina B12 (nutrientes típicos de origen animal).
+- **El hongo ostra** aporta proteínas vegetales de alta digestibilidad, fibra soluble (como beta-glucanos), vitaminas del complejo B, minerales esenciales y un nivel de grasas prácticamente nulo (sin colesterol).
+
+Por lo tanto, en lugar de ponerlos a competir, lo ideal es verlos como alimentos complementarios. Integrar hongos en el plato aporta cualidades protectoras e inmunológicas propias que la carne no posee.
+
+## Diversificar para comer más rico y sano
+
+No todas las personas que consumen hongos ostra buscan ser vegetarianas; muchas simplemente desean reducir su consumo de productos animales e incorporar más vegetales a su vida diaria. El hongo ostra es un excelente puente culinario porque entrega esa sensación carnosa satisfactoria al plato sin exigir técnicas de cocina complejas.
+
+Mejorar nuestra forma de alimentarnos no consiste en restringir o eliminar alimentos, sino en **sumar variedad, colores y nuevos ingredientes biológicos** que amplíen nuestras opciones gastronómicas.
 
 ---
 

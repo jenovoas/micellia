@@ -4,7 +4,7 @@
 
 ---
 
-![Bolsas de incubación de setas ostra en un módulo automatizado comercial](substrate_bags.png)
+![Bolsas de incubación de setas ostra en un módulo automatizado comercial](produccion_comercial_sala.png)
 
 La producción comercial de hongos ostra (*Pleurotus ostreatus*) requiere una metodología estricta para garantizar altos rendimientos y evitar pérdidas por contaminación. Desglosamos las fases industriales clave en una planta de cultivo moderna.
 

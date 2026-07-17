@@ -4,7 +4,7 @@
 
 ---
 
-![Hongos ostra creciendo de forma silvestre sobre la corteza de un árbol](raw_mushrooms.png)
+![Hongos ostra creciendo de forma silvestre sobre la corteza de un árbol](hongos_bosque_ecologia.png)
 
 Los bosques que conocemos no podrían existir sin los hongos. Dentro del ecosistema forestal, los hongos desempeñan funciones indispensables que sostienen la red trófica y garantizan el reciclaje de nutrientes vitales.
 

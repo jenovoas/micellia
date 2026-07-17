@@ -4,7 +4,7 @@
 
 ---
 
-![Setas ostra en un sustrato saludable, listas para recolectar](family_harvest.png)
+![Setas ostra en un sustrato saludable, listas para recolectar](ciclo_completo_spawn.png)
 
 Entender el ciclo técnico-biológico completo en el laboratorio y las salas de cultivo permite optimizar la eficiencia biológica del hongo ostra. A continuación, trazamos el ciclo completo dividiéndolo en sus fases técnicas de control.
 
