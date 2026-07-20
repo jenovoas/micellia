@@ -10,15 +10,6 @@ Este archivo define las reglas arquitectónicas, restricciones de diseño y espe
 
 ---
 
-## 2. Reglas del Catálogo y Precios
-Los precios y productos en la landing page y el carrito deben coincidir exactamente con los siguientes valores comerciales:
-* **Hongo Ostra Fresco 500g**: $4.500 CLP
-* **Hongo Ostra Fresco 1kg**: $8.000 CLP
-* **Suscripción HORECA B2B**: $25.000 CLP / mes
-* **Kit de Autocultivo Educativo**: $12.000 CLP
-
----
-
 ## 3. Accesibilidad de Tercera Edad (Adulto Mayor)
 * Para evitar la fricción digital, se debe proveer un flujo simplificado de pedidos por WhatsApp.
 * El enlace de WhatsApp debe redirigir al número corporativo con el mensaje pre-redactado:
