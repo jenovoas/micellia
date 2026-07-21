@@ -8,12 +8,14 @@
     <!-- Google Fonts & Material Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@400;500;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     <!-- Estilos -->
-    <link rel="stylesheet" href="public.css?v=2">
+    <link rel="stylesheet" href="public.css?v=3">
     <link rel="icon" type="image/png" href="logo.png">
     <!-- Three.js para Fondo 3D Animado -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -137,14 +139,11 @@
             const playPromise = video.play();
             if (playPromise !== undefined) {
                 playPromise.catch(error => {
-                    // Autoplay fue bloqueado por el navegador (requiere interacción).
-                    // Mostramos el botón para que el usuario inicie manualmente.
                     video.style.display = 'none';
                     startBtn.style.display = 'flex';
                 });
             }
 
-            // A browser gesture is required before autoplayed media can use audio.
             startBtn.addEventListener('click', () => {
                 startBtn.style.display = 'none';
                 video.style.display = 'block';
@@ -156,7 +155,6 @@
             video.addEventListener('ended', hidePreloader);
             skipBtn.addEventListener('click', hidePreloader);
 
-            // Fallback
             setTimeout(() => {
                 if (preloader.style.visibility !== 'hidden') {
                     hidePreloader();
@@ -165,29 +163,32 @@
         });
     </script>
     <style>
-        /* Cortar la esquina inferior derecha de las imagenes (marca de agua de Gemini) */
-        img:not([src*="logo"]) {
+        img.gemini-clip, img:not([src*="logo"]):not(.hero-nouveau-media img):not(.camino-media img):not(.camino-card-mini img):not(.magazine-img-wrapper img):not([src*="oyster"]):not([src*="hongos"]):not([src*="cocinar"]):not([src*="proteinas"]):not([src*="economia"]):not([src*="bosque"]) {
             clip-path: polygon(0 0, 100% 0, 100% calc(100% - 60px), calc(100% - 60px) calc(100% - 60px), calc(100% - 60px) 100%, 0 100%);
         }
     </style>
 
     <!-- Contenedor del Fondo 3D Mycelium Network -->
-    <div id="canvas-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.65;"></div>
+    <div id="canvas-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.45;"></div>
 
-    <!-- Navbar Superior -->
+    <!-- Navbar Superior Corporativo Nouveau -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="brand" onclick="window.location.href='#inicio'" style="cursor: pointer;">
                 <img src="logo.png" class="brand-logo-img" alt="Micelia Logo">
-                <span class="brand-name">MICELIA</span>
+                <div class="brand-text">
+                    <span class="brand-name">MICELIA</span>
+                    <span class="brand-subtitle">CULTIVO TÉCNICO DE HONGO OSTRA</span>
+                </div>
             </div>
             <div class="nav-links">
-                <a href="#inicio" class="nav-link active">Inicio</a>
-                <a href="biblioteca.html" class="nav-link">Biblioteca</a>
-                <a href="#camino-micelia" class="nav-link">Camino Micelia</a>
-                <a href="#tienda" class="nav-link">Productos</a>
-                <a href="#nosotros" class="nav-link">Nosotros</a>
-                <a href="#" class="nav-link" id="login-nav-btn">Iniciar Sesión</a>
+                <a href="#inicio" class="nav-link active">INICIO</a>
+                <a href="#nosotros" class="nav-link">SOBRE MICELIA</a>
+                <a href="#estilos-vida" class="nav-link">NUESTRO HONGO</a>
+                <a href="#nuestro-proceso" class="nav-link">PROCESO</a>
+                <a href="#tienda" class="nav-link">TIENDA</a>
+                <a href="#camino-micelia" class="nav-link">CAMINO MICELIA</a>
+                <a href="#contacto" class="nav-link">CONTACTO</a>
                 <div class="profile-nav-container" id="profile-nav-container" style="display: none; cursor: pointer;">
                     <span class="avatar-icon material-symbols-outlined"
                         style="font-size: 1.5rem; vertical-align: middle; color: var(--accent-gold);">account_circle</span>
@@ -196,92 +197,60 @@
                         G.</span>
                 </div>
             </div>
-            <button class="cart-btn" id="open-cart-btn">
-                <span class="material-symbols-outlined">shopping_cart</span>
-                <span class="cart-count">0</span>
-            </button>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <span class="material-symbols-outlined" style="color: var(--accent-gold); cursor: pointer;" id="login-nav-btn">account_circle</span>
+                <button class="cart-btn" id="open-cart-btn">
+                    <span class="material-symbols-outlined">shopping_cart</span>
+                    <span class="cart-count">0</span>
+                </button>
+            </div>
         </div>
     </nav>
 
-    <!-- Sección Inicio / Héroe -->
-    <!-- Sección Inicio / Héroe con Slider Dinámico -->
-    <section id="inicio" class="hero-slider-container">
-        <!-- Contenedor general del Slider -->
-        <div class="hero-slider">
+    <!-- Sección Inicio / Héroe Nouveau (nuevo_css.jpeg) -->
+    <section id="inicio" class="hero-nouveau">
+        <div class="hero-nouveau-content">
+            <span class="hero-nouveau-tagline">DESDE CURANILAHUE, PROVINCIA DE ARAUCO</span>
+            <h1 class="hero-nouveau-title">Cultivamos bienestar de forma sostenible</h1>
+            <p class="hero-nouveau-desc">Producimos hongo ostra de manera técnica y responsable, cuidando cada detalle del proceso para entregar un alimento saludable, nutritivo y local.</p>
             
-            <!-- Diapositiva 1: Misión y Propósito -->
-            <div class="hero-slide active" data-slide="0">
-                <div class="hero-slide-content">
-                    <span class="hero-tag">Propósito y Nutrición</span>
-                    <h1 class="gradient-text glow-text" style="font-size: 2.6rem; line-height: 1.25;">Cultivamos mucho más que hongos.</h1>
-                    <p class="hero-desc" style="font-size: 1.15rem; color: var(--accent-gold); margin-bottom: 0.5rem; font-weight: 600;">Cultivamos una nueva forma de entender la alimentación.</p>
-                    <p class="hero-desc">Hongos frescos, conocimiento compartido y producción sostenible desde la Provincia de Arauco. Un alimento noble basado en el respeto a los ciclos de la tierra y la honestidad ecológica.</p>
-                    <div class="hero-cta-container">
-                        <a href="#tienda" class="btn btn-primary">Conocer Productos</a>
-                        <a href="biblioteca.html" class="btn btn-secondary">Aprender en la Biblioteca</a>
-                    </div>
-                </div>
-                <div class="hero-slide-image animate-float">
-                    <img src="oyster_mushrooms.png" class="hero-img" alt="Cultivo Técnico de Hongo Ostra Micelia">
-                </div>
+            <div class="hero-nouveau-actions">
+                <a href="biblioteca.html" class="btn-pill-dark">CONOCE NUESTRO HONGO</a>
+                <a href="#tienda" class="btn-pill-outline">IR A LA TIENDA</a>
             </div>
 
-            <!-- Diapositiva 2: Recetas Gourmet -->
-            <div class="hero-slide" data-slide="1">
-                <div class="hero-slide-content">
-                    <span class="hero-tag" style="border-color: var(--accent-gold); color: var(--accent-gold); background: rgba(195,181,159,0.05);">Recetario Gourmet</span>
-                    <h1 class="gradient-text glow-text">Delicias Gourmet con el Verdadero Poder Umami</h1>
-                    <p class="hero-desc">Desde ceviches 100% vegetales hasta calamares crujientes tempura y risotto de trufa. Explora nuestro recetario gourmet detallado paso a paso con los valores nutricionales oficiales.</p>
-                    <div class="hero-cta-container">
-                        <a href="biblioteca.html?filter=Recetario%20Gourmet" class="btn btn-primary">Explorar Recetas</a>
-                        <a href="view_doc.html?file=docs/receta_tacos.md&title=Tacos%20de%20Hongo%20Ostra" class="btn btn-secondary">Receta de Tacos</a>
+            <div class="hero-pillars-row">
+                <a href="view_doc.html?file=docs/economia_circular.md&title=Econom%C3%ADa+Circular" class="pillar-item" style="text-decoration: none; color: inherit;">
+                    <span class="material-symbols-outlined pillar-icon">eco</span>
+                    <div class="pillar-info">
+                        <h4>SOSTENIBLE</h4>
+                        <p>Usamos recursos locales y procesos de bajo impacto.</p>
                     </div>
-                </div>
-                <div class="hero-slide-image animate-float">
-                    <img src="tacos.png" class="hero-img" alt="Tacos Gourmet de Hongo Ostra">
-                </div>
-            </div>
-
-            <!-- Diapositiva 3: Telemetría S60 e IoT -->
-            <div class="hero-slide" data-slide="2">
-                <div class="hero-slide-content">
-                    <span class="hero-tag" style="border-color: var(--accent-green-light); color: var(--accent-green-light); background: rgba(74, 140, 66, 0.05);">Monitoreo IoT Yatra S60</span>
-                    <h1 class="gradient-text glow-text">Cultivo Automatizado de Máxima Precisión</h1>
-                    <p class="hero-desc">Monitoreamos las variables críticas del Pleurotus ostreatus (humedad 85%-95%, CO₂ &lt; 900 ppm) mediante microcontroladores ESP32 en base sexagesimal y el daemon Cortex multihilo en Rust.</p>
-                    <div class="hero-cta-container">
-                        <a href="view_doc.html?file=docs/telemetria_s60.md&title=Telemetria%20IoT%20S60" class="btn btn-primary">Ver Estándar S60</a>
-                        <a href="view_doc.html?file=docs/cortex_daemon.md&title=Rust%20Cortex%20Daemon" class="btn btn-secondary">Cortex Daemon en Rust</a>
+                </a>
+                <a href="view_doc.html?file=docs/compendio_nutricional.md&title=Compendio+Nutricional" class="pillar-item" style="text-decoration: none; color: inherit;">
+                    <span class="material-symbols-outlined pillar-icon">favorite</span>
+                    <div class="pillar-info">
+                        <h4>SALUDABLE</h4>
+                        <p>Alimento natural, nutritivo y lleno de beneficios.</p>
                     </div>
-                </div>
-                <div class="hero-slide-image animate-float">
-                    <img src="substrate_bags.png" class="hero-img" alt="Telemetría IoT S60">
-                </div>
-            </div>
-
-            <!-- Diapositiva 4: Kits y Promociones -->
-            <div class="hero-slide" data-slide="3">
-                <div class="hero-slide-content">
-                    <span class="hero-tag" style="border-color: #ff6b8b; color: #ff6b8b; background: rgba(255,107,139,0.05);">Kits de Autocultivo</span>
-                    <h1 class="gradient-text glow-text">Cosecha tus Propias Setas en Casa</h1>
-                    <p class="hero-desc">Elige entre nuestro Kit Educativo ($12.000) de 2kg para proyectos escolares STEM, el Familiar XL ($18.000) de 4.5kg para chefs de hogar, o el Exótico ($15.000) de setas rosadas tropicales.</p>
-                    <div class="hero-cta-container">
-                        <a href="#tienda" class="btn btn-primary">Comprar Kit</a>
-                        <a href="view_doc.html?file=docs/guia_autocultivo.md&title=Guia%20de%20Autocultivo" class="btn btn-secondary">Guía de Autocultivo</a>
+                </a>
+                <a href="https://maps.google.com/?q=Curanilahue+Chile" target="_blank" rel="noopener" class="pillar-item" style="text-decoration: none; color: inherit;">
+                    <span class="material-symbols-outlined pillar-icon">groups</span>
+                    <div class="pillar-info">
+                        <h4>LOCAL</h4>
+                        <p>Desde Curanilahue para nuestra comunidad y el mundo.</p>
                     </div>
-                </div>
-                <div class="hero-slide-image animate-float">
-                    <img src="eco_packaging.png" class="hero-img" alt="Kits de Autocultivo">
-                </div>
+                </a>
             </div>
-
         </div>
 
-        <!-- Navegación por puntos -->
-        <div class="hero-slider-dots">
-            <span class="hero-dot active" onclick="setHeroSlide(0)"></span>
-            <span class="hero-dot" onclick="setHeroSlide(1)"></span>
-            <span class="hero-dot" onclick="setHeroSlide(2)"></span>
-            <span class="hero-dot" onclick="setHeroSlide(3)"></span>
+        <div class="hero-nouveau-media">
+            <img src="oyster_mushrooms.png" alt="Cultivo de Hongo Ostra Micelia">
+            <div class="floating-badge-natural">
+                <span class="title">HONGO</span>
+                <span class="val">100%</span>
+                <span class="title">NATURAL</span>
+            </div>
         </div>
     </section>
 
@@ -302,11 +271,11 @@
     <section id="estilos-vida" class="lifestyle-section" style="max-width: 1200px; margin: 0 auto; padding: 6rem 2rem;">
         <div class="section-header" style="text-align: center; margin-bottom: 3.5rem;">
             <span class="section-tag"
-                style="color: var(--accent-gold); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 0.75rem;">Micelia
+                style="color: var(--bg-dark-forest); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 0.75rem;">Micelia
                 Para Ti</span>
-            <h2 style="font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem;">
+            <h2 style="font-family: var(--font-serif); font-size: 2.4rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-dark);">
                 Beneficios según tu Estilo de Vida</h2>
-            <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto; font-size: 1rem; line-height: 1.6;">
+            <p style="color: var(--text-muted-dark); max-width: 600px; margin: 0 auto; font-size: 1rem; line-height: 1.6;">
                 Descubre cómo el hongo ostra se adapta a tu día a día y potencia tu salud, rendimiento y cocina con
                 recetas y consejos a tu medida.</p>
         </div>
@@ -314,7 +283,7 @@
         <div class="lifestyle-container" style="display: flex; flex-direction: column; gap: 2rem;">
             <!-- Tabs Navigation -->
             <div class="lifestyle-tabs"
-                style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 1.5rem;">
+                style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; border-bottom: 1px solid rgba(27,46,33,0.08); padding-bottom: 1.5rem;">
                 <button class="lifestyle-tab active" data-tab="deportistas" onclick="switchLifestyle('deportistas')">
                     <span class="material-symbols-outlined">directions_run</span>
                     <span>Deportistas</span>
@@ -359,20 +328,20 @@
 
     <!-- Sección Recetas e Info Nutricional / Slider -->
     <section id="recetas-nutricion" class="slider-section-container"
-        style="background: rgba(0, 0, 0, 0.25); padding: 6rem 2rem; border-top: 1px solid rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.02);">
+        style="background: var(--bg-warm); padding: 6rem 2rem; border-top: 1px solid rgba(27,46,33,0.05); border-bottom: 1px solid rgba(27,46,33,0.05);">
         <div class="section-header" style="text-align: center; margin-bottom: 3.5rem;">
             <span class="section-tag"
-                style="color: var(--accent-gold); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 0.75rem;">Inspiración
+                style="color: var(--bg-dark-forest); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 0.75rem;">Inspiración
                 Micológica</span>
-            <h2 style="font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem;">
+            <h2 style="font-family: var(--font-serif); font-size: 2.4rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-dark);">
                 Recetas que Abren el Apetito</h2>
-            <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto; font-size: 1rem; line-height: 1.6;">
+            <p style="color: var(--text-muted-dark); max-width: 600px; margin: 0 auto; font-size: 1rem; line-height: 1.6;">
                 Explora platos gourmet de fácil preparación y descubre la potencia nutricional oculta en cada bocado de
                 setas ostra.</p>
         </div>
 
         <div class="slider-container"
-            style="max-width: 1100px; margin: 0 auto; position: relative; overflow: hidden; border-radius: 24px; box-shadow: 0 30px 60px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); min-height: 480px; background: rgba(12, 18, 14, 0.7);">
+            style="max-width: 1100px; margin: 0 auto; position: relative; overflow: hidden; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); border: 1px solid rgba(27,46,33,0.08); min-height: 480px; background: #f8f5f0;">
             <!-- Slide 1: Tacos -->
             <div class="slide active" data-slide="0">
                 <div class="slide-image-wrapper">
@@ -463,86 +432,123 @@
         </div>
     </div>
 
-    <!-- Sección Camino Micelia (Revista Editorial) -->
-    <section id="camino-micelia" class="magazine-section">
-        <div class="section-header" style="text-align: center; margin-bottom: 2rem;">
-            <span class="section-tag" style="color: var(--accent-gold); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 0.75rem;">Divulgación Editorial</span>
-            <h2 style="font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem;">Camino Micelia</h2>
-            <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto; font-size: 1rem; line-height: 1.6;">Nuestra publicación digital dedicada a explorar la ciencia, gastronomía y sostenibilidad que rodea al reino Fungi.</p>
+    <!-- Sección Camino Micelia (Banner Oscuro de nuevo_css.jpeg) -->
+    <section id="camino-micelia" class="camino-micelia-banner">
+        <div class="camino-header-row">
+            <span class="camino-header-tag">EDICIONES DISPONIBLES</span>
+            <div class="camino-nav-arrows">
+                <button class="camino-arrow"><span class="material-symbols-outlined" style="font-size: 1rem;">chevron_left</span></button>
+                <button class="camino-arrow"><span class="material-symbols-outlined" style="font-size: 1rem;">chevron_right</span></button>
+            </div>
         </div>
 
-        <div class="magazine-grid">
-            <!-- Edición N°1 -->
-            <div class="magazine-card" onclick="window.location.href='view_doc.html?file=docs/alim_tiene_proteinas.md&title=La%20Revoluci%C3%B3n%20de%20la%20Prote%C3%ADna%20F%C3%BAngica'">
-                <span class="magazine-badge">Edición N°1</span>
-                <div class="magazine-img-wrapper">
-                    <img src="Logo Micelia.png" alt="Logo Micelia">
-                </div>
-                <div class="magazine-info">
-                    <h3 class="magazine-title">La Revolución de la Proteína Fúngica</h3>
-                    <p class="magazine-desc">¿Por qué cada vez más personas incorporan las setas a su menú diario?</p>
-                    <span class="magazine-read">
-                        Leer edición
-                        <span class="material-symbols-outlined" style="font-size: 1rem;">arrow_forward</span>
-                    </span>
-                </div>
+        <div class="camino-body-grid">
+            <div class="camino-media">
+                <img src="hongos_bosque_ecologia.png" alt="Sendero Bosque Camino Micelia">
+            </div>
+            
+            <div class="camino-info">
+                <h2>CAMINO MICELIA</h2>
+                <h4>APRENDER, COMPRENDER, TRANSFORMAR</h4>
+                <p>Creemos en la educación y en el poder de compartir conocimiento. Descubre nuestra revista digital gratuita sobre el fascinante mundo de los hongos y su impacto en la vida y el planeta.</p>
+                <a href="biblioteca.html" class="btn-gold-pill">
+                    LEER REVISTAS
+                    <span class="material-symbols-outlined" style="font-size: 1.1rem;">arrow_forward</span>
+                </a>
             </div>
 
-            <!-- Edición N°2 -->
-            <div class="magazine-card" onclick="window.location.href='view_doc.html?file=docs/cienc_economia_circular.md&title=Econom%C3%ADa%20Circular%20y%20Suelo%20Vivo'">
-                <span class="magazine-badge">Edición N°2</span>
-                <div class="magazine-img-wrapper">
-                    <img src="economia_circular_hongos.png" alt="Economía Circular">
+            <div class="camino-cards-row">
+                <div class="camino-card-mini" onclick="window.location.href='view_doc.html?file=docs/alim_tiene_proteinas.md&title=La%20Revoluci%C3%B3n%20de%20la%20Prote%C3%ADna%20F%C3%BAngica'">
+                    <span class="num">N°1</span>
+                    <img src="proteinas_fungicas.png" alt="Edición 1">
+                    <h5>¿Por qué el hongo puede cambiar nuestra forma de alimentarnos?</h5>
                 </div>
-                <div class="magazine-info">
-                    <h3 class="magazine-title">Economía Circular y Suelo Vivo</h3>
-                    <p class="magazine-desc">La asombrosa capacidad del hongo para convertir residuos locales en alimento noble.</p>
-                    <span class="magazine-read">
-                        Leer edición
-                        <span class="material-symbols-outlined" style="font-size: 1rem;">arrow_forward</span>
-                    </span>
-                </div>
-            </div>
 
-            <!-- Edición N°3 -->
-            <div class="magazine-card" onclick="window.location.href='view_doc.html?file=docs/alim_como_cocinarlo.md&title=Gu%C3%ADa%20y%20Secretos%20Gastron%C3%B3micos'">
-                <span class="magazine-badge">Edición N°3</span>
-                <div class="magazine-img-wrapper">
-                    <img src="cocinar_setas_sarten.png" alt="Secretos Gastronómicos">
+                <div class="camino-card-mini" onclick="window.location.href='view_doc.html?file=docs/cienc_economia_circular.md&title=Econom%C3%ADa%20Circular%20y%20Suelo%20Vivo'">
+                    <span class="num">N°2</span>
+                    <img src="economia_circular_hongos.png" alt="Edición 2">
+                    <h5>Un alimento único: nutritivo, versátil y sostenible</h5>
                 </div>
-                <div class="magazine-info">
-                    <h3 class="magazine-title">Guía y Secretos Gastronómicos</h3>
-                    <p class="magazine-desc">Consejos y técnicas sencillas para conservar la textura y potenciar el sabor umami.</p>
-                    <span class="magazine-read">
-                        Leer edición
-                        <span class="material-symbols-outlined" style="font-size: 1rem;">arrow_forward</span>
-                    </span>
-                </div>
-            </div>
 
-            <!-- Edición N°4 - Upcoming -->
-            <div class="magazine-card upcoming">
-                <span class="magazine-badge" style="border-color: var(--text-muted); color: var(--text-muted);">Edición N°4</span>
-                <div class="magazine-img-wrapper">
-                    <img src="oyster_mushrooms.png" alt="Biotecnología fúngica">
-                </div>
-                <div class="magazine-info">
-                    <h3 class="magazine-title" style="color: var(--text-muted);">Biotecnología y Biorremediación</h3>
-                    <p class="magazine-desc">Próximamente: descubriendo cómo el micelio limpia y sana suelos contaminados de forma natural.</p>
-                    <span class="magazine-read" style="color: var(--text-muted);">
-                        Próximamente
-                    </span>
+                <div class="camino-card-mini" onclick="window.location.href='view_doc.html?file=docs/alim_como_cocinarlo.md&title=Gu%C3%ADa%20y%20Secretos%20Gastron%C3%B3micos'">
+                    <span class="num">N°3</span>
+                    <img src="cocinar_setas_sarten.png" alt="Edición 3">
+                    <h5>Del cultivo a tu mesa: el viaje del hongo ostra</h5>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Sección Nuestro Proceso (Pipeline 6 pasos de nuevo_css.jpeg) -->
+    <section id="nuestro-proceso" class="nuestro-proceso-section">
+        <div class="nuestro-proceso-header">
+            <span class="tag">NUESTRO PROCESO</span>
+            <h2>Ciencia, naturaleza y dedicación</h2>
+            <p>Cada etapa de nuestro cultivo está diseñada para asegurar calidad, inocuidad y respeto por el medioambiente.</p>
+        </div>
+
+        <div class="proceso-pipeline">
+            <a href="view_doc.html?file=docs/economia_circular.md&title=Econom%C3%ADa+Circular" class="proceso-step" style="text-decoration: none; color: inherit;">
+                <div class="proceso-step-icon">
+                    <span class="material-symbols-outlined">grass</span>
+                </div>
+                <span class="material-symbols-outlined proceso-arrow">east</span>
+                <h4>SUSTRATO LOCAL</h4>
+                <p>Utilizamos paja de trigo de productores de la zona.</p>
+            </a>
+
+            <a href="view_doc.html?file=docs/biologia_hongo_ostra.md&title=Biolog%C3%ADa+del+Hongo+Ostra" class="proceso-step" style="text-decoration: none; color: inherit;">
+                <div class="proceso-step-icon">
+                    <span class="material-symbols-outlined">water_drop</span>
+                </div>
+                <span class="material-symbols-outlined proceso-arrow">east</span>
+                <h4>PREPARACIÓN</h4>
+                <p>Tratamiento alcalino natural para un sustrato limpio.</p>
+            </a>
+
+            <a href="view_doc.html?file=docs/guia_autocultivo.md&title=Gu%C3%ADa+de+Autocultivo" class="proceso-step" style="text-decoration: none; color: inherit;">
+                <div class="proceso-step-icon">
+                    <span class="material-symbols-outlined">science</span>
+                </div>
+                <span class="material-symbols-outlined proceso-arrow">east</span>
+                <h4>INOCULACIÓN</h4>
+                <p>Incorporamos micelio en condiciones controladas.</p>
+            </a>
+
+            <a href="view_doc.html?file=docs/telemetria_s60.md&title=Telemetr%C3%ADa+IoT+S60" class="proceso-step" style="text-decoration: none; color: inherit;">
+                <div class="proceso-step-icon">
+                    <span class="material-symbols-outlined">inventory_2</span>
+                </div>
+                <span class="material-symbols-outlined proceso-arrow">east</span>
+                <h4>INCUBACIÓN</h4>
+                <p>El micelio coloniza el sustrato en ambiente oscuro.</p>
+            </a>
+
+            <a href="view_doc.html?file=docs/compendio_nutricional.md&title=Compendio+Nutricional" class="proceso-step" style="text-decoration: none; color: inherit;">
+                <div class="proceso-step-icon">
+                    <span class="material-symbols-outlined">nature</span>
+                </div>
+                <span class="material-symbols-outlined proceso-arrow">east</span>
+                <h4>FRUCTIFICACIÓN</h4>
+                <p>Controlamos clima y humedad para obtener calidad.</p>
+            </a>
+
+            <a href="#tienda" class="proceso-step" style="text-decoration: none; color: inherit;">
+                <div class="proceso-step-icon">
+                    <span class="material-symbols-outlined">shopping_basket</span>
+                </div>
+                <h4>COSECHA</h4>
+                <p>Hongos frescos, listos para tu mesa.</p>
+            </a>
+        </div>
+    </section>
+
     <!-- Sección Tienda / Pedidos -->
-    <section id="tienda" class="tienda-section">
+    <section id="tienda" class="tienda-section" style="max-width: 1200px; margin: 0 auto;">
         <div class="section-header">
-            <span class="section-tag">Cultivo Local</span>
-            <h2>Formatos y Experiencias</h2>
-            <p>Cultivamos y cosechamos a mano el mismo día del despacho para resguardar la calidad natural de las setas. Elige la alternativa ideal para tu hogar o cocina.</p>
+            <span class="section-tag" style="color: var(--bg-dark-forest);">Cultivo Local</span>
+            <h2 style="font-family: var(--font-serif); color: var(--text-dark);">Formatos y Experiencias</h2>
+            <p style="color: var(--text-muted-dark);">Cultivamos y cosechamos a mano el mismo día del despacho para resguardar la calidad natural de las setas. Elige la alternativa ideal para tu hogar o cocina.</p>
         </div>
 
         <div class="products-grid">
@@ -553,7 +559,7 @@
                     <img src="eco_packaging.png" alt="Hongo Ostra Fresco - 500g">
                 </div>
                 <h3>Hongo Ostra Fresco - 500g</h3>
-                <p style="font-size: 0.85rem; color: var(--accent-gold); font-weight: 600; margin-bottom: 0.5rem; font-family: var(--font-display);">Cosechado a mano el mismo día de la entrega.</p>
+                <p style="font-size: 0.85rem; color: var(--bg-dark-forest); font-weight: 600; margin-bottom: 0.5rem; font-family: var(--font-display);">Cosechado a mano el mismo día de la entrega.</p>
                 <p class="price">$4.500 CLP</p>
                 <p class="desc">Formato ideal para conocer el sabor de nuestras setas frescas e incorporarlas de forma sencilla a tus comidas de la semana.</p>
                 <button class="btn btn-primary add-to-cart-btn" data-id="1" data-name="Hongo Ostra Fresco 500g"
@@ -566,7 +572,7 @@
                     <img src="raw_mushrooms.png" alt="Hongo Ostra Fresco - 1kg">
                 </div>
                 <h3>Hongo Ostra Fresco - 1kg</h3>
-                <p style="font-size: 0.85rem; color: var(--accent-gold); font-weight: 600; margin-bottom: 0.5rem; font-family: var(--font-display);">Perfecto para compartir en familia.</p>
+                <p style="font-size: 0.85rem; color: var(--bg-dark-forest); font-weight: 600; margin-bottom: 0.5rem; font-family: var(--font-display);">Perfecto para compartir en familia.</p>
                 <p class="price">$8.000 CLP</p>
                 <p class="desc">Una opción más abundante pensada para cocinar en familia, preparar conservas en escabeche o deshidratar de forma casera.</p>
                 <button class="btn btn-primary add-to-cart-btn" data-id="2" data-name="Hongo Ostra Fresco 1kg"
@@ -580,7 +586,7 @@
                     <img src="cooking_mushrooms.png" alt="Suscripción Restaurante HORECA">
                 </div>
                 <h3>Suscripción Restaurante (HORECA)</h3>
-                <p style="font-size: 0.85rem; color: var(--accent-gold); font-weight: 600; margin-bottom: 0.5rem; font-family: var(--font-display);">Suministro constante para cocinas conscientes.</p>
+                <p style="font-size: 0.85rem; color: var(--bg-dark-forest); font-weight: 600; margin-bottom: 0.5rem; font-family: var(--font-display);">Suministro constante para cocinas conscientes.</p>
                 <p class="price">$25.000 CLP <small>/mes</small></p>
                 <p class="desc">Entrega periódica y planificada de setas de calibre estandarizado en la Provincia de Arauco. Ideal para mantener la identidad local de tu menú.</p>
                 <button class="btn btn-secondary add-to-cart-btn" data-id="3" data-name="Suscripción HORECA"
@@ -594,7 +600,7 @@
                     <img src="eco_packaging.png" alt="Kit de Autocultivo Educativo">
                 </div>
                 <h3>Kit de Autocultivo Educativo</h3>
-                <p style="font-size: 0.85rem; color: var(--accent-gold); font-weight: 600; margin-bottom: 0.5rem; font-family: var(--font-display);">Aprende cultivando en casa.</p>
+                <p style="font-size: 0.85rem; color: var(--bg-dark-forest); font-weight: 600; margin-bottom: 0.5rem; font-family: var(--font-display);">Aprende cultivando en casa.</p>
                 <p class="price">$12.000 CLP</p>
                 <p class="desc">Una experiencia maravillosa y sencilla para observar el desarrollo biológico de los hongos en familia. Cosecha garantizada en 10-14 días.</p>
                 <button class="btn btn-primary add-to-cart-btn" data-id="4" data-name="Kit de Autocultivo Educativo"
@@ -608,7 +614,7 @@
                     <img src="kit_autocultivo.png" alt="Kit de Autocultivo Familiar XL">
                 </div>
                 <h3>Kit de Autocultivo Familiar XL</h3>
-                <p style="font-size: 0.85rem; color: var(--accent-gold); font-weight: 600; margin-bottom: 0.5rem; font-family: var(--font-display);">Cosecha abundante para tu cocina.</p>
+                <p style="font-size: 0.85rem; color: var(--bg-dark-forest); font-weight: 600; margin-bottom: 0.5rem; font-family: var(--font-display);">Cosecha abundante para tu cocina.</p>
                 <p class="price">$18.000 CLP</p>
                 <p class="desc">Bloque gigante de sustrato inoculado de 4.5kg, diseñado para recolectar setas en cantidad y disfrutar de varias cosechas en tu propio hogar.</p>
                 <button class="btn btn-primary add-to-cart-btn" data-id="5" data-name="Kit de Autocultivo Familiar XL"
@@ -622,7 +628,7 @@
                     <img src="oyster_mushrooms.png" alt="Kit de Autocultivo Exótico (Setas Rosadas)">
                 </div>
                 <h3>Kit de Autocultivo Exótico</h3>
-                <p style="font-size: 0.85rem; color: var(--accent-gold); font-weight: 600; margin-bottom: 0.5rem; font-family: var(--font-display);">Descubre la variedad rosa tropical.</p>
+                <p style="font-size: 0.85rem; color: var(--bg-dark-forest); font-weight: 600; margin-bottom: 0.5rem; font-family: var(--font-display);">Descubre la variedad rosa tropical.</p>
                 <p class="price">$15.000 CLP</p>
                 <p class="desc">Variedad Pleurotus djamor con hermosos colores rosados y un sabor muy suave. Una alternativa diferente y fascinante para adentrarse en el reino Fungi.</p>
                 <button class="btn btn-primary add-to-cart-btn" data-id="6" data-name="Kit de Autocultivo Exótico"
@@ -894,7 +900,7 @@
     <!-- Sección Nosotros (Relato Humano) -->
     <section id="nosotros" class="nosotros-section">
         <div class="nosotros-container">
-            <span class="section-tag" style="color: var(--accent-gold); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 1.5rem;">Nuestro Origen</span>
+            <span class="section-tag" style="color: var(--bg-dark-forest); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 1.5rem;">Nuestro Origen</span>
             <div class="nosotros-quote">
                 Todo comenzó cuando descubrimos que un pequeño hongo podía responder preguntas mucho más grandes. ¿Cómo producir alimentos de alta calidad utilizando menos recursos? ¿Cómo aprovechar los residuos agrícolas de la Provincia de Arauco? ¿Cómo acercar una nutrición noble y saludable a las personas? Micelia nació para explorar esas respuestas de la mano de la ciencia, la cercanía y el respeto a la tierra.
             </div>
@@ -902,18 +908,65 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-brand">
-                <img src="logo.png" class="brand-logo-img" alt="Micelia Logo">
-                <span>MICELIA</span>
-            </div>
-            <p>Cultivo Técnico de Hongos Ostra • Soberanía Alimentaria Arauco</p>
-            <p class="copyright">Curanilahue, Región del Biobío, Chile • © 2026 Todos los derechos reservados.</p>
-        </div>
-    </footer>
+    <!-- Banner Inferior Nutrición + Newsletter (nuevo_css.jpeg) -->
+    <section class="bottom-features-section" id="contacto">
+        <div class="bottom-features-card">
+            <a href="view_doc.html?file=docs/compendio_nutricional.md&title=Compendio+Nutricional" class="feature-pill-item" style="text-decoration: none; color: inherit;">
+                <div class="feature-pill-icon"><span class="material-symbols-outlined">nature</span></div>
+                <div class="feature-pill-info">
+                    <h5>ALTO EN NUTRIENTES</h5>
+                    <p>Rico en proteínas, vitaminas y minerales esenciales.</p>
+                </div>
+            </a>
 
+            <a href="view_doc.html?file=docs/receta_risotto.md&title=Risotto+Cremoso" class="feature-pill-item" style="text-decoration: none; color: inherit;">
+                <div class="feature-pill-icon"><span class="material-symbols-outlined">local_fire_department</span></div>
+                <div class="feature-pill-info">
+                    <h5>BAJO EN CALORÍAS</h5>
+                    <p>Ideal para una alimentación saludable y equilibrada.</p>
+                </div>
+            </a>
+
+            <a href="view_doc.html?file=docs/compendio_nutricional.md&title=Compendio+Nutricional" class="feature-pill-item" style="text-decoration: none; color: inherit;">
+                <div class="feature-pill-icon"><span class="material-symbols-outlined">shield</span></div>
+                <div class="feature-pill-info">
+                    <h5>FORTALECE TU SISTEMA INMUNE</h5>
+                    <p>Contiene betaglucanos que apoyan tus defensas.</p>
+                </div>
+            </a>
+
+            <a href="view_doc.html?file=docs/alim_como_cocinarlo.md&title=Gu%C3%ADa+y+Secretos+Gastron%C3%B3micos" class="feature-pill-item" style="text-decoration: none; color: inherit;">
+                <div class="feature-pill-icon"><span class="material-symbols-outlined">sentiment_very_satisfied</span></div>
+                <div class="feature-pill-info">
+                    <h5>APOYA TU BIENESTAR</h5>
+                    <p>Ayuda a reducir el estrés y mejorar el estado de ánimo.</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="newsletter-card">
+            <div class="newsletter-header">
+                <span class="material-symbols-outlined icon">mail</span>
+                <h3>SÉ PARTE DEL CAMINO</h3>
+            </div>
+            <p class="newsletter-desc">Recibe novedades, recetas y contenido exclusivo.</p>
+            <form class="newsletter-form" onsubmit="event.preventDefault(); alert('¡Gracias por suscribirte a Micelia!');">
+                <input type="email" placeholder="Tu correo electrónico" required>
+                <button type="submit">SUSCRIBIRME</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer Nouveau Bar -->
+    <footer class="footer-nouveau-bar">
+        <div>© 2025 Micelia. Todos los derechos reservados.</div>
+        <div class="footer-nouveau-center">
+            <a href="https://instagram.com/micelia.cl" target="_blank" rel="noopener" class="social-circle-link" title="Instagram"><span class="material-symbols-outlined" style="font-size: 1.1rem;">photo_camera</span></a>
+            <a href="https://facebook.com/micelia.cl" target="_blank" rel="noopener" class="social-circle-link" title="Facebook"><span class="material-symbols-outlined" style="font-size: 1.1rem;">facebook</span></a>
+            <span>Curanilahue, Provincia de Arauco, Región del Biobío</span>
+        </div>
+        <div>Desarrollado con <span style="color: #d9534f;">♥</span> para la comunidad.</div>
+    </footer>
 
     <!-- Scripts de la Landing Page -->
     <script src="public.js?v=4"></script>

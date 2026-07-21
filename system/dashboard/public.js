@@ -106,6 +106,31 @@ document.addEventListener("DOMContentLoaded", () => {
     // Inicializar Fondo 3D Mycelium
     initMycelium3D();
 
+    // Navegación activa por scroll y click
+    const navLinks = document.querySelectorAll(".nav-link");
+    const sections = document.querySelectorAll("section[id]");
+
+    function updateActiveNav() {
+        let current = "";
+        sections.forEach(s => {
+            const top = s.getBoundingClientRect().top;
+            if (top < 200) current = s.getAttribute("id");
+        });
+        navLinks.forEach(link => {
+            link.classList.toggle("active", link.getAttribute("href") === "#" + current);
+        });
+    }
+
+    navLinks.forEach(link => {
+        link.addEventListener("click", () => {
+            navLinks.forEach(l => l.classList.remove("active"));
+            link.classList.add("active");
+        });
+    });
+
+    window.addEventListener("scroll", updateActiveNav, { passive: true });
+    updateActiveNav();
+
     // Referencias DOM
     const openCartBtn = document.getElementById("open-cart-btn");
     const closeCartBtn = document.getElementById("close-cart-btn");
