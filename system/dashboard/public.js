@@ -415,8 +415,8 @@ function runMLPrediction() {
             habitContent.innerHTML = `
                 <p>Como socio gastronómico HORECA, tu flujo constante de setas ostra frescas es ideal para cocinas comerciales. Te recomendamos revisar el dossier de almacenamiento a granel y conservación de calidad:</p>
                 <ul style="margin-top: 0.5rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.5rem;">
-                    <li>📖 <a href="view_doc.html?doc=compendio_nutricional.md" style="color: var(--accent-gold); text-decoration: underline;">Compendio Nutricional y Conservación</a></li>
-                    <li>♻️ <a href="view_doc.html?doc=economia_circular.md" style="color: var(--accent-gold); text-decoration: underline;">Economía Circular y Aprovechamiento de Mermas</a></li>
+                    <li>📖 <a href="view_doc.html?file=docs/compendio_nutricional.md&title=Compendio%20Nutricional%20y%20Conservaci%C3%B3n" style="color: var(--accent-gold); text-decoration: underline;">Compendio Nutricional y Conservación</a></li>
+                    <li>♻️ <a href="view_doc.html?file=docs/economia_circular.md&title=Econom%C3%ADa%20Circular%20y%20Aprovechamiento%20de%20Mermas" style="color: var(--accent-gold); text-decoration: underline;">Economía Circular y Aprovechamiento de Mermas</a></li>
                 </ul>
             `;
         } else if (kitCount >= freshCount && kitCount > 0) {
@@ -426,8 +426,8 @@ function runMLPrediction() {
             habitContent.innerHTML = `
                 <p>¡Hola, cultivador! Vemos que prefieres nuestros Kits de Autocultivo. Para mejorar tu tasa de fructificación y el cuidado de tu micelio, te sugerimos leer las siguientes guías técnicas:</p>
                 <ul style="margin-top: 0.5rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.5rem;">
-                    <li>🍄 <a href="view_doc.html?doc=guia_autocultivo.md" style="color: var(--accent-gold); text-decoration: underline;">Guía de Autocultivo Paso a Paso</a></li>
-                    <li>🔬 <a href="view_doc.html?doc=biologia_hongo_ostra.md" style="color: var(--accent-gold); text-decoration: underline;">Biología y Fisiología del Hongo Ostra</a></li>
+                    <li>🍄 <a href="view_doc.html?file=docs/guia_autocultivo.md&title=Gu%C3%ADa%20de%20Autocultivo%20Paso%20a%20Paso" style="color: var(--accent-gold); text-decoration: underline;">Guía de Autocultivo Paso a Paso</a></li>
+                    <li>🔬 <a href="view_doc.html?file=docs/biologia_hongo_ostra.md&title=Biolog%C3%ADa%20y%20Fisiolog%C3%ADa%20del%20Hongo%20Ostra" style="color: var(--accent-gold); text-decoration: underline;">Biología y Fisiología del Hongo Ostra</a></li>
                 </ul>
             `;
         } else if (freshCount > 0) {
@@ -437,9 +437,9 @@ function runMLPrediction() {
             habitContent.innerHTML = `
                 <p>Vemos que eres un entusiasta de las setas ostra frescas en la cocina. Para potenciar tus platos y aprovechar al máximo su textura y sabor, te sugerimos explorar estas recetas de autor de nuestro chef:</p>
                 <ul style="margin-top: 0.5rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.5rem; list-style: none;">
-                    <li>🥘 <a href="view_doc.html?doc=receta_risotto.md" style="color: var(--accent-gold); text-decoration: underline;">Risotto Cremoso de Setas Ostra</a></li>
-                    <li>🥗 <a href="view_doc.html?doc=receta_ceviche.md" style="color: var(--accent-gold); text-decoration: underline;">Ceviche Vegano Fiel de Setas</a></li>
-                    <li>🌮 <a href="view_doc.html?doc=receta_tacos.md" style="color: var(--accent-gold); text-decoration: underline;">Tacos Rústicos de Setas Salteadas</a></li>
+                    <li>🥘 <a href="view_doc.html?file=docs/receta_risotto.md&title=Risotto%20Cremoso%20de%20Setas%20Ostra" style="color: var(--accent-gold); text-decoration: underline;">Risotto Cremoso de Setas Ostra</a></li>
+                    <li>🥗 <a href="view_doc.html?file=docs/receta_ceviche.md&title=Ceviche%20Vegano%20Fiel%20de%20Setas" style="color: var(--accent-gold); text-decoration: underline;">Ceviche Vegano Fiel de Setas</a></li>
+                    <li>🌮 <a href="view_doc.html?file=docs/receta_tacos.md&title=Tacos%20R%C3%BAsticos%20de%20Setas%20Salteadas" style="color: var(--accent-gold); text-decoration: underline;">Tacos Rústicos de Setas Salteadas</a></li>
                 </ul>
             `;
         } else {
