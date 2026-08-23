@@ -6,7 +6,7 @@
         "code-review-graph",
         "serve"
       ],
-      "cwd": "/home/jnovoas/Proyectos/micellia",
+      "cwd": "/home/jnovoas/proyectos/micellia",
       "type": "stdio"
     }
   }
