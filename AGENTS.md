@@ -36,3 +36,8 @@ Fall back to Grep/Glob/Read **only** when the graph doesn't cover what you need.
 2. Use `detect_changes_tool` for code review.
 3. Use `get_affected_flows_tool` to understand impact.
 4. Use `query_graph_tool` pattern="tests_for" to check coverage.
+> **Infraestructura 2026-08-26:** la topología de transición usa `fenix` para
+> desarrollo/compilación y `dns1.pinguinoseguro.cl`, y `kingu` para producción
+> contenerizada/Traefik y `dns2.pinguinoseguro.cl`. Verificar el estado real en
+> los hosts antes de actuar. Guía común:
+> `/home/jnovoas/proyectos/sysdocs/02-topologia-y-metodologia-transicion-2026-08-26.md`.
