@@ -1,0 +1,76 @@
+services:
+  micelia-db:
+    image: postgres:16-alpine
+    container_name: micelia-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: micelia
+      POSTGRES_USER: micelia
+      POSTGRES_PASSWORD: micelia_prod_secret_change_me
+    volumes:
+      - micelia-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U micelia -d micelia"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - micelia-net
+
+  micelia-redis:
+    image: redis:7-alpine
+    container_name: micelia-redis
+    restart: unless-stopped
+    volumes:
+      - micelia-redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - micelia-net
+
+  micelia-cortex:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: micelia-cortex:latest
+    container_name: micelia-cortex
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://micelia:micelia_prod_secret_change_me@micelia-db:5432/micelia
+      REDIS_URL: redis://micelia-redis:6379/
+      PORT: 8080
+      TCP_PORT: 4000
+      STATIC_DIR: /app/dashboard
+    depends_on:
+      micelia-db:
+        condition: service_healthy
+      micelia-redis:
+        condition: service_healthy
+    networks:
+      - micelia-net
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.micelia.rule=Host(`micelia.cl`) || Host(`www.micelia.cl`)"
+      - "traefik.http.routers.micelia.entrypoints=websecure"
+      - "traefik.http.routers.micelia.tls.certresolver=powerdns"
+      - "traefik.http.services.micelia.loadbalancer.server.port=8080"
+      - "traefik.docker.network=proxy"
+      # Redirect www to non-www
+      - "traefik.http.middlewares.micelia-redirect.redirectregex.regex=^https://www\\.micelia\\.cl/(.*)"
+      - "traefik.http.middlewares.micelia-redirect.redirectregex.replacement=https://micelia.cl/$${1}"
+      - "traefik.http.middlewares.micelia-redirect.redirectregex.permanent=true"
+      - "traefik.http.routers.micelia.middlewares=micelia-redirect"
+
+networks:
+  micelia-net:
+    driver: bridge
+  proxy:
+    external: true
+
+volumes:
+  micelia-db-data:
+  micelia-redis-data:

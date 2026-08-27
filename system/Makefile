@@ -1,4 +1,4 @@
-.PHONY: check test build run-dashboard build-seo
+.PHONY: check test build build-image run-dashboard build-seo deploy-kingu
 
 check:
 	PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1 cargo check
@@ -9,14 +9,17 @@ test:
 build:
 	PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1 cargo build --release
 
+build-image:
+	podman build -t micelia-cortex:latest -f ../Dockerfile ..
+
 run-dashboard:
-	@echo "Para ver el dashboard local, abre file:///home/jnovoas/Dev/micellia/system/dashboard/index.html en tu navegador."
+	@echo "Para ver el dashboard local, abre file://$(shell pwd)/dashboard/index.html en tu navegador."
 
 build-seo:
 	node dashboard/scripts/build-seo-pages.mjs
 
-deploy:
-	ssh fan "mkdir -p ~/micellia"
-	rsync -avz --exclude 'target' --exclude '.git' --exclude '.cargo' --exclude '.github' ./ fan:~/micellia/
-	rsync -avz dashboard/ fan:/var/www/micelia.cl/dashboard/
-	ssh fan "cd ~/micellia && PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1 ~/.cargo/bin/cargo build --release"
+deploy-kingu:
+	ssh kingu "mkdir -p ~/proyectos/micellia"
+	rsync -avz --exclude 'target' --exclude '.git' --exclude '.cargo' --exclude '.github' ../ kingu:~/proyectos/micellia/
+	ssh kingu "cd ~/proyectos/micellia && podman compose up -d --build"
+

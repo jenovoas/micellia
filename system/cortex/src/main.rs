@@ -74,15 +74,27 @@ struct AppState {
 async fn main() {
     println!("Cortex daemon de Micelia inicializado.");
 
+    let pg_url = std::env::var("DATABASE_URL").unwrap_or_else(|_| PG_URL.to_string());
+    let redis_url = std::env::var("REDIS_URL").unwrap_or_else(|_| REDIS_URL.to_string());
+    let http_port: u16 = std::env::var("PORT")
+        .ok()
+        .and_then(|p| p.parse().ok())
+        .unwrap_or(HTTP_PORT);
+    let tcp_port: u16 = std::env::var("TCP_PORT")
+        .ok()
+        .and_then(|p| p.parse().ok())
+        .unwrap_or(TCP_PORT);
+    let static_dir = std::env::var("STATIC_DIR").unwrap_or_else(|_| "../dashboard".to_string());
+
     // Conexión opcional a base de datos PostgreSQL (TruthSync)
-    let pg_client = match tokio_postgres::connect(PG_URL, tokio_postgres::NoTls).await {
+    let pg_client = match tokio_postgres::connect(&pg_url, tokio_postgres::NoTls).await {
         Ok((client, connection)) => {
             tokio::spawn(async move {
                 if let Err(e) = connection.await {
                     eprintln!("Error de conexión en Postgres: {}", e);
                 }
             });
-            println!("TruthSync: Conectado a PostgreSQL en {}", PG_URL);
+            println!("TruthSync: Conectado a PostgreSQL en {}", pg_url);
             
             // Crear tabla de ledger si no existe
             let _ = client.execute(
@@ -126,10 +138,10 @@ async fn main() {
     };
 
     // Conexión opcional a Redis (Caché de estado)
-    let redis_conn = match redis::Client::open(REDIS_URL) {
+    let redis_conn = match redis::Client::open(redis_url.as_str()) {
         Ok(client) => match client.get_tokio_connection().await {
             Ok(conn) => {
-                println!("State Cache: Conectado a Redis en {}", REDIS_URL);
+                println!("State Cache: Conectado a Redis en {}", redis_url);
                 Some(conn)
             }
             Err(_) => {
@@ -156,10 +168,11 @@ async fn main() {
     let state_tcp = app_state.clone();
     let state_http = app_state.clone();
 
-    // 1. Iniciar Servidor TCP para Firmware del Nodo (Puerto 4000)
+    // 1. Iniciar Servidor TCP para Firmware del Nodo
     tokio::spawn(async move {
-        let listener = TokioTcpListener::bind(format!("127.0.0.1:{}", TCP_PORT)).await.unwrap();
-        println!("TCP Listener: Escuchando firmware en el puerto {}", TCP_PORT);
+        let bind_addr = format!("0.0.0.0:{}", tcp_port);
+        let listener = TokioTcpListener::bind(&bind_addr).await.unwrap();
+        println!("TCP Listener: Escuchando firmware en {}", bind_addr);
 
         loop {
             if let Ok((socket, addr)) = listener.accept().await {
@@ -171,17 +184,17 @@ async fn main() {
         }
     });
 
-    // 2. Iniciar Servidor API Axum y WebSockets (Puerto 8080)
+    // 2. Iniciar Servidor API Axum y WebSockets
     let app = Router::new()
         .route("/ws", get(ws_handler))
         .route("/api/orders", get(get_orders).post(create_order))
         .route("/api/orders/status", put(update_order_status))
-        .fallback_service(tower_http::services::ServeDir::new("../dashboard"))
+        .fallback_service(tower_http::services::ServeDir::new(static_dir))
         .layer(CorsLayer::permissive())
         .with_state(state_http);
 
-    let listener_http = tokio::net::TcpListener::bind(format!("0.0.0.0:{}", HTTP_PORT)).await.unwrap();
-    println!("API Gateway: Servidor HTTP/WebSocket listo en http://localhost:{}", HTTP_PORT);
+    let listener_http = tokio::net::TcpListener::bind(format!("0.0.0.0:{}", http_port)).await.unwrap();
+    println!("API Gateway: Servidor HTTP/WebSocket listo en http://0.0.0.0:{}", http_port);
     axum::serve(listener_http, app).await.unwrap();
 }
 
