@@ -49,27 +49,14 @@ services:
         condition: service_healthy
       micelia-redis:
         condition: service_healthy
+    ports:
+      - "127.0.0.1:8080:8080"
     networks:
       - micelia-net
-      - proxy
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.micelia.rule=Host(`micelia.cl`) || Host(`www.micelia.cl`)"
-      - "traefik.http.routers.micelia.entrypoints=websecure"
-      - "traefik.http.routers.micelia.tls.certresolver=powerdns"
-      - "traefik.http.services.micelia.loadbalancer.server.port=8080"
-      - "traefik.docker.network=proxy"
-      # Redirect www to non-www
-      - "traefik.http.middlewares.micelia-redirect.redirectregex.regex=^https://www\\.micelia\\.cl/(.*)"
-      - "traefik.http.middlewares.micelia-redirect.redirectregex.replacement=https://micelia.cl/$${1}"
-      - "traefik.http.middlewares.micelia-redirect.redirectregex.permanent=true"
-      - "traefik.http.routers.micelia.middlewares=micelia-redirect"
 
 networks:
   micelia-net:
     driver: bridge
-  proxy:
-    external: true
 
 volumes:
   micelia-db-data:

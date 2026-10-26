@@ -27,4 +27,4 @@ El hongo ostra es un organismo mesófilo. Una temperatura constante entre **18°
 
 ---
 
-*¿Quieres aprender a evitar desastres en tus salas de cultivo? → Ver: [Evita el Fracaso: Errores Comunes en el Cultivo de Hongo Ostra](file:///home/jnovoas/Dev/micellia/system/dashboard/docs/cult_errores_comunes.md)*
+*¿Quieres aprender a evitar desastres en tus salas de cultivo? → Ver: [Evita el Fracaso: Errores Comunes en el Cultivo de Hongo Ostra](/view_doc.html?file=docs/cult_errores_comunes.md)*

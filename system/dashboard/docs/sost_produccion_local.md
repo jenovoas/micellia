@@ -17,4 +17,4 @@ Los circuitos cortos de comercialización consisten en la venta directa del prod
 
 ---
 
-*¿De qué forma este modelo local mejora la resiliencia en Arauco? → Ver: [Soberanía y Seguridad Alimentaria en Tiempos de Cambio Climático](file:///home/jnovoas/Dev/micellia/system/dashboard/docs/sost_seguridad_alimentaria.md)*
+*¿De qué forma este modelo local mejora la resiliencia en Arauco? → Ver: [Soberanía y Seguridad Alimentaria en Tiempos de Cambio Climático](/view_doc.html?file=docs/sost_seguridad_alimentaria.md)*

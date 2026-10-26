@@ -32,5 +32,5 @@ La plaga más devastadora en la producción de *Pleurotus ostreatus* y *Hericium
 
 Cada transición de estado crítico (ej. inicio de fructificación, detección de alerta, salida de sanitización) queda registrada en PostgreSQL como una entrada de ledger firmada. Esto permite:
 
-*   Trazabilidad completa por Batch ID para el cliente final y certificaciones orgánicas.
-*   Auditorías forenses en caso de pérdida de un lote para identificar fallas en las rampas de inducción térmica.
+* Trazabilidad completa por Batch ID para el cliente final y certificaciones orgánicas.
+* Auditorías forenses en caso de pérdida de un lote para identificar fallas en las rampas de inducción térmica.

@@ -32,4 +32,4 @@ Las láminas de la seta madura liberan millones de esporas microscópicas al air
 
 ---
 
-*¿Cuáles son las variables exactas para inducir la fructificación? → Ver: [Parámetros Ambientales Críticos: ¿Qué Necesita un Cultivo de Setas?](file:///home/jnovoas/Dev/micellia/system/dashboard/docs/cult_que_necesita.md)*
+*¿Cuáles son las variables exactas para inducir la fructificación? → Ver: [Parámetros Ambientales Críticos: ¿Qué Necesita un Cultivo de Setas?](/view_doc.html?file=docs/cult_que_necesita.md)*

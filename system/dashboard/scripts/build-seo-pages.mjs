@@ -5,8 +5,8 @@
  * Uso local (URL temporal):
  *   node scripts/build-seo-pages.mjs
  *
- * Uso al migrar al dominio propio:
- *   SITE_URL=https://micelia.cl SITE_BASE_PATH=/ node scripts/build-seo-pages.mjs
+ * Dominio actual:
+ *   SITE_URL=https://micelia.pinguinoseguro.cl SITE_BASE_PATH=/ node scripts/build-seo-pages.mjs
  */
 import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
@@ -14,8 +14,8 @@ import { dirname, join } from 'node:path';
 const dashboardDir = dirname(dirname(new URL(import.meta.url).pathname));
 const docsDir = join(dashboardDir, 'docs');
 const outputDir = join(dashboardDir, 'articulos');
-const siteUrl = (process.env.SITE_URL || 'https://pinguinoseguro.cl').replace(/\/$/, '');
-const basePath = normalizeBasePath(process.env.SITE_BASE_PATH || '/micelia');
+const siteUrl = (process.env.SITE_URL || 'https://micelia.pinguinoseguro.cl').replace(/\/$/, '');
+const basePath = normalizeBasePath(process.env.SITE_BASE_PATH || '/');
 const siteBaseUrl = `${siteUrl}${basePath}`;
 
 function normalizeBasePath(value) {

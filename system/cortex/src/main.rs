@@ -1,8 +1,8 @@
-use std::sync::Arc;
+use std::{io, sync::Arc};
 use tokio::net::{TcpListener as TokioTcpListener, TcpStream};
 use tokio::sync::broadcast;
 use tokio::sync::RwLock;
-use tokio::io::AsyncReadExt;
+use tokio::io::{AsyncBufRead, AsyncBufReadExt, BufReader};
 use serde::{Serialize, Deserialize};
 use axum::{
     routing::{get, put},
@@ -198,57 +198,149 @@ async fn main() {
     axum::serve(listener_http, app).await.unwrap();
 }
 
-// Manejar conexiones TCP del firmware
-async fn handle_node_connection(mut socket: TcpStream, addr: std::net::SocketAddr, state: Arc<AppState>) {
+const MAX_TELEMETRY_FRAME_BYTES: usize = 4096;
+
+// Cada muestra de telemetría ocupa una línea JSON terminada en '\n'.
+async fn handle_node_connection(socket: TcpStream, addr: std::net::SocketAddr, state: Arc<AppState>) {
     println!("TCP Listener: Nodo conectado desde {}", addr);
-    let mut buf = [0; 1024];
+    let mut reader = BufReader::new(socket);
+    let mut frame = Vec::new();
 
     loop {
-        match socket.read(&mut buf).await {
+        match read_bounded_line(&mut reader, &mut frame).await {
             Ok(0) => {
                 println!("TCP Listener: Nodo desconectado {}", addr);
                 break;
             }
-            Ok(n) => {
-                let data = &buf[..n];
-                if let Ok(telemetry) = serde_json::from_slice::<TelemetryPayload>(data) {
-                    // Procesar telemetría y aplicar reglas MIP/Yatra
-                    let mut chamber = state.chamber.write().await;
-                    chamber.temp_raw = telemetry.temp_raw;
-                    chamber.hum_raw = telemetry.hum_raw;
-                    chamber.co2_raw = telemetry.co2_raw;
-                    chamber.diff_press_raw = telemetry.diff_press_raw;
-
-                    // Regla de Control de CO2 (Umbral de 800 ppm)
-                    let co2_ppm = telemetry.co2_raw / 216000;
-                    chamber.extractor_active = co2_ppm > 800;
-
-                    // Regla de Control de Presión Diferencial (Prevención de Trichoderma)
-                    // Si cae por debajo de 500 tercios (equivalente a 0.0023 unidades de presión)
-                    if telemetry.diff_press_raw < 500 && chamber.current_state != "CONTAMINACION_ALERTA" && chamber.current_state != "SANITIZACION" {
-                        let old_state = chamber.current_state.clone();
-                        chamber.current_state = "CONTAMINACION_ALERTA".to_string();
-                        chamber.damper_closed = true;
-                        println!("MIP ALERT: ¡Pérdida de flujo de aire detectada! Hermetización activa. Transición: {} -> CONTAMINACION_ALERTA", old_state);
-                        
-                        // Guardar en el ledger de TruthSync
-                        log_state_transition(&state, &chamber.cell_id, &old_state, "CONTAMINACION_ALERTA").await;
+            Ok(_) => {
+                let telemetry = match parse_telemetry_frame(&frame) {
+                    Ok(telemetry) => telemetry,
+                    Err(error) => {
+                        eprintln!("TCP Listener: JSON inválido desde {}: {}", addr, error);
+                        continue;
                     }
+                };
 
-                    // Actualizar caché de Redis
-                    if let Some(ref _conn) = state.redis_client {
-                        // En desarrollo simulamos la escritura sin bloquear
-                    }
+                // Procesar telemetría recibida y aplicar reglas MIP/Yatra.
+                let mut chamber = state.chamber.write().await;
+                chamber.cell_id = telemetry.cell_id.clone();
+                chamber.temp_raw = telemetry.temp_raw;
+                chamber.hum_raw = telemetry.hum_raw;
+                chamber.co2_raw = telemetry.co2_raw;
+                chamber.diff_press_raw = telemetry.diff_press_raw;
 
-                    // Transmitir actualización al canal WebSocket
-                    let _ = state.tx.send(serde_json::to_value(chamber.clone()).unwrap());
+                // Regla de control de CO2 (umbral de 800 ppm).
+                let co2_ppm = telemetry.co2_raw / 216000;
+                chamber.extractor_active = co2_ppm > 800;
+
+                // Regla de control de presión diferencial (prevención de Trichoderma).
+                if telemetry.diff_press_raw < 500
+                    && chamber.current_state != "CONTAMINACION_ALERTA"
+                    && chamber.current_state != "SANITIZACION"
+                {
+                    let old_state = chamber.current_state.clone();
+                    chamber.current_state = "CONTAMINACION_ALERTA".to_string();
+                    chamber.damper_closed = true;
+                    println!("MIP ALERT: ¡Pérdida de flujo de aire detectada! Hermetización activa. Transición: {} -> CONTAMINACION_ALERTA", old_state);
+                    log_state_transition(&state, &chamber.cell_id, &old_state, "CONTAMINACION_ALERTA").await;
                 }
+
+                // Transmitir actualización al canal WebSocket.
+                let _ = state.tx.send(serde_json::to_value(chamber.clone()).unwrap());
             }
-            Err(e) => {
-                eprintln!("TCP Listener Error: {}", e);
+            Err(error) => {
+                eprintln!("TCP Listener Error desde {}: {}", addr, error);
                 break;
             }
         }
+    }
+}
+
+async fn read_bounded_line<R>(reader: &mut R, frame: &mut Vec<u8>) -> io::Result<usize>
+where
+    R: AsyncBufRead + Unpin,
+{
+    frame.clear();
+    loop {
+        let (consumed, complete) = {
+            let available = reader.fill_buf().await?;
+            if available.is_empty() {
+                if frame.is_empty() {
+                    return Ok(0);
+                }
+                return Err(io::Error::new(
+                    io::ErrorKind::UnexpectedEof,
+                    "telemetry frame ended before newline",
+                ));
+            }
+
+            let newline = available.iter().position(|byte| *byte == b'\n');
+            let consumed = newline.map_or(available.len(), |index| index + 1);
+            if frame.len() + consumed > MAX_TELEMETRY_FRAME_BYTES {
+                return Err(io::Error::new(
+                    io::ErrorKind::InvalidData,
+                    "telemetry frame exceeds maximum size",
+                ));
+            }
+
+            frame.extend_from_slice(&available[..consumed]);
+            (consumed, newline.is_some())
+        };
+        reader.consume(consumed);
+        if complete {
+            return Ok(frame.len());
+        }
+    }
+}
+
+fn parse_telemetry_frame(frame: &[u8]) -> Result<TelemetryPayload, serde_json::Error> {
+    serde_json::from_slice(frame)
+}
+
+#[cfg(test)]
+mod telemetry_tests {
+    use super::{parse_telemetry_frame, read_bounded_line, MAX_TELEMETRY_FRAME_BYTES};
+    use tokio::io::{AsyncWriteExt, BufReader};
+
+    #[tokio::test]
+    async fn reads_multiple_json_lines_from_one_stream() {
+        let (mut sender, receiver) = tokio::io::duplex(256);
+        sender
+            .write_all(b"{\"cell_id\":\"cell_test\",\"temp_raw\":4212000,\"hum_raw\":19872000,\"co2_raw\":168480000,\"diff_press_raw\":2160}\n{\"cell_id\":\"cell_test\",\"temp_raw\":4212000,\"hum_raw\":19872000,\"co2_raw\":168480000,\"diff_press_raw\":2160}\n")
+            .await
+            .unwrap();
+        drop(sender);
+
+        let mut reader = BufReader::new(receiver);
+        let mut frame = Vec::new();
+        for _ in 0..2 {
+            assert!(read_bounded_line(&mut reader, &mut frame).await.unwrap() > 0);
+            let telemetry = parse_telemetry_frame(&frame).unwrap();
+            assert_eq!(telemetry.cell_id, "cell_test");
+            assert_eq!(telemetry.temp_raw, 4_212_000);
+            assert_eq!(telemetry.diff_press_raw, 2160);
+        }
+        assert_eq!(read_bounded_line(&mut reader, &mut frame).await.unwrap(), 0);
+    }
+
+    #[tokio::test]
+    async fn rejects_oversized_frame_before_unbounded_buffering() {
+        let (mut sender, receiver) = tokio::io::duplex(MAX_TELEMETRY_FRAME_BYTES + 1);
+        sender
+            .write_all(&vec![b'x'; MAX_TELEMETRY_FRAME_BYTES + 1])
+            .await
+            .unwrap();
+
+        let mut reader = BufReader::new(receiver);
+        let error = read_bounded_line(&mut reader, &mut Vec::new())
+            .await
+            .unwrap_err();
+        assert_eq!(error.kind(), std::io::ErrorKind::InvalidData);
+    }
+
+    #[test]
+    fn rejects_malformed_json_frame() {
+        assert!(parse_telemetry_frame(b"{not-json}\n").is_err());
     }
 }
 

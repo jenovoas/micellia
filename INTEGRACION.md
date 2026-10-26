@@ -26,7 +26,8 @@ sequenceDiagram
 ```
 
 ### Pasos de Implementación:
-1. **Configurar Webhook**: Registrar la URL `https://micelia.cl/ws` (o `/api/whatsapp` según configures) como webhook de entrada en la consola de desarrolladores de Meta (o Twilio).
+
+1. **Configurar Webhook**: Registrar la URL `https://micelia.pinguinoseguro.cl/ws` (o `/api/whatsapp` según configures) como webhook de entrada en la consola de desarrolladores de Meta (o Twilio).
 2. **Procesar Notas de Voz**: 
    * Meta envía notas de voz en formato `.ogg`. 
    * Se requiere usar una librería de decodificación como `ffmpeg` (o el decodificador nativo de Rust `symphonia`) para transcribir el archivo antes de pasarlo al procesador Cortex.
@@ -39,6 +40,7 @@ sequenceDiagram
 Todo pedido y cambio de estado de despacho se firma criptográficamente mediante SHA-256 en la tabla `truthsync_orders`.
 
 ### Esquema de Base de Datos Sugerido:
+
 ```sql
 CREATE TABLE truthsync_orders (
     id SERIAL PRIMARY KEY,
@@ -55,6 +57,7 @@ CREATE TABLE truthsync_orders (
 ```
 
 ### Algoritmo de Firmado SHA-256 (Rust):
+
 ```rust
 use sha2::{Sha256, Digest};
 
@@ -82,9 +85,10 @@ pub fn calculate_block_hash(
 El visualizador [view_lote.html](system/dashboard/view_lote.html) recibe el ID del lote por parámetro de URL.
 
 ### Generación de Códigos QR Físicos:
+
 1. Al confirmarse un pedido, se genera una etiqueta adhesiva para la caja de setas con el código de barras y un QR.
 2. El QR codifica la URL de trazabilidad:
-   `https://micelia.cl/micelia/view_lote.html?lote=M260717-A`
+   `https://micelia.pinguinoseguro.cl/view_lote.html?lote=M260717-A`
 3. Al ser escaneado por el cliente o chef del restaurante, el portal carga en tiempo real la bitácora desde la tabla de telemetría de producción y la firma criptográfica asociada.
 
 ---
@@ -94,6 +98,7 @@ El visualizador [view_lote.html](system/dashboard/view_lote.html) recibe el ID d
 Toda lectura de sensores (Temperatura, Humedad, CO₂) se almacena internamente en formato sexagesimal (`s60`) en la base de datos PostgreSQL, garantizando el estándar Yatra S60 de Micelia.
 
 ### Rangos Críticos para Visualización Premium:
+
 * **Humedad**: 85% - 95%. Crítico para evitar el secado de los primordios de setas.
 * **CO₂**: < 900 ppm. Si sube de este límite, el hongo ostra crece con tallo largo fibroso y sombrero deforme.
 * **Temperatura**: 18°C - 22°C. Rango celular óptimo para la asimilación enzimática de la celulosa del sustrato.

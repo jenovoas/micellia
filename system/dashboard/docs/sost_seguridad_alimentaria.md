@@ -19,4 +19,4 @@ El hongo ostra (*Pleurotus ostreatus*) destaca por su increíble eficiencia en e
 
 ---
 
-*¿Cuáles son las proyecciones de esta actividad en Arauco? → Ver: [Provincia de Arauco: Desafíos, Geografía y el Potencial de la Fungicultura](file:///home/jnovoas/Dev/micellia/system/dashboard/docs/sost_provincia_arauco.md)*
+*¿Cuáles son las proyecciones de esta actividad en Arauco? → Ver: [Provincia de Arauco: Desafíos, Geografía y el Potencial de la Fungicultura](/view_doc.html?file=docs/sost_provincia_arauco.md)*

@@ -24,4 +24,4 @@ Incluso con equipamiento moderno, los cultivadores novatos de setas suelen enfre
 
 ---
 
-*¿Cómo se integra este proceso con la sustentabilidad y el cuidado del suelo? → Ver: [Agricultura Regenerativa y el Aporte Fúngico a la Salud del Suelo](file:///home/jnovoas/Dev/micellia/system/dashboard/docs/sost_agri_regenerativa.md)*
+*¿Cómo se integra este proceso con la sustentabilidad y el cuidado del suelo? → Ver: [Agricultura Regenerativa y el Aporte Fúngico a la Salud del Suelo](/view_doc.html?file=docs/sost_agri_regenerativa.md)*

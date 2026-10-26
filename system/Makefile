@@ -1,4 +1,4 @@
-.PHONY: check test build build-image run-dashboard build-seo deploy-kingu
+.PHONY: check test build build-image run-dashboard build-seo deploy-fenix
 
 check:
 	PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1 cargo check
@@ -18,8 +18,8 @@ run-dashboard:
 build-seo:
 	node dashboard/scripts/build-seo-pages.mjs
 
-deploy-kingu:
-	ssh kingu "mkdir -p ~/proyectos/micellia"
-	rsync -avz --exclude 'target' --exclude '.git' --exclude '.cargo' --exclude '.github' ../ kingu:~/proyectos/micellia/
-	ssh kingu "cd ~/proyectos/micellia && podman compose up -d --build"
+deploy-fenix:
+	ssh fenix "mkdir -p ~/proyectos/micellia"
+	rsync -avz --exclude 'target' --exclude '.git' --exclude '.cargo' --exclude '.github' ../ fenix:~/proyectos/micellia/
+	ssh fenix "cd ~/proyectos/micellia && podman compose up -d --build"
 

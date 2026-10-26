@@ -18,4 +18,4 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-Sitemap: https://pinguinoseguro.cl/micelia/sitemap.xml
+Sitemap: https://micelia.pinguinoseguro.cl/sitemap.xml

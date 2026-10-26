@@ -86,7 +86,7 @@ Para dar máxima transparencia comercial y auditar la trazabilidad de los pedido
 
 ```mermaid
 flowchart TD
-    A["Cliente realiza Pedido en Portal Web (micelia.cl)"] --> B["Servidor Next.js (Puerto 3000) procesa orden"]
+    A["Cliente realiza Pedido en Portal Web (micelia.pinguinoseguro.cl)"] --> B["Servidor Next.js (Puerto 3000) procesa orden"]
     B --> C["Consulta base de datos y recupera Hash del pedido anterior (H_prev)"]
     C --> D["Concatena: ID_Pedido + Datos_Cliente + Estado_Nuevo + H_prev"]
     D --> E["Calcula Hash criptográfico SHA256 (H_new)"]

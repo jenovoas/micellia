@@ -22,4 +22,4 @@ El micelio es una masa filamentosa compuesta por redes de hilos microscópicos l
 
 ---
 
-*¿Quieres saber cómo el micelio se convierte en hongo? → Ver: [Fisiología Fúngica: ¿Cómo Nacen y se Desarrollan los Hongos?](file:///home/jnovoas/Dev/micellia/system/dashboard/docs/cienc_como_nacen.md)*
+*¿Quieres saber cómo el micelio se convierte en hongo? → Ver: [Fisiología Fúngica: ¿Cómo Nacen y se Desarrollan los Hongos?](/view_doc.html?file=docs/cienc_como_nacen.md)*

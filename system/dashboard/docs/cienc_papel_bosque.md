@@ -27,4 +27,4 @@ Sin la acción de los hongos saprófitos, la materia leñosa se acumularía inde
 
 ---
 
-*¿Cómo podemos usar esta capacidad de biotransformación en la industria? → Ver: [Biotransformación Fúngica y su Rol en la Economía Circular](file:///home/jnovoas/Dev/micellia/system/dashboard/docs/cienc_economia_circular.md)*
+*¿Cómo podemos usar esta capacidad de biotransformación en la industria? → Ver: [Biotransformación Fúngica y su Rol en la Economía Circular](/view_doc.html?file=docs/cienc_economia_circular.md)*

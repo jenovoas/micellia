@@ -31,4 +31,4 @@ Se mezcla la semilla en grano con el sustrato final (paja o aserrín pasteurizad
 
 ---
 
-*¿Cuáles son las variables exactas que monitorea el sistema IoT en cada fase? → Ver: [Parámetros Ambientales Críticos: ¿Qué Necesita un Cultivo de Setas?](file:///home/jnovoas/Dev/micellia/system/dashboard/docs/cult_que_necesita.md)*
+*¿Cuáles son las variables exactas que monitorea el sistema IoT en cada fase? → Ver: [Parámetros Ambientales Críticos: ¿Qué Necesita un Cultivo de Setas?](/view_doc.html?file=docs/cult_que_necesita.md)*

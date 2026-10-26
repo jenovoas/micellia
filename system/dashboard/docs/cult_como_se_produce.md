@@ -27,4 +27,4 @@ Se realizan aberturas en las bolsas y se introducen en la sala de fructificació
 
 ---
 
-*¿Cuáles son las etapas biológicas del ciclo? → Ver: [El Ciclo Completo de Producción Fúngica: De la Espora a la Cosecha](file:///home/jnovoas/Dev/micellia/system/dashboard/docs/cult_ciclo_completo.md)*
+*¿Cuáles son las etapas biológicas del ciclo? → Ver: [El Ciclo Completo de Producción Fúngica: De la Espora a la Cosecha](/view_doc.html?file=docs/cult_ciclo_completo.md)*

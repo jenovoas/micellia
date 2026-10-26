@@ -30,4 +30,4 @@ Al final del ciclo, el sustrato remanente (Spent Mushroom Substrate - SMS) no es
 
 ---
 
-*¿Cómo se aplica esto en la agricultura moderna? → Ver: [Agricultura Regenerativa y el Aporte Fúngico a la Salud del Suelo](file:///home/jnovoas/Dev/micellia/system/dashboard/docs/sost_agri_regenerativa.md)*
+*¿Cómo se aplica esto en la agricultura moderna? → Ver: [Agricultura Regenerativa y el Aporte Fúngico a la Salud del Suelo](/view_doc.html?file=docs/sost_agri_regenerativa.md)*

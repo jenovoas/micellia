@@ -4,7 +4,7 @@
 
 ---
 
-Este documento detalla la arquitectura de red, DNS, proxy reverso Nginx y el esquema de seguridad SSL de nuestro servidor de producción **`fan`** (`157.254.174.40`). Sigue estas directrices para realizar cambios sin alterar los sitios activos (`pinguinoseguro.cl`, `laespiguita.cl` y el futuro `micelia.cl`).
+Este documento conserva la arquitectura histórica de red, DNS, proxy reverso Nginx y SSL del servidor **`fan`** (`157.254.174.40`); ya no es una guía operativa. El dominio actual del portal Micelia es **`micelia.pinguinoseguro.cl`**. Verifica `PIZARRA.md` y la configuración vigente antes de cualquier cambio de infraestructura.
 
 ---
 

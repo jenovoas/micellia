@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arquitectura del Servidor de Producción y Configuración Multidominio · Micelia</title>
-    <meta name="description" content="Categoría: Infraestructura · Tiempo de lectura: 12 min Este documento detalla la arquitectura de red, DNS, proxy reverso Nginx y el esquema de seguridad SS…">
-    <link rel="canonical" href="https://pinguinoseguro.cl/micelia/articulos/arquitectura_servidor/">
+    <meta name="description" content="Categoría: Infraestructura · Tiempo de lectura: 12 min Este documento conserva la arquitectura histórica de red, DNS, proxy reverso Nginx y SSL del servido…">
+    <link rel="canonical" href="https://micelia.pinguinoseguro.cl/articulos/arquitectura_servidor/">
     <meta property="og:type" content="article">
     <meta property="og:locale" content="es_CL">
     <meta property="og:site_name" content="Micelia">
     <meta property="og:title" content="Arquitectura del Servidor de Producción y Configuración Multidominio">
-    <meta property="og:description" content="Categoría: Infraestructura · Tiempo de lectura: 12 min Este documento detalla la arquitectura de red, DNS, proxy reverso Nginx y el esquema de seguridad SS…">
-    <meta property="og:url" content="https://pinguinoseguro.cl/micelia/articulos/arquitectura_servidor/">
-    <link rel="stylesheet" href="/micelia/public.css?v=2">
+    <meta property="og:description" content="Categoría: Infraestructura · Tiempo de lectura: 12 min Este documento conserva la arquitectura histórica de red, DNS, proxy reverso Nginx y SSL del servido…">
+    <meta property="og:url" content="https://micelia.pinguinoseguro.cl/articulos/arquitectura_servidor/">
+    <link rel="stylesheet" href="/public.css?v=2">
     <style>
         .seo-article { max-width: 880px; margin: 0 auto; padding: 7rem 1.5rem 4rem; }
         .seo-article__meta { color: var(--accent-green-light); font-size: .9rem; }
@@ -22,15 +22,15 @@
         .seo-article pre { white-space: pre-wrap; overflow-wrap: anywhere; padding: 1rem; border-radius: 10px; background: rgba(0,0,0,.3); }
         .seo-article a { color: var(--accent-gold); }
     </style>
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Arquitectura del Servidor de Producción y Configuración Multidominio","description":"Categoría: Infraestructura · Tiempo de lectura: 12 min Este documento detalla la arquitectura de red, DNS, proxy reverso Nginx y el esquema de seguridad SS…","inLanguage":"es-CL","publisher":{"@type":"Organization","name":"Micelia","url":"https://pinguinoseguro.cl/micelia"},"mainEntityOfPage":"https://pinguinoseguro.cl/micelia/articulos/arquitectura_servidor/"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Arquitectura del Servidor de Producción y Configuración Multidominio","description":"Categoría: Infraestructura · Tiempo de lectura: 12 min Este documento conserva la arquitectura histórica de red, DNS, proxy reverso Nginx y SSL del servido…","inLanguage":"es-CL","publisher":{"@type":"Organization","name":"Micelia","url":"https://micelia.pinguinoseguro.cl"},"mainEntityOfPage":"https://micelia.pinguinoseguro.cl/articulos/arquitectura_servidor/"}</script>
 </head>
 <body>
     <main class="seo-article">
-        <p><a href="/micelia/biblioteca.html">← Biblioteca Micelia</a></p>
+        <p><a href="/biblioteca.html">← Biblioteca Micelia</a></p>
         <p class="seo-article__meta">Infraestructura</p>
         <article class="prose"><h1>Arquitectura del Servidor de Producción y Configuración Multidominio</h1>
 <p><em>Categoría: Infraestructura · Tiempo de lectura: 12 min</em></p>
-<p>Este documento detalla la arquitectura de red, DNS, proxy reverso Nginx y el esquema de seguridad SSL de nuestro servidor de producción <strong><code>fan</code></strong> (<code>157.254.174.40</code>). Sigue estas directrices para realizar cambios sin alterar los sitios activos (<code>pinguinoseguro.cl</code>, <code>laespiguita.cl</code> y el futuro <code>micelia.cl</code>).</p>
+<p>Este documento conserva la arquitectura histórica de red, DNS, proxy reverso Nginx y SSL del servidor <strong><code>fan</code></strong> (<code>157.254.174.40</code>); ya no es una guía operativa. El dominio actual del portal Micelia es <strong><code>micelia.pinguinoseguro.cl</code></strong>. Verifica <code>PIZARRA.md</code> y la configuración vigente antes de cualquier cambio de infraestructura.</p>
 <h2>1. Topología del Servidor e IP</h2>
 <p>El servidor centraliza todas las funciones de red y aplicaciones:</p>
 <ul><li><strong>IP Pública</strong>: <code>157.254.174.40</code> (Hostname: <code>fan</code>).</li><li><strong>Usuario</strong>: <code>jnovoas</code> (con permisos de <code>sudo</code>).</li></ul>

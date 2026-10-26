@@ -1,6 +1,6 @@
 #!/bin/bash
-# setup_multi_production.sh - Configuración de BIND9, Nginx y Certbot en el servidor fan.
-# Debe ejecutarse en el servidor 'fan' como root o con privilegios sudo.
+# setup_multi_production.sh - Configuración de BIND9, Nginx y Certbot en el servidor fenix.
+# Ejecutar como el usuario que desplegó el repo; como root, define MICELIA_PROJECT_DIR.
 
 set -e
 
@@ -12,7 +12,7 @@ sudo dnf install -y epel-release dnf-plugins-core
 
 # 2. Instalar BIND9 y Nginx
 echo "Instalando BIND9 y Nginx..."
-sudo dnf install -y bind bind-utils nginx
+sudo dnf install -y bind bind-utils nginx curl
 
 # 3. Configurar BIND9 (/etc/named.conf)
 echo "Configurando /etc/named.conf..."
@@ -56,12 +56,6 @@ include "/etc/named.rfc1912.zones";
 include "/etc/named.root.key";
 
 // Zonas Autorizadas
-zone "micelia.cl" IN {
-    type master;
-    file "db.micelia.cl";
-    allow-update { none; };
-};
-
 zone "pinguinoseguro.cl" IN {
     type master;
     file "db.pinguinoseguro.cl";
@@ -76,7 +70,43 @@ zone "laespiguita.cl" IN {
 EOF
 
 # 4. Crear archivos de Zona DNS
-IP_PUBLICA="157.254.174.40"
+if [ -n "${MICELIA_PUBLIC_IPV4:-}" ]; then
+    IP_PUBLICA="$MICELIA_PUBLIC_IPV4"
+else
+    IP_PUBLICA=$(curl -4fsS https://api.ipify.org)
+fi
+
+es_ipv4_publica_valida() {
+    local octeto
+    local a b c
+    local -a octetos
+    [[ "$1" =~ ^([0-9]{1,3}[.]){3}[0-9]{1,3}$ ]] || return 1
+    IFS=. read -r -a octetos <<< "$1"
+    for octeto in "${octetos[@]}"; do
+        if ((10#$octeto > 255)); then
+            return 1
+        fi
+    done
+
+    a=$((10#${octetos[0]}))
+    b=$((10#${octetos[1]}))
+    c=$((10#${octetos[2]}))
+    if ((a == 0 || a == 10 || a == 127 || a >= 224)); then return 1; fi
+    if ((a == 100 && b >= 64 && b <= 127)); then return 1; fi
+    if ((a == 169 && b == 254)); then return 1; fi
+    if ((a == 172 && b >= 16 && b <= 31)); then return 1; fi
+    if ((a == 192 && (b == 0 || b == 168))); then return 1; fi
+    if ((a == 192 && b == 0 && c == 2)); then return 1; fi
+    if ((a == 192 && b == 88 && c == 99)); then return 1; fi
+    if ((a == 198 && (b == 18 || b == 19 || (b == 51 && c == 100)))); then return 1; fi
+    if ((a == 203 && b == 0 && c == 113)); then return 1; fi
+    return 0
+}
+
+if ! es_ipv4_publica_valida "$IP_PUBLICA"; then
+    echo "No se pudo determinar una IPv4 pública válida. Define MICELIA_PUBLIC_IPV4 y reintenta."
+    exit 1
+fi
 
 crear_zona_dns() {
     local dominio=$1
@@ -96,30 +126,22 @@ ns1 IN  A       $IP_PUBLICA
 ns2 IN  A       $IP_PUBLICA
 @   IN  A       $IP_PUBLICA
 www IN  A       $IP_PUBLICA
+; micelia.pinguinoseguro.cl se resuelve como subdominio (A record)
+micelia IN  A     $IP_PUBLICA
 EOF
     # Corregir permisos para que BIND pueda leerlos
     sudo chown root:named /var/named/db.$dominio
     sudo chmod 640 /var/named/db.$dominio
 }
 
-crear_zona_dns "micelia.cl"
+# micelia.cl YA NO es zona propia; es subdominio micelia.pinguinoseguro.cl
 crear_zona_dns "pinguinoseguro.cl"
 crear_zona_dns "laespiguita.cl"
 
-# 5. Crear directorios web y placeholders
+# 5. Crear directorios web de los sitios estáticos auxiliares.
 echo "Configurando directorios web..."
-sudo mkdir -p /var/www/micelia.cl/dashboard
-sudo mkdir -p /var/www/pinguinoseguro.cl
+sudo mkdir -p /var/www/pinguinoseguro.cl/portfolio
 sudo mkdir -p /var/www/laespiguita.cl
-
-# Copiar dashboard si ya existe en la carpeta desplegada
-if [ -d "/home/jnovoas/micellia/system/dashboard" ]; then
-    echo "Desplegando dashboard real de Micelia..."
-    sudo cp -r /home/jnovoas/micellia/system/dashboard/* /var/www/micelia.cl/dashboard/
-else
-    echo "Creando placeholder para el dashboard de Micelia..."
-    echo "<h1>Micelia Dashboard - Placeholder</h1>" | sudo tee /var/www/micelia.cl/dashboard/index.html > /dev/null
-fi
 
 if [ ! -f /var/www/pinguinoseguro.cl/index.html ]; then
     echo "<h1>Bienvenido a pinguinoseguro.cl</h1>" | sudo tee /var/www/pinguinoseguro.cl/index.html > /dev/null
@@ -132,33 +154,13 @@ sudo chown -R nginx:nginx /var/www/
 # 6. Configurar Server Blocks en Nginx
 echo "Configurando bloques de servidores Nginx..."
 
-# micelia.cl
-sudo tee /etc/nginx/conf.d/micelia.cl.conf > /dev/null << 'EOF'
-server {
-    listen 80;
-    server_name micelia.cl www.micelia.cl;
-
-    location / {
-        root /var/www/micelia.cl/dashboard;
-        index index.html;
-    }
-
-    location /ws {
-        proxy_pass http://127.0.0.1:8080/ws;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-        proxy_set_header Host $host;
-    }
-}
-EOF
-
-# pinguinoseguro.cl
+# pinguinoseguro.cl (incluye micelia.pinguinoseguro.cl)
 sudo tee /etc/nginx/conf.d/pinguinoseguro.cl.conf > /dev/null << 'EOF'
 server {
     listen 80;
-    server_name pinguinoseguro.cl www.pinguinoseguro.cl _ 157.254.174.40;
+    server_name pinguinoseguro.cl www.pinguinoseguro.cl _;
 
+    # Sitio principal pinguinoseguro.cl (proxy a Next.js en puerto 3000)
     location / {
         proxy_pass http://127.0.0.1:3000;
         proxy_http_version 1.1;
@@ -177,20 +179,19 @@ server {
         index index.html;
     }
 
-    location = /micelia {
-        return 301 /micelia/;
-    }
+}
 
-    location ^~ /micelia/ {
-        alias /var/www/micelia.cl/dashboard/;
-        index index.html;
-    }
+# Subdominio micelia.pinguinoseguro.cl: dashboard, API y WebSocket por Cortex.
+server {
+    listen 80;
+    server_name micelia.pinguinoseguro.cl;
 
-    # robots.txt se consulta siempre en la raíz del host; no en /micelia/.
-    # Si Pinguino Seguro ya tiene reglas propias, intégralas en este archivo.
-    location = /robots.txt {
-        alias /var/www/micelia.cl/dashboard/robots-host.txt;
-        default_type text/plain;
+    location /api/ {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
     }
 
     location /ws {
@@ -199,6 +200,16 @@ server {
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
         proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
 EOF
@@ -237,5 +248,5 @@ sudo systemctl enable named nginx
 sudo systemctl restart named nginx
 
 echo "=== Aprovisionamiento Completado Correctamente ==="
-echo "BIND9 y Nginx están corriendo y configurados para: micelia.cl, pinguinoseguro.cl, laespiguita.cl."
+echo "BIND9 y Nginx están corriendo y configurados para: pinguinoseguro.cl (incluye micelia.pinguinoseguro.cl), laespiguita.cl."
 echo "Usa el script /usr/local/bin/issue_ssl.sh para certificar cada dominio cuando esté propagado en la red."

@@ -21,4 +21,4 @@ El sustrato residual de cultivo de hongos (conocido como **SMS** por sus siglas 
 
 ---
 
-*¿Cómo se genera este sustrato a partir de residuos forestales locales? → Ver: [Supra-reciclaje Fúngico: El Aprovechamiento de Residuos Agrícolas](file:///home/jnovoas/Dev/micellia/system/dashboard/docs/sost_aprovechamiento_residuos.md)*
+*¿Cómo se genera este sustrato a partir de residuos forestales locales? → Ver: [Supra-reciclaje Fúngico: El Aprovechamiento de Residuos Agrícolas](/view_doc.html?file=docs/sost_aprovechamiento_residuos.md)*

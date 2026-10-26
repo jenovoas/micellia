@@ -3,6 +3,7 @@ resolver = "2"
 members = [
     "cortex",
     "firmware",
+    "firmware-sim",
     "s60"
 ]
 

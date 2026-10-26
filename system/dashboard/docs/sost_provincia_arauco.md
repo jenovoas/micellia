@@ -26,4 +26,4 @@ Al transformar desechos biológicos de la industria maderera en proteína gourme
 
 ---
 
-*¿Quieres aprender a iniciar tu propio cultivo en casa? → Ver: [Kit de Autocultivo Micelia: Guía Paso a Paso](file:///home/jnovoas/Dev/micellia/system/dashboard/docs/guia_autocultivo.md)*
+*¿Quieres aprender a iniciar tu propio cultivo en casa? → Ver: [Kit de Autocultivo Micelia: Guía Paso a Paso](/view_doc.html?file=docs/guia_autocultivo.md)*

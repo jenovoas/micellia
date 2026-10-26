@@ -30,4 +30,4 @@ Al desviar estos residuos de la quema o el enterramiento directo:
 
 ---
 
-*¿Cómo beneficia esto al comercio de la región? → Ver: [Producción Local y Circuitos Cortos de Comercialización en Arauco](file:///home/jnovoas/Dev/micellia/system/dashboard/docs/sost_produccion_local.md)*
+*¿Cómo beneficia esto al comercio de la región? → Ver: [Producción Local y Circuitos Cortos de Comercialización en Arauco](/view_doc.html?file=docs/sost_produccion_local.md)*
