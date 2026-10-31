@@ -1,5 +1,5 @@
 # Multi-stage Dockerfile for Micelia Cortex Daemon & Dashboard
-FROM rust:1.80-slim-bookworm AS builder
+FROM rust:1.99.1-slim-bookworm AS builder
 
 WORKDIR /app
 
