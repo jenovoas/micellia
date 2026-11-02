@@ -1,0 +1,597 @@
+{
+  "communities": {
+    "0": [
+      "arc",
+      "asyncbufread",
+      "asyncbufreadext",
+      "asyncwriteext",
+      "broadcast",
+      "bufreader",
+      "client",
+      "connection",
+      "corslayer",
+      "digest",
+      "get",
+      "intoresponse",
+      "json",
+      "message",
+      "put",
+      "r",
+      "router",
+      "rwlock",
+      "sender",
+      "sha256",
+      "state",
+      "system_cortex_src_main",
+      "system_cortex_src_main_appstate",
+      "system_cortex_src_main_chamberstate",
+      "system_cortex_src_main_chamberstate_default",
+      "system_cortex_src_main_create_order",
+      "system_cortex_src_main_dashboardaction",
+      "system_cortex_src_main_get_orders",
+      "system_cortex_src_main_handle_node_connection",
+      "system_cortex_src_main_handle_websocket",
+      "system_cortex_src_main_http_port",
+      "system_cortex_src_main_log_state_transition",
+      "system_cortex_src_main_main",
+      "system_cortex_src_main_max_telemetry_frame_bytes",
+      "system_cortex_src_main_orderpayload",
+      "system_cortex_src_main_orderstatuspayload",
+      "system_cortex_src_main_parse_telemetry_frame",
+      "system_cortex_src_main_pg_url",
+      "system_cortex_src_main_read_bounded_line",
+      "system_cortex_src_main_reads_multiple_json_lines_from_one_stream",
+      "system_cortex_src_main_redis_url",
+      "system_cortex_src_main_rejects_malformed_json_frame",
+      "system_cortex_src_main_rejects_oversized_frame_before_unbounded_buffering",
+      "system_cortex_src_main_rs_socketaddr",
+      "system_cortex_src_main_sha256",
+      "system_cortex_src_main_tcp_port",
+      "system_cortex_src_main_telemetrypayload",
+      "system_cortex_src_main_update_order_status",
+      "system_cortex_src_main_ws_handler",
+      "tcplistener_as_tokiotcplistener",
+      "value",
+      "websocket",
+      "websocketupgrade"
+    ],
+    "1": [
+      "system_dashboard_app",
+      "system_dashboard_app_btndashboard",
+      "system_dashboard_app_btndeliveries",
+      "system_dashboard_app_btndossier",
+      "system_dashboard_app_btnlogout",
+      "system_dashboard_app_btnmlforecast",
+      "system_dashboard_app_btnnextstate",
+      "system_dashboard_app_btntasks",
+      "system_dashboard_app_btntriggeralert",
+      "system_dashboard_app_btnusers",
+      "system_dashboard_app_co2float",
+      "system_dashboard_app_co2s60",
+      "system_dashboard_app_employees",
+      "system_dashboard_app_humfloat",
+      "system_dashboard_app_hums60",
+      "system_dashboard_app_logsobs",
+      "system_dashboard_app_logssec",
+      "system_dashboard_app_logviewport",
+      "system_dashboard_app_rangeco2",
+      "system_dashboard_app_rangehum",
+      "system_dashboard_app_rangetemp",
+      "system_dashboard_app_saveduser",
+      "system_dashboard_app_savetasks",
+      "system_dashboard_app_state_order",
+      "system_dashboard_app_statebadge",
+      "system_dashboard_app_statedesc",
+      "system_dashboard_app_states",
+      "system_dashboard_app_tabobs",
+      "system_dashboard_app_tabsec",
+      "system_dashboard_app_tempfloat",
+      "system_dashboard_app_temps60",
+      "system_dashboard_app_timelinesteps",
+      "system_dashboard_app_viewdashboard",
+      "system_dashboard_app_viewdeliveries",
+      "system_dashboard_app_viewdossier",
+      "system_dashboard_app_viewmlforecast",
+      "system_dashboard_app_viewtasks",
+      "system_dashboard_app_viewusers"
+    ],
+    "2": [
+      "add",
+      "addassign",
+      "div",
+      "divassign",
+      "fmt",
+      "formatter",
+      "mul",
+      "mulassign",
+      "neg",
+      "output",
+      "sub",
+      "subassign",
+      "system_s60_src_lib",
+      "system_s60_src_lib_s60",
+      "system_s60_src_lib_s60_add",
+      "system_s60_src_lib_s60_add_assign",
+      "system_s60_src_lib_s60_div",
+      "system_s60_src_lib_s60_div_assign",
+      "system_s60_src_lib_s60_fmt",
+      "system_s60_src_lib_s60_from_f64",
+      "system_s60_src_lib_s60_from_parts",
+      "system_s60_src_lib_s60_from_raw",
+      "system_s60_src_lib_s60_from_units",
+      "system_s60_src_lib_s60_mul",
+      "system_s60_src_lib_s60_mul_assign",
+      "system_s60_src_lib_s60_neg",
+      "system_s60_src_lib_s60_one",
+      "system_s60_src_lib_s60_raw",
+      "system_s60_src_lib_s60_scale",
+      "system_s60_src_lib_s60_sub",
+      "system_s60_src_lib_s60_sub_assign",
+      "system_s60_src_lib_s60_to_f64",
+      "system_s60_src_lib_s60_to_parts",
+      "system_s60_src_lib_s60_zero",
+      "system_s60_src_lib_test_arithmetic",
+      "system_s60_src_lib_test_conversion",
+      "system_s60_src_lib_test_negative_conversion"
+    ],
+    "3": [
+      "deserialize",
+      "duration",
+      "error",
+      "io",
+      "ipv4addr",
+      "parser",
+      "s60",
+      "serialize",
+      "super",
+      "system_firmware_sim_src_main",
+      "system_firmware_sim_src_main_args",
+      "system_firmware_sim_src_main_args_3030e7",
+      "system_firmware_sim_src_main_main",
+      "system_firmware_sim_src_main_pins_loopback_destination",
+      "system_firmware_sim_src_main_rejects_non_loopback_destinations",
+      "system_firmware_sim_src_main_rs_socketaddr",
+      "system_firmware_sim_src_main_scenario",
+      "system_firmware_sim_src_main_scenario_from",
+      "system_firmware_sim_src_main_scenarioarg",
+      "system_firmware_sim_src_main_scenarioarg_pressuredrop",
+      "system_firmware_sim_src_main_scenarioarg_stable",
+      "system_firmware_sim_src_main_validate_args",
+      "system_firmware_sim_src_model",
+      "system_firmware_sim_src_model_frames_are_json_lines",
+      "system_firmware_sim_src_model_pressure_drop_scenario_emits_alert_value_only_in_its_window",
+      "system_firmware_sim_src_model_sample",
+      "system_firmware_sim_src_model_samples_are_deterministic_and_use_s60_raw_values",
+      "system_firmware_sim_src_model_scenario",
+      "system_firmware_sim_src_model_scenario_pressuredrop",
+      "system_firmware_sim_src_model_scenario_stable",
+      "system_firmware_sim_src_model_telemetryframe",
+      "system_firmware_sim_src_model_telemetryframe_to_json_line",
+      "tcpstream",
+      "thread",
+      "tosocketaddrs",
+      "valueenum",
+      "write"
+    ],
+    "4": [
+      "compose",
+      "compose_environment_postgres_db",
+      "compose_environment_postgres_password",
+      "compose_environment_postgres_user",
+      "compose_healthcheck_interval",
+      "compose_healthcheck_retries",
+      "compose_healthcheck_test",
+      "compose_healthcheck_timeout",
+      "compose_micelia_db_container_name",
+      "compose_micelia_db_environment",
+      "compose_micelia_db_healthcheck",
+      "compose_micelia_db_image",
+      "compose_micelia_db_networks",
+      "compose_micelia_db_restart",
+      "compose_micelia_db_volumes",
+      "compose_micelia_net_driver",
+      "compose_micelia_redis_container_name",
+      "compose_micelia_redis_healthcheck",
+      "compose_micelia_redis_image",
+      "compose_micelia_redis_networks",
+      "compose_micelia_redis_restart",
+      "compose_micelia_redis_volumes",
+      "compose_networks",
+      "compose_networks_micelia_net",
+      "compose_services",
+      "compose_services_micelia_db",
+      "compose_services_micelia_redis",
+      "compose_volumes",
+      "compose_volumes_micelia_db_data",
+      "compose_volumes_micelia_redis_data"
+    ],
+    "5": [
+      "system_dashboard_public",
+      "system_dashboard_public_abortpayment",
+      "system_dashboard_public_appendmessage",
+      "system_dashboard_public_cart",
+      "system_dashboard_public_closearticlemodal",
+      "system_dashboard_public_closecheckoutmodal",
+      "system_dashboard_public_default_users",
+      "system_dashboard_public_initsalesbotui",
+      "system_dashboard_public_lifestyles",
+      "system_dashboard_public_miceliausers",
+      "system_dashboard_public_mutesalesbot",
+      "system_dashboard_public_openarticlemodal",
+      "system_dashboard_public_public_articles",
+      "system_dashboard_public_savedusers",
+      "system_dashboard_public_setupharvestpassportlink",
+      "system_dashboard_public_simulatebotresponse",
+      "system_dashboard_public_speakpagetext",
+      "system_dashboard_public_switchlifestyle",
+      "system_dashboard_public_telemetryhistory",
+      "system_dashboard_public_togglea11ytts",
+      "system_dashboard_public_togglesalesbot",
+      "system_dashboard_public_togglewabot",
+      "system_dashboard_public_updateactivenav",
+      "system_dashboard_public_userorders"
+    ],
+    "6": [
+      "compose_build_context",
+      "compose_build_dockerfile",
+      "compose_depends_on_micelia_db",
+      "compose_depends_on_micelia_redis",
+      "compose_environment_database_url",
+      "compose_environment_port",
+      "compose_environment_redis_url",
+      "compose_environment_static_dir",
+      "compose_environment_tcp_port",
+      "compose_micelia_cortex_build",
+      "compose_micelia_cortex_container_name",
+      "compose_micelia_cortex_depends_on",
+      "compose_micelia_cortex_environment",
+      "compose_micelia_cortex_image",
+      "compose_micelia_cortex_networks",
+      "compose_micelia_cortex_ports",
+      "compose_micelia_cortex_restart",
+      "compose_micelia_db_condition",
+      "compose_micelia_redis_condition",
+      "compose_services_micelia_cortex"
+    ],
+    "7": [
+      "ref_node_fs",
+      "ref_node_path",
+      "system_dashboard_scripts_build_seo_pages",
+      "system_dashboard_scripts_build_seo_pages_articletemplate",
+      "system_dashboard_scripts_build_seo_pages_basepath",
+      "system_dashboard_scripts_build_seo_pages_dashboarddir",
+      "system_dashboard_scripts_build_seo_pages_docsdir",
+      "system_dashboard_scripts_build_seo_pages_escapehtml",
+      "system_dashboard_scripts_build_seo_pages_files",
+      "system_dashboard_scripts_build_seo_pages_inline",
+      "system_dashboard_scripts_build_seo_pages_markdowntohtml",
+      "system_dashboard_scripts_build_seo_pages_normalizebasepath",
+      "system_dashboard_scripts_build_seo_pages_outputdir",
+      "system_dashboard_scripts_build_seo_pages_siteurl",
+      "system_dashboard_scripts_build_seo_pages_urls"
+    ],
+    "8": [
+      "system_dashboard_public_addtocart",
+      "system_dashboard_public_appendsalesbotmessage",
+      "system_dashboard_public_calculatetotal",
+      "system_dashboard_public_closeprofilemodal",
+      "system_dashboard_public_finishorder",
+      "system_dashboard_public_handlesalesbotsubmit",
+      "system_dashboard_public_logoutuser",
+      "system_dashboard_public_orderpredicteditem",
+      "system_dashboard_public_processsalesbotquery",
+      "system_dashboard_public_rendercart",
+      "system_dashboard_public_requestwhatsapporder",
+      "system_dashboard_public_updatequantity"
+    ],
+    "9": [
+      "system_dashboard_public_closeloginmodal",
+      "system_dashboard_public_connectclientwebsocket",
+      "system_dashboard_public_loaduserorders",
+      "system_dashboard_public_loginsocial",
+      "system_dashboard_public_loginuser",
+      "system_dashboard_public_openprofilemodal",
+      "system_dashboard_public_renderprofileorders",
+      "system_dashboard_public_runmlprediction",
+      "system_dashboard_public_updateuserui"
+    ],
+    "10": [
+      "bound",
+      "prelude",
+      "pymodule",
+      "pyresult",
+      "system_cortex_src_lib",
+      "system_cortex_src_lib_cortex",
+      "system_cortex_src_lib_predict_sales",
+      "system_cortex_src_lib_s60_to_string"
+    ],
+    "11": [
+      "system_dashboard_public_applysaveda11ysettings",
+      "system_dashboard_public_initaccessibilityui",
+      "system_dashboard_public_seta11yanimations",
+      "system_dashboard_public_seta11ycontrast",
+      "system_dashboard_public_seta11yfontsize",
+      "system_dashboard_public_seta11ytheme",
+      "system_dashboard_public_toggleaccessibilitypanel",
+      "system_dashboard_public_updateactivebuttons"
+    ],
+    "12": [
+      "system_dashboard_tour",
+      "system_dashboard_tour_clearhighlights",
+      "system_dashboard_tour_closewhatsappwidget",
+      "system_dashboard_tour_exittour",
+      "system_dashboard_tour_handlenext",
+      "system_dashboard_tour_renderstep",
+      "system_dashboard_tour_starttour",
+      "system_dashboard_tour_typewriter"
+    ],
+    "13": [
+      "system_dashboard_app_connectwebsocket",
+      "system_dashboard_app_s60_fromfloat",
+      "system_dashboard_app_setgaugevalue",
+      "system_dashboard_app_updateco2",
+      "system_dashboard_app_updatehumidity",
+      "system_dashboard_app_updatestateui",
+      "system_dashboard_app_updatetemperature"
+    ],
+    "14": [
+      "panicinfo",
+      "system_firmware_src_main",
+      "system_firmware_src_main_main",
+      "system_firmware_src_main_panic",
+      "system_firmware_src_main_start"
+    ],
+    "15": [
+      "system_dashboard_app_balancetaskassignee",
+      "system_dashboard_app_gettasks",
+      "system_dashboard_app_loadandrendertasks",
+      "system_dashboard_app_rendermlforecastchart",
+      "system_dashboard_app_switchview"
+    ],
+    "16": [
+      "system_dashboard_public_generatetelemetryhash",
+      "system_dashboard_public_opentelemetrystudymodal",
+      "system_dashboard_public_rendertelemetrychart",
+      "system_dashboard_public_rendertelemetrylogstable",
+      "system_dashboard_public_updatelivetelemetrystudy"
+    ],
+    "17": [
+      "system_dashboard_public_initheroslider",
+      "system_dashboard_public_resetherointerval",
+      "system_dashboard_public_setheroslide",
+      "system_dashboard_public_showheroslide",
+      "system_dashboard_public_startherointerval"
+    ],
+    "18": [
+      "system_dashboard_public_moveslider",
+      "system_dashboard_public_resetsliderinterval",
+      "system_dashboard_public_setslide",
+      "system_dashboard_public_showslide",
+      "system_dashboard_public_sliderinterval"
+    ],
+    "19": [
+      "pkg_cortex",
+      "pkg_firmware",
+      "pkg_firmware_sim",
+      "pkg_s60"
+    ],
+    "20": [
+      "system_dashboard_app_addlog",
+      "system_dashboard_app_changeorderstatus",
+      "system_dashboard_app_loadadminorders",
+      "system_dashboard_app_renderlogs"
+    ],
+    "21": [
+      "system_dashboard_app_s60",
+      "system_dashboard_app_s60_constructor",
+      "system_dashboard_app_s60_toparts",
+      "system_dashboard_app_s60_tostring"
+    ],
+    "22": [
+      "system_dashboard_public_createwireframeoystermushroom",
+      "system_dashboard_public_initmycelium3d",
+      "system_dashboard_public_initmycelium3d_animate",
+      "system_dashboard_public_initmycelium3d_updatepointsarray"
+    ],
+    "23": [
+      "system_deployment_setup_multi_production",
+      "system_deployment_setup_multi_production_crear_zona_dns",
+      "system_deployment_setup_multi_production_es_ipv4_publica_valida",
+      "system_deployment_setup_multi_production_sh__entry"
+    ],
+    "24": [
+      "mcp",
+      "mcp_json_mcp_command_uvx",
+      "mcp_mcp_server_code_review_graph"
+    ],
+    "25": [
+      "qoder_mcp",
+      "qoder_mcp_json_mcp_command_uvx",
+      "qoder_mcp_mcp_server_code_review_graph"
+    ],
+    "26": [
+      "system_deployment_issue_ssl",
+      "system_deployment_issue_ssl_sh__entry",
+      "system_deployment_issue_ssl_verificar_dns"
+    ],
+    "27": [
+      "gemini_hooks_crg_session_start",
+      "gemini_hooks_crg_session_start_sh__entry"
+    ],
+    "28": [
+      "gemini_hooks_crg_update",
+      "gemini_hooks_crg_update_sh__entry"
+    ],
+    "29": [
+      "system_deployment_cell_templates_deploy_cell",
+      "system_deployment_cell_templates_deploy_cell_sh__entry"
+    ]
+  },
+  "cohesion": {
+    "0": 0.06095791001451379,
+    "1": 0.05263157894736842,
+    "2": 0.08408408408408409,
+    "3": 0.07657657657657657,
+    "4": 0.07586206896551724,
+    "5": 0.09420289855072464,
+    "6": 0.1,
+    "7": 0.17142857142857143,
+    "8": 0.19696969696969696,
+    "9": 0.2777777777777778,
+    "10": 0.32142857142857145,
+    "11": 0.2857142857142857,
+    "12": 0.5,
+    "13": 0.47619047619047616,
+    "14": 0.5,
+    "15": 0.4,
+    "16": 0.6,
+    "17": 0.6,
+    "18": 0.4,
+    "19": 0.5,
+    "20": 0.5,
+    "21": 0.6666666666666666,
+    "22": 0.6666666666666666,
+    "23": 0.8333333333333334,
+    "24": 0.6666666666666666,
+    "25": 0.6666666666666666,
+    "26": 1.0,
+    "27": 1.0,
+    "28": 1.0,
+    "29": 1.0
+  },
+  "gods": [
+    {
+      "id": "system_s60_src_lib_s60",
+      "label": "S60",
+      "degree": 30
+    },
+    {
+      "id": "system_cortex_src_main_appstate",
+      "label": "AppState",
+      "degree": 14
+    },
+    {
+      "id": "compose_services_micelia_cortex",
+      "label": "micelia-cortex",
+      "degree": 9
+    },
+    {
+      "id": "system_cortex_src_main_handle_node_connection",
+      "label": "handle_node_connection()",
+      "degree": 8
+    },
+    {
+      "id": "compose_services_micelia_db",
+      "label": "micelia-db",
+      "degree": 8
+    },
+    {
+      "id": "system_dashboard_app_connectwebsocket",
+      "label": "connectWebSocket()",
+      "degree": 7
+    },
+    {
+      "id": "system_firmware_sim_src_model_sample",
+      "label": "sample()",
+      "degree": 7
+    },
+    {
+      "id": "compose_services_micelia_redis",
+      "label": "micelia-redis",
+      "degree": 7
+    },
+    {
+      "id": "system_dashboard_public_updateactivebuttons",
+      "label": "updateActiveButtons()",
+      "degree": 6
+    },
+    {
+      "id": "system_dashboard_public_rendercart",
+      "label": "renderCart()",
+      "degree": 6
+    }
+  ],
+  "surprises": [
+    {
+      "source": "main()",
+      "target": "sample()",
+      "source_files": [
+        "system/firmware-sim/src/main.rs",
+        "system/firmware-sim/src/model.rs"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source"
+    },
+    {
+      "source": "cortex",
+      "target": "s60",
+      "source_files": [
+        "system/cortex/Cargo.toml",
+        "system/s60/Cargo.toml"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "depends_on",
+      "why": "cross-file semantic connection"
+    },
+    {
+      "source": "firmware",
+      "target": "s60",
+      "source_files": [
+        "system/firmware/Cargo.toml",
+        "system/s60/Cargo.toml"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "depends_on",
+      "why": "cross-file semantic connection"
+    },
+    {
+      "source": "firmware-sim",
+      "target": "s60",
+      "source_files": [
+        "system/firmware-sim/Cargo.toml",
+        "system/s60/Cargo.toml"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "depends_on",
+      "why": "cross-file semantic connection"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `services` connect `Container Infrastructure` to `Cortex Container Configuration`?",
+      "why": "High betweenness centrality (0.012) - this node is a cross-community bridge."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `MAX_TELEMETRY_FRAME_BYTES`, `cortex`, `firmware` to the rest of the system?",
+      "why": "10 weakly-connected nodes found - possible documentation gaps or missing edges."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Cortex Networking` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.06095791001451379 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `micelia-cortex` connect `Cortex Container Configuration` to `Container Infrastructure`?",
+      "why": "High betweenness centrality (0.011) - this node is a cross-community bridge."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Dashboard Controls` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.05263157894736842 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `S60 Arithmetic` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.08408408408408409 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Firmware Simulator Parsing` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.07657657657657657 - nodes in this community are weakly interconnected."
+    }
+  ]
+}

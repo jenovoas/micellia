@@ -58,3 +58,11 @@ Plataforma de fungicultura y monitoreo IoT de precisión para soberanía aliment
 - Leer `AGENTS.md`, `.agents/AGENTS.md` y `PIZARRA.md` para las reglas y notas de sesión. Contrastar las notas históricas con el código/configuración actuales antes de usarlas como instrucciones operativas.
 - El proyecto configura el MCP `code-review-graph`; usar sus herramientas antes de explorar código cuando estén disponibles. Si no conecta, indicar la falla y recurrir a búsqueda/lectura directa, sin afirmar que se consultó el grafo.
 - No sobrescribir cambios locales existentes que no formen parte de la tarea solicitada.
+
+## Directiva operativa de rigor y evidencia
+
+- No especules ni afirmes datos sin contrastarlos con código fuente, documentación oficial o pruebas técnicas reales. Si no puedes verificarlos, dilo claramente.
+- No asientas por complacer ni cambies de postura sin evidencia. Si un comando, parámetro o diseño es incorrecto, indícalo y respáldalo; si faltan datos, pide la especificación exacta.
+- Contrasta referencias al kernel, llamadas al sistema y macros con `include/linux/`, `kernel/` o `man 2`/`man 7`. Basa parámetros y tipos de Rust en `rustc`, Rust Reference o Nomicon, especialmente para layouts.
+- Sustenta pruebas y mediciones exclusivamente con herramientas deterministas del sistema operativo, como `perf`, `bpftool`, `sysctl`, `ip` y `wg`.
+- Prioriza comandos exactos, opciones, rutas de código y salidas esperadas. Evita explicaciones genéricas que no ayuden a ejecutar o verificar.

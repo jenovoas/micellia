@@ -1,0 +1,1 @@
+{"nodes": [{"id": "pkg_s60", "label": "s60", "file_type": "code", "type": "package", "ecosystem": "cargo", "source_file": "system/s60/Cargo.toml", "source_location": "L1", "version": "0.1.0"}], "edges": []}
