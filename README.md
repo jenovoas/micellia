@@ -48,7 +48,9 @@ Catálogo de divulgación científica, culinaria, tecnológica y sustentable del
 
 ## 🌐 Configuración del Servidor y Enrutamiento (Conceptual)
 
-La plataforma utiliza el enrutamiento reverso de Nginx para distribuir la carga del sistema de forma segura:
+El siguiente esquema es documentación conceptual del diseño y no describe el estado operativo actual. No lo uses para inferir hosts, vhosts, rutas, puertos publicados ni servicios desplegados.
+
+La plataforma contempla el enrutamiento reverso de Nginx para distribuir la carga del sistema:
 
 * **/ (Raíz)** ➔ Redirección al frontend dinámico (puerto Next.js interno).
 * **/portfolio** ➔ Directorio de portafolio y recursos estáticos.
@@ -59,15 +61,9 @@ Las políticas de seguridad del sistema y el cortafuegos están configurados par
 
 ---
 
-## 🛠️ Comandos de Despliegue
+## Operación de producción
 
-Para desplegar de forma segura los cambios locales al servidor remoto, ejecute el comando de sincronización automatizado:
-
-```bash
-make -C system deploy-fenix
-```
-
-Este comando sincroniza los estáticos del dashboard de Micelia y recompila el daemon Cortex en la arquitectura de producción mediante reglas preestablecidas.
+Este repositorio contiene targets y scripts que pueden modificar servicios remotos, pero la documentación local no confirma por sí sola el destino ni el estado actual de producción. Antes de cualquier despliegue, consulta el HANDOFF y las notas vigentes del vault, verifica el host y el servicio en vivo y obtén autorización explícita para esa operación concreta. No ejecutes targets de despliegue como parte de una validación local.
 
 ---
 
