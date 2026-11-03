@@ -2,6 +2,15 @@
 
 Este archivo define las reglas arquitectónicas, restricciones de diseño y especificaciones técnicas de Micelia. Los agentes de IA deben respetar y adherirse estrictamente a estas directrices en cada interacción y edición de código.
 
+## Protocolo común de entorno y memoria
+
+- Lee `../AGENTS.md` antes de trabajar y aplica sus reglas junto con estas.
+- Consulta al inicio el vault en este orden: `HANDOFF.md` → `MAPA_VAULT.md` → `Pendientes.md` → `Personal/PREFERENCIAS_TRABAJO.md` → notas pertinentes. Usa MCP `obsidian-vault`; si no está disponible, lee los mismos archivos desde `../personalvault/` y declara cualquier falta de acceso.
+- Considera `PIZARRA.md`, hosts, direcciones, herramientas y procedimientos locales como históricos hasta validarlos contra el vault vigente y el estado actual. No ejecutes instrucciones de la infraestructura anterior.
+- Usa solo herramientas disponibles en esta sesión. Graphify es opcional si está instalado y existe `graphify-out/`; no exijas `code-review-graph`.
+- Sigue OpenSpec para cambios no triviales. No hagas commit, push, despliegue ni cambios en infraestructura sin autorización explícita.
+- Registra al cierre en el vault los archivos y comprobaciones; separa cambios locales de operaciones verificadas y actualiza `HANDOFF.md` en sitio si queda trabajo abierto.
+
 ---
 
 ## 1. Identidad de Marca y Estética
@@ -42,38 +51,15 @@ Este archivo define las reglas arquitectónicas, restricciones de diseño y espe
 
 ---
 
-## 7. Entorno de Producción y Despliegue
+## 7. Estado de infraestructura y despliegue
 
-* **Servidor Destino**: `157.254.174.40` (Hostname: `fan`, usuario `jnovoas`, llaves SSH configuradas).
-* **Zonas DNS Autoritativas (BIND9)**: El puerto 53 (UDP/TCP) de `fan` responde consultas de nombres de forma autoritativa para:
-  * `micelia.cl`
-  * `pinguinoseguro.cl` (registrado en NIC Chile con Glue Records `ns1.pinguinoseguro.cl` y `ns2.pinguinoseguro.cl` a la IP `157.254.174.40`).
-  * `laespiguita.cl` (delegado a los nameservers de `pinguinoseguro.cl`).
-* **Puertos de Aplicación**:
-  * **Puerto 3000**: Next.js Standalone de `pinguinoseguro_web` (`~/pinguinoseguro_web/.next/standalone/server.js`).
-  * **Puerto 8080**: API Gateway & WebSockets del Cortex daemon de Micelia (`~/micellia/target/release/cortex`).
-  * **Puerto 4000**: TCP Listener del Cortex daemon para recibir lecturas de firmware IoT.
-* **Enrutamiento Nginx (`/etc/nginx/conf.d/`)**:
-  * **`pinguinoseguro.cl.conf` (también maneja IP `157.254.174.40` y `_`)**:
-    * `/` (Raíz) ➔ Proxy reverso a `http://127.0.0.1:3000` (Next.js).
-    * `/portfolio` ➔ Alias a `/var/www/pinguinoseguro.cl/portfolio/` (Vite static). Tiene una regla de redirección estricta para forzar barra diagonal al final (`/portfolio/`).
-    * `/micelia` ➔ Alias a `/var/www/micelia.cl/dashboard/` (Estáticos de Micelia + Fondo Three.js).
-    * `/ws` ➔ Proxy reverso WebSocket a `http://127.0.0.1:8080/ws` (Cortex daemon).
-  * **`laespiguita.cl.conf`**:
-    * `/` (Raíz) ➔ Carpeta `/var/www/laespiguita.cl/` (React Vite static).
-* **Políticas de Seguridad de Sistema (SELinux)**:
-  * Todas las carpetas en `/var/www/` deben estar etiquetadas con el contexto `httpd_sys_content_t` y permisos `chmod 755` para ser legibles por Nginx.
-  * El booleano de SELinux `httpd_can_network_connect` debe permanecer en `1` (on) para permitir a Nginx redirigir tráfico a los puertos 3000 y 8080.
-* **Certificados SSL (Certbot)**:
-  * Administrados mediante el script helper en el servidor en `/usr/local/bin/issue_ssl.sh`. Ejecutar por dominio bajo demanda una vez propagado el DNS (`sudo /usr/local/bin/issue_ssl.sh <dominio>`).
+Las direcciones, hosts, puertos, DNS, rutas Nginx, políticas SELinux y comandos que aparecían en esta sección describen un entorno anterior y no son instrucciones operativas. La memoria vigente indica que el servicio Micelia aún no tiene definido un servicio activo, host virtual, contenido ni certificado; no asumir `fan`, `fenix` ni otro destino por referencias históricas.
 
----
+Antes de cualquier operación futura, consulta el HANDOFF y las notas operativas vigentes del vault, comprueba el estado real del repositorio y del host autorizado, y solicita autorización explícita para el despliegue concreto. La ausencia de infraestructura actual no autoriza a provisionarla ni a cambiar DNS, TLS, proxy o firewall.
 
-## 8. Foco en Producción y Despliegues Remotos
+## 8. Desarrollo y verificación
 
-* Todo cambio realizado en el código local debe sincronizarse y probarse directamente en el servidor de producción `fan` (mediante `make -C system deploy`).
-* Los reportes, capturas y walkthroughs deben orientarse y hacer referencia al entorno real de producción y no a pruebas en localhost.
-* **Advertencia Crítica de SSL/Certbot**: Ejecutar `setup_multi_production.sh` sobrescribe los bloques de Nginx en `/etc/nginx/conf.d/` desactivando el puerto 443 (SSL). Si es estrictamente necesario correr ese script de aprovisionamiento, se debe ejecutar inmediatamente después la emisión de certificados: `sudo /usr/local/bin/issue_ssl.sh <dominio>` para evitar la caída de los portales HTTPS.
+Las tareas locales pueden verificarse con las herramientas instaladas y los comandos documentados por el repositorio. No se exige ejecutar cambios en producción para validar código o documentación. No ejecutar scripts de aprovisionamiento heredados ni comandos que sobrescriban Nginx, certificados, DNS o servicios compartidos sin una solicitud explícita y un plan de reversión verificado.
 
 ## Directiva operativa de rigor y evidencia
 

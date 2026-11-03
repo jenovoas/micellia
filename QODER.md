@@ -1,38 +1,9 @@
-<!-- code-review-graph MCP tools -->
-## MCP Tools: code-review-graph
+# Reglas comunes de agentes — Micelia
 
-**IMPORTANT: This project has a knowledge graph. ALWAYS use the
-code-review-graph MCP tools BEFORE using Grep/Glob/Read to explore
-the codebase.** The graph is faster, cheaper (fewer tokens), and gives
-you structural context (callers, dependents, test coverage) that file
-scanning cannot.
+Antes de trabajar, lee `../AGENTS.md` y estas reglas. Al inicio consulta la memoria compartida en este orden: `HANDOFF.md` → `MAPA_VAULT.md` → `Pendientes.md` → `Personal/PREFERENCIAS_TRABAJO.md` → notas del proyecto y de la tarea. Usa MCP `obsidian-vault`; si no está disponible en este agente, lee los mismos archivos desde `../personalvault/` y declara si no puedes acceder.
 
-### When to use graph tools FIRST
+Trata `PIZARRA.md`, direcciones, hosts, comandos y procedimientos como históricos hasta contrastarlos con el vault vigente y el estado actual del repositorio. No reutilices instrucciones de la infraestructura anterior como acciones ejecutables. No supongas que un host de producción está confirmado por aparecer en una nota.
 
-- **Exploring code**: `semantic_search_nodes_tool` or `query_graph_tool` instead of Grep
-- **Understanding impact**: `get_impact_radius_tool` instead of manually tracing imports
-- **Code review**: `detect_changes_tool` + `get_review_context_tool` instead of reading entire files
-- **Finding relationships**: `query_graph_tool` with callers_of/callees_of/imports_of/tests_for
-- **Architecture questions**: `get_architecture_overview_tool` + `list_communities_tool`
+Usa MCP, CLI y habilidades solo cuando estén disponibles en esta sesión. Graphify es opcional y se usa si está instalado y el proyecto tiene `graphify-out/`; de lo contrario, consulta directamente los archivos pertinentes. No exijas `code-review-graph` ni afirmes haber consultado herramientas que no estén disponibles.
 
-Fall back to Grep/Glob/Read **only** when the graph doesn't cover what you need.
-
-### Key Tools
-
-| Tool | Use when |
-| ------ | ---------- |
-| `detect_changes_tool` | Reviewing code changes — gives risk-scored analysis |
-| `get_review_context_tool` | Need source snippets for review — token-efficient |
-| `get_impact_radius_tool` | Understanding blast radius of a change |
-| `get_affected_flows_tool` | Finding which execution paths are impacted |
-| `query_graph_tool` | Tracing callers, callees, imports, tests, dependencies |
-| `semantic_search_nodes_tool` | Finding functions/classes by name or keyword |
-| `get_architecture_overview_tool` | Understanding high-level codebase structure |
-| `refactor_tool` | Planning renames, finding dead code |
-
-### Workflow
-
-1. The graph auto-updates on file changes (via hooks).
-2. Use `detect_changes_tool` for code review.
-3. Use `get_affected_flows_tool` to understand impact.
-4. Use `query_graph_tool` pattern="tests_for" to check coverage.
+Sigue OpenSpec para cambios no triviales. Mantén los cambios locales y acotados; no hagas commit, push, despliegue ni cambios en infraestructura sin autorización explícita. Al cierre, registra archivos y verificaciones en el vault, separando preparación local de operaciones verificadas; actualiza `HANDOFF.md` en sitio si queda trabajo abierto.
